@@ -1,0 +1,39 @@
+/* Mobile */
+@media only screen and (max-width: 767px) {
+.contain{
+    width: auto!important;
+    margin-top: 1em !important;
+    margin-bottom: 1em !important;
+    margin-left: 1em!important;
+    margin-right: 1em!important;
+}
+.maincontain{
+    width: auto!important;
+    margin-top: 1em !important;
+    margin-bottom: 1em !important;
+    margin-left: 1% !important;
+    margin-right: 1%!important;
+}
+.tasktitle{
+    font-size: 25px;
+}
+.loginBox{
+    margin-top: 3em !important;
+}
+.headertop{
+    z-index: 10;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+}
+.footerbottom{
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+}
+.loginError{
+    margin-top: 2em; 
+}
+}
