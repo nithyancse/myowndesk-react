@@ -26,7 +26,7 @@ class MobileSideBar extends Component {
 
     componentWillMount() {
         let list = [];
-        axios.get('/fetchMenuList?userId=1')
+        axios.get(RedirectTo.AXIOS_FETCH_MENU_LIST)
           .then((response) => {
             //console.log(response.data)
             for (var key in response.data) {

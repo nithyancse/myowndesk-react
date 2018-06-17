@@ -36,7 +36,7 @@ class SignupBox extends Component {
         }
 
         //add the new user 
-        axios.post('/addUser', {
+        axios.post(RedirectTo.AXIOS_ADD_USER, {
             emailId: this.emailId.value,
             password: this.password.value
         })

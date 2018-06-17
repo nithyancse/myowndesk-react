@@ -35,7 +35,7 @@ class NameBox extends Component {
         params.append('id', this.props.store.home.user.id);
         params.append('name', name);
 
-        axios.post('/addName', params)
+        axios.post(RedirectTo.AXIOS_ADD_NAME, params)
             .then(response => {
                 if (response.status == 201) {
                     this.props.store.home.setUserName(name);

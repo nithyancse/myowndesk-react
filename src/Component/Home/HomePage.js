@@ -11,7 +11,11 @@ class HomePage extends Component {
         return (
             <div className="maincontain" >
                 {isLoggedIn &&
-                <Header as='h3'>Hi {this.props.store.home.user.name}, Welcome to My Own Desk</Header>
+                    <div>
+                        <Header as='h2'>Hi {this.props.store.home.user.name},</Header>
+                        <Header as='h3'>Welcome to My Own Desk</Header>
+                        <Header as='h4'> Create your Own Menu and play with it</Header>
+                    </div>
                 }
             </div>
         )

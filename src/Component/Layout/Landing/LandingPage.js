@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
 import { Segment, Divider, Grid, Container, Button, Image } from 'semantic-ui-react'
 import ContentHome1 from './ContentHome1'
 import ContentHome2 from './ContentHome2'
@@ -30,34 +31,43 @@ class LandingPage extends Component {
 
         return (
             <div className="contain" >
-                <Grid columns='equal'>
-                    <Grid.Row only='computer tablet' >
-                        <Grid.Column >
-                            <ContentHome1 />
-                        </Grid.Column>
-                        <Grid.Column>
-                            <Image size='large' src="public/images/responsive1.jpg" />
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row only='computer tablet'>
-                        <Grid.Column >
-                            <ContentHome2 />
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row only='mobile' width={16}>
-                        <Grid.Column >
-                            <ContentHome1 />
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row only='mobile' width={16}>
-                        <Grid.Column>
-                            {custResponse.length > 0 && <CenterSegment color={custColor} message={custResponse} />}
-                            <Segment>
-                                <LoginBox onClick={this.handleClick} handleMessage={this.handleMessage} />
-                            </Segment>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+                <BrowserView device={isBrowser}>
+                    <Grid columns='equal'>
+                        <Grid.Row>
+                            <Grid.Column >
+                                <ContentHome1 />
+                            </Grid.Column>
+                            <Grid.Column>
+                                <Image size='large' src="public/images/responsive2.jpg" />
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row >
+                            <Grid.Column>
+                                <Image size='large' src="public/images/responsive2.jpg" />
+                            </Grid.Column>
+                            <Grid.Column >
+                                <ContentHome2 />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </BrowserView>
+                <MobileView device={isMobile}>
+                    <Grid stackable>
+                        <Grid.Row >
+                            <Grid.Column >
+                                <ContentHome1 />
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row >
+                            <Grid.Column>
+                                {custResponse.length > 0 && <CenterSegment color={custColor} message={custResponse} />}
+                                <Segment>
+                                    <LoginBox onClick={this.handleClick} handleMessage={this.handleMessage} />
+                                </Segment>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </MobileView >
             </div>
         )
     }

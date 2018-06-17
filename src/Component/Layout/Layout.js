@@ -11,9 +11,7 @@ const Layout = props => ({
       <div className="o-container">
         <Header />
         {location.pathname.indexOf("home") == -1 &&
-          <div className="contain" >
-            <main>{props.children}</main>
-          </div>
+          <main>{props.children}</main>
         }
         {location.pathname.indexOf("home") >= 0 && <div>
           <BrowserView device={isBrowser}>

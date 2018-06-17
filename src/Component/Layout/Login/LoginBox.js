@@ -39,7 +39,7 @@ class LoginBox extends Component {
         params.append('emailId', this.emailId.value);
         params.append('password', this.password.value);
 
-        axios.post('/login', params)
+        axios.post(RedirectTo.AXIOS_LOGIN, params)
             .then(response => {
                 if (response.status == 200) {
                     this.props.store.home.setIsLoggedIn(true);
