@@ -12,6 +12,7 @@ const constValid = {
         NOT_MATCH: "Confirm Password doesn't match with Password",
     }, 
     AGREE : "This field required",
+    MENU_NAME_EMPTY : "Menu name should not be empty"
 };
 
 export default constValid;

@@ -7,13 +7,23 @@ import BrowserSideBar from './BrowserSideBar'
 
 const Layout = props => ({
   render() {
+
+    let listOfPrivatePaths = ['/home', '/menu', '/topic', '/managemenu']
+    let isPrivate = false;
+    for (let path of listOfPrivatePaths) {
+      if (location.pathname == path) {
+        isPrivate = true;
+      }
+    }
+
     return (
       <div className="o-container">
         <Header />
-        {location.pathname.indexOf("home") == -1 &&
+
+        {!isPrivate &&
           <main>{props.children}</main>
         }
-        {location.pathname.indexOf("home") >= 0 && <div>
+        {isPrivate && <div>
           <BrowserView device={isBrowser}>
             <Grid>
               <Grid.Row>
@@ -38,13 +48,12 @@ const Layout = props => ({
         </div>
         }
 
-        {location.pathname.indexOf("home") == -1 && <Footer />}
-        {location.pathname.indexOf("home") >= 0 &&
+        {!isPrivate && <Footer />}
+        {isPrivate &&
           <BrowserView device={isBrowser}>
             <Footer />
           </BrowserView>
         }
-
       </div>
     );
   }

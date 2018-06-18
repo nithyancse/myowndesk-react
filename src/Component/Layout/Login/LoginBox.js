@@ -15,7 +15,6 @@ class LoginBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoginTap: true,
             pageToRedirect: "",
             emailIdErr: '',
             passwordErr: '',

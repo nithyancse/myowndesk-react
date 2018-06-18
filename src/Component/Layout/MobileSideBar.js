@@ -55,6 +55,11 @@ class MobileSideBar extends Component {
         this.props.handleSideBar();
     }
 
+    handleCreateMenu(pageToRedirect, name) {
+        this.props.handleSideBar();
+        this.context.router.history.push(pageToRedirect);
+      }
+
     render() {
         const visible = this.props.status;
         const item = this.state.menuList;
@@ -72,7 +77,7 @@ class MobileSideBar extends Component {
                     <Menu.Item name='home' onClick={() => this.handleRedirect(RedirectTo.HOME)} className="textalignleft">
                         Home
                     </Menu.Item>
-                    <Menu.Item name='home' onClick={() => this.handleRedirect(RedirectTo.HOME)} className="textalignleft">
+                    <Menu.Item name='home' onClick={() => this.handleCreateMenu(RedirectTo.MENU)} className="textalignleft">
                         Create Menu
                     </Menu.Item>
                     {menuListArray}

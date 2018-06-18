@@ -12,6 +12,10 @@ import LoginPage from '../Component/Layout/Login/LoginPage'
 import SignupPage from '../Component/Layout/Signup/SignupPage'
 import NamePage from '../Component/Layout/Name/NamePage'
 import HomePage from '../Component/Home/HomePage'
+import MenuModal from '../Component/Menu/MenuModal'
+import TopicPage from '../Component/Menu/TopicPage'
+import MenuManagePage from '../Component/Menu/MenuManagePage'
+
 
 /* if(performance.navigation.type == 1){
   window.location.href= Config.HOME_URL;
@@ -23,14 +27,17 @@ const Router = (props) => {
   return (
     <Provider store={store}>
       <BrowserRouter>
-      <Layout>
+        <Layout>
           <Route exact path='/' component={LandingPage} />
           <Route path={RedirectTo.LOGIN} component={LoginPage} />
           <Route path={RedirectTo.SIGNUP} component={SignupPage} />
           <Route path={RedirectTo.ADD_NAME} component={NamePage} />
           <Route path={RedirectTo.HOME} component={HomePage} />
+          <Route path={RedirectTo.MENU} component={MenuModal} />
+          <Route path={RedirectTo.MANAGE_MENU} component={MenuManagePage} />
+          <Route path={RedirectTo.TOPIC} component={TopicPage} />
           <Route path={RedirectTo.LOGOUT} component={LandingPage} />
-          </Layout>
+        </Layout>
       </BrowserRouter>
     </Provider>
   );
