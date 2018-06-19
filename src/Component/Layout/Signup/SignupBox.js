@@ -130,9 +130,9 @@ class SignupBox extends Component {
             return <Redirect to={RedirectTo.LOGIN} />;
         }
 
-        const emailIdErr = this.state.emailId;
-        const passwordErr = this.state.password;
-        const confirmPasswordErr = this.state.confirmPassword;
+        const emailIdErrMsg = this.state.emailId;
+        const passwordErrMsg = this.state.password;
+        const confirmPasswordErrMsg = this.state.confirmPassword;
         const agreeErrMsg = this.state.agree;
 
         return (
@@ -152,7 +152,7 @@ class SignupBox extends Component {
                                             ref={(emailId) => this.emailId = emailId}
                                         />
                                         <i aria-hidden="true" className="user icon"></i>
-                                        {emailIdErr.length > 0 && <Label pointing='left'>{emailIdErr}</Label>}
+                                        {emailIdErrMsg.length > 0 && <Label pointing='left'>{emailIdErrMsg}</Label>}
                                     </div>
                                 </Form.Field>
                                 <Form.Field>
@@ -163,7 +163,7 @@ class SignupBox extends Component {
                                             ref={(password) => this.password = password}
                                         />
                                         <i aria-hidden="true" className="lock icon"></i>
-                                        {passwordErr.length > 0 && <Label pointing='left'>{passwordErr}</Label>}
+                                        {passwordErrMsg.length > 0 && <Label pointing='left'>{passwordErrMsg}</Label>}
                                     </div>
                                 </Form.Field>
                                 <Form.Field>
@@ -174,7 +174,7 @@ class SignupBox extends Component {
                                             ref={(confirmPassword) => this.confirmPassword = confirmPassword}
                                         />
                                         <i aria-hidden="true" className="lock icon"></i>
-                                        {confirmPasswordErr.length > 0 && <Label pointing='left'>{confirmPasswordErr}</Label>}
+                                        {confirmPasswordErrMsg.length > 0 && <Label pointing='left'>{confirmPasswordErrMsg}</Label>}
                                     </div>
                                 </Form.Field>
                                 <Form.Field className="textalignleft" >

@@ -18,7 +18,6 @@ class MenuModal extends Component {
         super(props, context);
         this.state = {
             open: true,
-            size: "small",
             name: ""
         }
     }
@@ -114,11 +113,9 @@ class MenuModal extends Component {
 
     render() {
         const isLoggedIn = this.props.store.home.isLoggedIn;
-        const { open, size } = this.state;
-        const nameErr = this.state.name;
-        const menuNameValue = this.props.store.menu.menuObject.name;
-        const menuIdValue = this.props.store.menu.menuObject.id;
-        const name = this.state.name;
+        const open = this.state.open;
+        const nameErrMsg = this.state.name;
+        const defaultName = this.props.store.menu.menuObject.name;
 
         return (
             <div>
@@ -133,10 +130,10 @@ class MenuModal extends Component {
                                     <input
                                         placeholder='Menu Name'
                                         type="text"
-                                        defaultValue={menuNameValue}
+                                        defaultValue={defaultName}
                                         ref={(name) => this.name = name}
                                     />
-                                    {nameErr.length > 0 && <Label pointing='left'>{nameErr}</Label>}
+                                    {nameErrMsg.length > 0 && <Label pointing='left'>{nameErrMsg}</Label>}
                                 </div>
                             </Form.Field>
 

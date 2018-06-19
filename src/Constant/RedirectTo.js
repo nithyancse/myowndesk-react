@@ -5,8 +5,9 @@ const RedirectTo = {
     HOME:"/home",
     LOGOUT:"/logout",
     MENU:"/menu",
-    TOPIC:"/topic",
     MANAGE_MENU:"/managemenu",
+    TOPIC:"/topic",
+    TOPIC_LIST:"/topicList",
 
     AXIOS_LOGIN:"/user/login",
     AXIOS_ADD_NAME:"/user/addName",
@@ -15,6 +16,7 @@ const RedirectTo = {
     AXIOS_ADD_MENU:"/menu/addMenu",
     AXIOS_UPDATE_MENU:"/menu/updateMenu",
     AXIOS_DELETE_MENU:"/menu/deleteMenu",
+    AXIOS_FETCH_TOPIC_LIST:"/topic/fetchTopicList?menuId=",
 };
 
 export default RedirectTo;

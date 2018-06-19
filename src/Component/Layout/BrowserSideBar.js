@@ -24,23 +24,17 @@ class BrowserSideBar extends Component {
 
   componentWillMount() {
     let list = [];
-    let showMenuId = 0;
-    let showMenuName = "";
     //let userId =  this.props.store.home.user.id;
     let userId =  1;
     let url = RedirectTo.AXIOS_FETCH_MENU_LIST+""+userId;
     axios.get(url)
       .then((response) => {
-        console.log(response.data)
+        //console.log(response.data)
         for (var key in response.data) {
-          if(key == 0){
-            showMenuId = response.data[key].id;
-            showMenuName = response.data[key].name
-          }
           list.push(response.data[key]);
         }
         this.props.store.menu.setMenuList(list);
-        this.handleClick(showMenuId, showMenuName);
+        this.context.router.history.push(RedirectTo.HOME);
       })
       .catch((error) => {
         console.log(error);
@@ -50,7 +44,7 @@ class BrowserSideBar extends Component {
   handleClick(menuId, name) {
     this.props.store.menu.setMenuId(menuId);
     this.props.store.menu.setMenuName(name);
-    this.context.router.history.push(RedirectTo.TOPIC);
+    this.context.router.history.push(RedirectTo.TOPIC_LIST);
   }
 
   handleManageMenu() {

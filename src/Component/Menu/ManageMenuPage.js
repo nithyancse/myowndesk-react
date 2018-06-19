@@ -7,11 +7,10 @@ import RedirectTo from '../../Constant/RedirectTo'
 import { CommonUtil } from '../../Util/CommonUtil'
 import PropTypes from 'prop-types'
 import ReactTable from 'react-table'
-import 'react-table/react-table.css'
 
 @inject(['store'])
 @observer
-class MenuManagePage extends Component {
+class ManageMenuPage extends Component {
 
     static contextTypes = {
         router: PropTypes.object
@@ -63,9 +62,8 @@ class MenuManagePage extends Component {
 
     render() {
         const isLoggedIn = this.props.store.home.isLoggedIn;
-        let list = this.props.store.menu.menuList;
+        const data = this.props.store.menu.menuList;
 
-        const data = list;
         const columns = [{
             Header: 'Menu Name',
             accessor: 'name'
@@ -104,4 +102,4 @@ class MenuManagePage extends Component {
     }
 }
 
-export default MenuManagePage
+export default ManageMenuPage

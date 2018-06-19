@@ -7,23 +7,23 @@ export class MenuStore {
   @observable menuName = Common.EMPTY
   @observable menuObject = {}
 
-  @action setMenuList(menuList){
+  @action setMenuList(menuList) {
     this.menuList = menuList;
   }
 
-  @action setMenuId(menuId){
+  @action setMenuId(menuId) {
     this.menuId = menuId;
   }
 
-  @action setMenuName(menuName){
+  @action setMenuName(menuName) {
     this.menuName = menuName;
   }
 
-   @action setPrevPathForMenu(path){
+  @action setPrevPathForMenu(path) {
     this.prevPathForMenu = path;
   }
 
-  @action setMenuObject(menuObject){
+  @action setMenuObject(menuObject) {
     this.menuObject = menuObject;
   }
 
