@@ -16,6 +16,7 @@ import MenuModal from '../Component/Menu/MenuModal'
 import ManageMenuPage from '../Component/Menu/ManageMenuPage'
 import TopicModal from '../Component/Menu/Topic/TopicModal'
 import TopicListPage from '../Component/Menu/Topic/TopicListPage'
+import TopicPage from '../Component/Menu/Topic/TopicPage'
 
 
 /* if(performance.navigation.type == 1){
@@ -34,10 +35,11 @@ const Router = (props) => {
           <Route path={RedirectTo.SIGNUP} component={SignupPage} />
           <Route path={RedirectTo.ADD_NAME} component={NamePage} />
           <Route path={RedirectTo.HOME} component={HomePage} />
-          <Route path={RedirectTo.MENU} component={MenuModal} />
+          <Route path={RedirectTo.MENU_MODAL} component={MenuModal} />
           <Route path={RedirectTo.MANAGE_MENU} component={ManageMenuPage} />
-          <Route path={RedirectTo.TOPIC} component={TopicModal} />
+          <Route path={RedirectTo.TOPIC_MODAL} component={TopicModal} />
           <Route path={RedirectTo.TOPIC_LIST} component={TopicListPage} />
+          <Route path={RedirectTo.TOPIC} component={TopicPage} />
           <Route path={RedirectTo.LOGOUT} component={LandingPage} />
         </Layout>
       </BrowserRouter>

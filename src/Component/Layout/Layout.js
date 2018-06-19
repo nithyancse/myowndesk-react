@@ -8,7 +8,7 @@ import BrowserSideBar from './BrowserSideBar'
 const Layout = props => ({
   render() {
 
-    let listOfPrivatePaths = ['/home', '/menu', '/managemenu', '/topic', '/topicList' ]
+    let listOfPrivatePaths = ['/home', '/menuModal', '/managemenu', '/topic', '/topicList', '/topicModal' ]
     let isPrivate = false;
     for (let path of listOfPrivatePaths) {
       if (location.pathname == path) {

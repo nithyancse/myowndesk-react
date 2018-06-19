@@ -17,27 +17,48 @@ class TopicModal extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            open: true,
+            open: false,
+            modalTitle:"",
             title: "",
             description: "",
             type: "",
-            typeValue:"", //for dropdown case only becasue validaton error message value set as dropdown value
+            typeVal:"", //for dropdown case only becasue validaton error message value set as dropdown value
         }
     }
 
     close = () => {
         this.setState({ open: false })
-        this.context.router.history.push(RedirectTo.MANAGE_MENU);
+        this.context.router.history.push(RedirectTo.TOPIC_LIST);
+    }
+
+    componentWillMount() {
+        let modalTitle = "Add";
+        let topicObject = this.props.store.topic.topicObject;
+        if (typeof topicObject.id !== "undefined" && topicObject != 0){
+            modalTitle = "Update"
+        }
+
+        this.setState({
+            open: true,
+            modalTitle : modalTitle,
+            typeVal:topicObject.type
+        }); 
+        
+    }
+
+    componentWillUnmount() {
+        this.props.store.topic.setTopicObject({});
     }
 
     handleTopicSubmit(e) {
         let list = [];
+        let url = "";
         let topicForm = document.getElementById("topicForm");
         let topicId = this.props.store.topic.topicObject.id;
         let topicSubmitButton = document.getElementById("topicSubmitButton");
 
         let isValid = this.validateTopicForm(e);
-        let color = "green";
+        let color = "", message="";
         if (!isValid) {
             //this.props.handleMessage("", ""); // don't show this error(parent class) if any field error is displayed
             return false;
@@ -50,24 +71,22 @@ class TopicModal extends Component {
 
         if (!topicId) {
             topicId = 0;
-            url = RedirectTo.AXIOS_ADD_MENU;
+            url = RedirectTo.AXIOS_ADD_TOPIC;
         } else {
-            url = RedirectTo.AXIOS_UPDATE_MENU;
+            url = RedirectTo.AXIOS_UPDATE_TOPIC;
         }
         axios.post(url, {
             id: topicId,
             title: this.title.value,
-            userId: this.props.store.home.user.id
+            description: this.description.value,
+            type: this.state.typeVal,
+            menuId: this.props.store.menu.menuId
         })
             .then(response => {
                 console.log(response);
                 if (response.status == 201 || response.status == 208 || response.status == 200) {
                     if (response.status == 201) {
                         for (var key in response.data) {
-                            if (title == response.data[key].title) {
-                                this.props.store.topic.setTopicId(response.data[key].id);
-                                this.props.store.topic.setTopicTitle(title);
-                            }
                             list.push(response.data[key]);
                         }
                     } else {
@@ -76,23 +95,26 @@ class TopicModal extends Component {
                         //Log object to Console.
                         console.log("Before update: ", list[objIndex])
                         //Update object's title property.
-                        list[objIndex].title = title
+                        list[objIndex].title = this.title.value;
+                        list[objIndex].description = this.description.value;
+                        list[objIndex].type = this.state.typeVal;
                         //Log object to console again.
                         console.log("After update: ", list[objIndex])
-                        this.props.store.topic.setTopicId(topicId);
-                        this.props.store.topic.setTopicTitle(title);
                     }
                     this.props.store.topic.setTopicList(list);
                     //clear the errors from server if successfullly registerd
                     this.setState({
                         open: false,
-                        title: ""
+                        title: "",
+                        description: "",
+                        type: "",
+                        typeVal:""
                     });
                     if (response.status == 208) {
                         color = "yellow";
                         message = "Topic already added";
                     } else if (response.status == 200) {
-                        color = "yellow";
+                        color = "green";
                         message = "Topic updated successfully";
                     } else {
                         color = "green";
@@ -101,13 +123,13 @@ class TopicModal extends Component {
                     this.props.store.home.setResponseStatus(message);
                     this.props.store.home.setResponseColor(color);
                     alert(message);
-                    this.context.router.history.push(RedirectTo.MANAGE_MENU);
+                    this.context.router.history.push(RedirectTo.TOPIC_LIST);
                 }
             })
             .catch(error => {
-                alert(error.response.data.message);
-                this.context.router.history.push(RedirectTo.MANAGE_MENU);
-                //this.props.handleMessage(error.response.data.message, "red");
+                //console.log(error);
+                //console.log(error.response);
+                this.context.router.history.push(RedirectTo.TOPIC_LIST);
             });
 
         topicForm.classList.remove("loading");
@@ -116,21 +138,21 @@ class TopicModal extends Component {
     validateTopicForm(e) {
         let title = this.title.value;
         let description = this.description.value;
-        let type = this.state.typeValue;
+        let type = this.state.typeVal;
         console.log("type-->" + type);
         let titleErrMsg = "", descriptionErrMsg = "", typeErrMsg = "";
         let status = true;
 
         if (!title) {
-            titleErrMsg = constValid.EMAIL.VALID;
+            titleErrMsg = constValid.TOPIC_TITLE_EMPTY;
             status = false;
         }
         if (!description) {
-            descriptionErrMsg = constValid.PASSWORD.VALID;
+            descriptionErrMsg = constValid.TOPIC_DESCRIPTION_EMPTY;
             status = false;
         }
         if (!type) {
-            typeErrMsg = constValid.AGREE;
+            typeErrMsg = constValid.TOPIC_TYPE_EMPTY;
             status = false;
         }
         this.setState({
@@ -143,7 +165,7 @@ class TopicModal extends Component {
 
     onChange = (e, data) => {
         console.log(data.value);
-        this.setState({ typeValue: data.value });
+        this.setState({ typeVal: data.value });
     }
 
     render() {
@@ -152,22 +174,23 @@ class TopicModal extends Component {
         const titleErrMsg = this.state.title;
         const descriptionErrMsg = this.state.description;
         const typeErrMsg = this.state.type;
-        const typeValue = this.state.typeValue;
+        const typeVal = this.state.typeVal;
 
         const defaultTitle = this.props.store.topic.topicObject.title;
         const defaultDescription = this.props.store.topic.topicObject.description;
         const defaultType = this.props.store.topic.topicObject.type;
 
         const options = [
-            { key: 'm', text: 'Male', value: 'male' },
-            { key: 'f', text: 'Female', value: 'female' },
+            { key: 'l', text: 'Learn', value: 'L' },
+            { key: 's', text: 'Solution', value: 'S' },
+            { key: 'q', text: 'Question', value: 'Q' },
         ]
         const { searchQuery, selected } = this.state;
 
         return (
             <div>
-                <Modal size={'small'} open={open} onClose={this.close} style={{ top: "40%" }}>
-                    <Modal.Header>Add Topic</Modal.Header>
+                <Modal size={'large'} open={open} onClose={this.close} style={{ top: "40%" }}>
+                    <Modal.Header>{this.state.modalTitle} Topic</Modal.Header>
                     <Modal.Content>
 
                         <Form id="topicForm" size='large'>
@@ -188,7 +211,7 @@ class TopicModal extends Component {
                                 <Dropdown
                                     selection
                                     options={options}
-                                    value={typeValue}
+                                    defaultValue={defaultType}
                                     onChange={this.onChange}
                                 />
                                 {typeErrMsg.length > 0 && <Label pointing='left'>{typeErrMsg}</Label>}
@@ -197,7 +220,7 @@ class TopicModal extends Component {
                                 <div className="ui left icon input">
                                     <input
                                         placeholder='Topic Title'
-                                        type="text"
+                                        type="textarea"
                                         defaultValue={defaultDescription}
                                         ref={(description) => this.description = description}
                                     />

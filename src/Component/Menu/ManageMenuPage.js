@@ -2,7 +2,7 @@
 import axios from 'axios'
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { Button, Form, Grid, Header, Message, Segment, Table } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Message, Segment, Table, Modal } from 'semantic-ui-react'
 import RedirectTo from '../../Constant/RedirectTo'
 import { CommonUtil } from '../../Util/CommonUtil'
 import PropTypes from 'prop-types'
@@ -19,7 +19,8 @@ class ManageMenuPage extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-
+            open:false,
+            originalData : {}
         }
     }
 
@@ -28,15 +29,16 @@ class ManageMenuPage extends Component {
     }
 
     handleCreate() {
-        this.context.router.history.push(RedirectTo.MENU);
+        this.context.router.history.push(RedirectTo.MENU_MODAL);
     }
 
     handleEdit(original) {
         this.props.store.menu.setMenuObject(original);
-        this.context.router.history.push(RedirectTo.MENU);
+        this.context.router.history.push(RedirectTo.MENU_MODAL);
     }
 
-    handleDelete(original) {
+    handleDelete() {
+        let original = this.state.originalData;
         let tempArray = [];
         let message = "", color="";
         axios.delete(RedirectTo.AXIOS_DELETE_MENU+"?menuId="+original.id)
@@ -51,6 +53,7 @@ class ManageMenuPage extends Component {
                     this.props.store.home.setResponseStatus(message);
                     this.props.store.home.setResponseColor(color);
                     alert(message);
+                    this.close();
                 }
             })
             .catch(error => {
@@ -59,10 +62,25 @@ class ManageMenuPage extends Component {
             });
     }
 
+    closeConfigShow = (originalData) => () => {
+        this.setState({
+            open: true,
+            originalData: originalData
+        })
+    }
+
+    close = () => {
+        this.setState({
+            open: false,
+            originalData: {}
+        })
+    }
+
 
     render() {
         const isLoggedIn = this.props.store.home.isLoggedIn;
         const data = this.props.store.menu.menuList;
+        const open = this.state.open
 
         const columns = [{
             Header: 'Menu Name',
@@ -73,7 +91,7 @@ class ManageMenuPage extends Component {
             Cell: row => (
                 <div>
                     <button onClick={() => this.handleEdit(row.original)}>Edit</button>
-                    <button onClick={() => this.handleDelete(row.original)}>Delete</button>
+                    <button onClick={this.closeConfigShow(row.original)}>Delete</button>
                 </div>)
         }]
 
@@ -94,9 +112,26 @@ class ManageMenuPage extends Component {
                         columns={columns}
                         resolveData={data => data.map(row => row)}
                         showPagination={false}
-                        minRows={5}
+                        minRows={3}
                     />
                 </div>
+
+
+                <Modal  size={"small"}
+                    open={open}
+                    onClose={this.close}
+                >
+                    <Modal.Header>Delete Your Menu</Modal.Header>
+                    <Modal.Content>
+                        <p>Are you sure you want to delete your menu <b>{this.state.originalData.name}</b>?</p>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button negative onClick={this.close} >No</Button>
+                        <Button positive onClick={() => this.handleDelete()} labelPosition='right' icon='checkmark' content='Yes' />
+                    </Modal.Actions>
+                </Modal>
+
+
             </div>
         )
     }

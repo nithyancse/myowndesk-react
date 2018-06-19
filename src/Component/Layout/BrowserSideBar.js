@@ -42,9 +42,9 @@ class BrowserSideBar extends Component {
   }
 
   handleClick(menuId, name) {
-    this.props.store.menu.setMenuId(menuId);
+    this.props.store.menu.setMenuId(1);
     this.props.store.menu.setMenuName(name);
-    this.context.router.history.push(RedirectTo.TOPIC_LIST);
+    this.context.router.history.push(RedirectTo.TOPIC);
   }
 
   handleManageMenu() {

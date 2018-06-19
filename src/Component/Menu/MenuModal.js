@@ -62,10 +62,6 @@ class MenuModal extends Component {
                 if (response.status == 201 || response.status == 208 || response.status == 200) {
                     if (response.status == 201) {
                         for (var key in response.data) {
-                            if (name == response.data[key].name) {
-                                this.props.store.menu.setMenuId(response.data[key].id);
-                                this.props.store.menu.setMenuName(name);
-                            }
                             list.push(response.data[key]);
                         }
                     } else {
@@ -77,8 +73,6 @@ class MenuModal extends Component {
                         list[objIndex].name = name
                         //Log object to console again.
                         console.log("After update: ", list[objIndex])
-                        this.props.store.menu.setMenuId(menuId);
-                        this.props.store.menu.setMenuName(name);
                     }
                     this.props.store.menu.setMenuList(list);
                     //clear the errors from server if successfullly registerd
