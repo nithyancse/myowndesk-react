@@ -40,4 +40,12 @@ body {
 .width100{
   width: 100% !important;
 }
-
+.spanlink {
+  cursor:pointer;
+  color:blue;
+  text-decoration:none;
+}
+.spanlink:hover {
+  text-decoration:none;
+  color:darkblue;
+}

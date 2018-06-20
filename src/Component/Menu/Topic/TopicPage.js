@@ -21,34 +21,11 @@ class TopicPage extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            topicTitle:"",
             originalData: {}
         }
 
     }
 
-
-    componentWillMount() {
-        let list = [];
-        let original = {};
-        let menuId = this.props.store.menu.menuId;
-        let url = RedirectTo.AXIOS_FETCH_TOPIC_LIST + "" + menuId;
-        axios.get(url)
-            .then((response) => {
-                //console.log(response.data)
-                for (var key in response.data) {
-                    if(key==0){
-                        original = response.data[key];
-                    }
-                    list.push(response.data[key]);
-                }
-                this.props.store.topic.setTopicList(list);
-                this.props.store.topic.setTopicObject(original);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
 
     handleTopicDisplayBox(original) {
         this.props.store.topic.setTopicObject(original);
@@ -62,20 +39,23 @@ class TopicPage extends Component {
         const isLoggedIn = this.props.store.home.isLoggedIn;
         const data = this.props.store.topic.topicList;
         const open = this.state.open
+        const menuName = this.props.store.menu.menuName;
 
         const columns = [{
             Header: 'Topic Name',
             Cell: row => (
                 <div>
-                    <span onClick={() => this.handleTopicDisplayBox(row.original)}>{row.original.title}</span>
+                    <span className="spanlink" onClick={() => this.handleTopicDisplayBox(row.original)}>{row.original.title}</span>
                 </div>)
         }]
         return (
             <div className="maincontain" >
+            <Button onClick={this.handleClick.bind(this)}>Manage Topics</Button> 
+            <Header as='h2'> {menuName}</Header>
 
-               <Button onClick={this.handleClick.bind(this)}>Settings</Button> 
+               
             
-                <Header as='h4'> {this.state.topicTitle}</Header>
+                
 
                 <BrowserView device={isBrowser}>
             <Grid>
@@ -88,8 +68,11 @@ class TopicPage extends Component {
                     data={data}
                     columns={columns}
                     resolveData={data => data.map(row => row)}
-                    showPagination={false}
-                    minRows={3}
+                    showPagination={true}
+                    showPageSizeOptions= {true}
+                    pageSizeOptions= {[5, 10, 20, 25, 50, 100]}
+                    defaultPageSize= {10}
+                    minRows={5}
                 />
                 </Grid.Column>
               </Grid.Row>

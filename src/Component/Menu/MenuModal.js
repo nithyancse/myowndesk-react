@@ -18,7 +18,8 @@ class MenuModal extends Component {
         super(props, context);
         this.state = {
             open: true,
-            name: ""
+            name: "",
+            modalTitle:"",
         }
     }
 
@@ -104,6 +105,18 @@ class MenuModal extends Component {
         menuSubmitButton.classList.remove("loading");
     }
 
+    componentWillMount() {
+        let modalTitle = "Add";
+        let name = this.props.store.menu.menuObject.name;
+        if (typeof name !== "undefined" && name != ""){
+            modalTitle = "Update"
+        }
+        this.setState({
+            modalTitle : modalTitle
+        }); 
+        
+    }
+
 
     render() {
         const isLoggedIn = this.props.store.home.isLoggedIn;
@@ -114,7 +127,7 @@ class MenuModal extends Component {
         return (
             <div>
                 <Modal size={'small'} open={open} onClose={this.close} style={{ top: "40%" }}>
-                    <Modal.Header>Add Menu</Modal.Header>
+                    <Modal.Header>{this.state.modalTitle} Menu</Modal.Header>
                     <Modal.Content>
 
                         <Form size='large'>

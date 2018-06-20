@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { Segment, Grid, Button, Image } from 'semantic-ui-react'
+import { Segment, Grid, Button, Image, Header } from 'semantic-ui-react'
 
 @inject(['store'])
 @observer
@@ -10,9 +10,7 @@ class TopicDisplayBox extends Component {
         this.state = {}    
     }
 
-    componentWillUnmount() {
-        this.props.store.topic.setTopicObject({});
-    }
+    
     
     render() {
 
@@ -20,7 +18,7 @@ class TopicDisplayBox extends Component {
 
         return (
             <div className="contain" >
-                {topicObject.title}
+                <Header as="h3">{topicObject.title}</Header>
                 <Grid centered columns='equal'>
                     <Grid.Row >
                         <Grid.Column>

@@ -16,17 +16,16 @@ class BrowserSideBar extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      activeItem : ""
+      activeItem: ""
     }
   }
 
-  
 
   componentWillMount() {
     let list = [];
     //let userId =  this.props.store.home.user.id;
-    let userId =  1;
-    let url = RedirectTo.AXIOS_FETCH_MENU_LIST+""+userId;
+    let userId = 1;
+    let url = RedirectTo.AXIOS_FETCH_MENU_LIST + userId;
     axios.get(url)
       .then((response) => {
         //console.log(response.data)
@@ -41,9 +40,34 @@ class BrowserSideBar extends Component {
       });
   }
 
-  handleClick(menuId, name) {
-    this.props.store.menu.setMenuId(1);
+  componentWillUnmount() {
+    this.props.store.menu.setMenuList([]);
+    this.props.store.topic.setTopicList([]);
+    this.props.store.topic.setTopicObject({});
+}
+
+
+  handleMenuClick(menuId, name) {
+    this.props.store.menu.setMenuId(menuId);
     this.props.store.menu.setMenuName(name);
+    let list = [];
+    let original = {};
+    let url = RedirectTo.AXIOS_FETCH_TOPIC_LIST + menuId;
+    axios.get(url)
+      .then((response) => {
+        //console.log(response.data)
+        for (var key in response.data) {
+          if (key == 0) {
+            original = response.data[key];
+          }
+          list.push(response.data[key]);
+        }
+        this.props.store.topic.setTopicList(list);
+        this.props.store.topic.setTopicObject(original);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     this.context.router.history.push(RedirectTo.TOPIC);
   }
 
@@ -57,7 +81,7 @@ class BrowserSideBar extends Component {
     const item = this.props.store.menu.menuList;
     let menuListArray = [];
     for (let i = 0; i < item.length; i++) {
-      menuListArray.push(<Menu.Item key={i} name={item[i].name} active={activeItem === item[i].name} onClick={() => this.handleClick(item[i].id, item[i].name)}> {item[i].name} </Menu.Item>);
+      menuListArray.push(<Menu.Item key={i} name={item[i].name} active={activeItem === item[i].name} onClick={() => this.handleMenuClick(item[i].id, item[i].name)}> {item[i].name} </Menu.Item>);
     }
 
     return (

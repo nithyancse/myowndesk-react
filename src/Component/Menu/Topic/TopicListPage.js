@@ -29,7 +29,7 @@ class TopicListPage extends Component {
     componentWillMount() {
         let list = [];
         let menuId = this.props.store.menu.menuId;
-        let url = RedirectTo.AXIOS_FETCH_TOPIC_LIST + "" + menuId;
+        let url = RedirectTo.AXIOS_FETCH_TOPIC_LIST + menuId;
         axios.get(url)
             .then((response) => {
                 //console.log(response.data)
@@ -48,7 +48,7 @@ class TopicListPage extends Component {
     }
 
     handleEdit(original) {
-        this.props.store.topic.setTopicObject(original);
+        this.props.store.topic.setTopicObjectForEdit(original);
         this.context.router.history.push(RedirectTo.TOPIC_MODAL);
     }
 

@@ -33,28 +33,28 @@ class TopicModal extends Component {
 
     componentWillMount() {
         let modalTitle = "Add";
-        let topicObject = this.props.store.topic.topicObject;
-        if (typeof topicObject.id !== "undefined" && topicObject != 0){
+        let topicObjectForEdit = this.props.store.topic.topicObjectForEdit;
+        if (typeof topicObjectForEdit.id !== "undefined" && topicObjectForEdit != 0){
             modalTitle = "Update"
         }
 
         this.setState({
             open: true,
             modalTitle : modalTitle,
-            typeVal:topicObject.type
+            typeVal:topicObjectForEdit.type
         }); 
         
     }
 
     componentWillUnmount() {
-        this.props.store.topic.setTopicObject({});
+        this.props.store.topic.setTopicObjectForEdit({});
     }
 
     handleTopicSubmit(e) {
         let list = [];
         let url = "";
         let topicForm = document.getElementById("topicForm");
-        let topicId = this.props.store.topic.topicObject.id;
+        let topicId = this.props.store.topic.topicObjectForEdit.id;
         let topicSubmitButton = document.getElementById("topicSubmitButton");
 
         let isValid = this.validateTopicForm(e);
@@ -176,9 +176,9 @@ class TopicModal extends Component {
         const typeErrMsg = this.state.type;
         const typeVal = this.state.typeVal;
 
-        const defaultTitle = this.props.store.topic.topicObject.title;
-        const defaultDescription = this.props.store.topic.topicObject.description;
-        const defaultType = this.props.store.topic.topicObject.type;
+        const defaultTitle = this.props.store.topic.topicObjectForEdit.title;
+        const defaultDescription = this.props.store.topic.topicObjectForEdit.description;
+        const defaultType = this.props.store.topic.topicObjectForEdit.type;
 
         const options = [
             { key: 'l', text: 'Learn', value: 'L' },

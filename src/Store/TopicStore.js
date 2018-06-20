@@ -6,6 +6,7 @@ export class TopicStore {
     @observable topicId = 0
     @observable topicTitle = Common.EMPTY
     @observable topicObject = {}
+    @observable topicObjectForEdit = {}
 
     @action setTopicList(topicList) {
         this.topicList = topicList;
@@ -25,6 +26,10 @@ export class TopicStore {
 
     @action setTopicObject(topicObject) {
         this.topicObject = topicObject;
+    }
+
+    @action setTopicObjectForEdit(topicObject) {
+        this.topicObjectForEdit = topicObject;
     }
 
 }
