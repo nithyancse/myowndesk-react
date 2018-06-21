@@ -18,11 +18,11 @@ class TopicModal extends Component {
         super(props, context);
         this.state = {
             open: false,
-            modalTitle:"",
+            modalTitle: "",
             title: "",
             description: "",
             type: "",
-            typeVal:"", //for dropdown case only becasue validaton error message value set as dropdown value
+            typeVal: "", //for dropdown case only becasue validaton error message value set as dropdown value
         }
     }
 
@@ -34,16 +34,16 @@ class TopicModal extends Component {
     componentWillMount() {
         let modalTitle = "Add";
         let topicObjectForEdit = this.props.store.topic.topicObjectForEdit;
-        if (typeof topicObjectForEdit.id !== "undefined" && topicObjectForEdit != 0){
+        if (typeof topicObjectForEdit.id !== "undefined" && topicObjectForEdit != 0) {
             modalTitle = "Update"
         }
 
         this.setState({
             open: true,
-            modalTitle : modalTitle,
-            typeVal:topicObjectForEdit.type
-        }); 
-        
+            modalTitle: modalTitle,
+            typeVal: topicObjectForEdit.type
+        });
+
     }
 
     componentWillUnmount() {
@@ -58,7 +58,7 @@ class TopicModal extends Component {
         let topicSubmitButton = document.getElementById("topicSubmitButton");
 
         let isValid = this.validateTopicForm(e);
-        let color = "", message="";
+        let color = "", message = "";
         if (!isValid) {
             //this.props.handleMessage("", ""); // don't show this error(parent class) if any field error is displayed
             return false;
@@ -108,7 +108,7 @@ class TopicModal extends Component {
                         title: "",
                         description: "",
                         type: "",
-                        typeVal:""
+                        typeVal: ""
                     });
                     if (response.status == 208) {
                         color = "yellow";
@@ -192,9 +192,7 @@ class TopicModal extends Component {
                 <Modal size={'large'} open={open} onClose={this.close} style={{ top: "40%" }}>
                     <Modal.Header>{this.state.modalTitle} Topic</Modal.Header>
                     <Modal.Content>
-
                         <Form id="topicForm" size='large'>
-
                             <Form.Group widths='equal'>
                                 <Form.Field>
                                     <div className="ui left icon input">
@@ -207,7 +205,6 @@ class TopicModal extends Component {
                                         {titleErrMsg.length > 0 && <Label pointing='left'>{titleErrMsg}</Label>}
                                     </div>
                                 </Form.Field>
-
                                 <Dropdown
                                     selection
                                     options={options}
@@ -218,21 +215,16 @@ class TopicModal extends Component {
                             </Form.Group>
                             <Form.Field>
                                 <div className="ui left icon input">
-                                    <input
+                                    <textarea
                                         placeholder='Topic Title'
-                                        type="textarea"
+                                        type="text"
                                         defaultValue={defaultDescription}
                                         ref={(description) => this.description = description}
                                     />
                                     {descriptionErrMsg.length > 0 && <Label pointing='left'>{descriptionErrMsg}</Label>}
                                 </div>
                             </Form.Field>
-
-
                         </Form>
-
-
-
                     </Modal.Content>
                     <Modal.Actions>
                         <Button negative onClick={this.close}>No</Button>

@@ -1,9 +1,8 @@
 import axios from 'axios'
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import ReactTable from 'react-table'
 import { Redirect } from 'react-router'
-import { Button, Form, Grid, Header, Message, Segment, Divider, Label, Modal } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Message, Segment, Divider, Label, Modal, Table, Menu } from 'semantic-ui-react'
 import RedirectTo from '../../../Constant/RedirectTo'
 import constValid from '../../../Constant/Validation'
 import PropTypes from 'prop-types'
@@ -20,7 +19,8 @@ class TopicListPage extends Component {
         super(props, context);
         this.state = {
             open: false,
-            originalData: {}
+            originalData: {},
+            search: ''
         }
 
     }
@@ -79,7 +79,7 @@ class TopicListPage extends Component {
 
     handleGoBack() {
         this.context.router.history.push(RedirectTo.TOPIC);
-      }
+    }
 
     closeConfigShow = (originalData) => () => {
         this.setState({
@@ -97,7 +97,7 @@ class TopicListPage extends Component {
 
     render() {
         const isLoggedIn = this.props.store.home.isLoggedIn;
-        const data = this.props.store.topic.topicList;
+        let data = this.props.store.topic.topicList;
         const open = this.state.open
 
         const columns = [{
@@ -116,21 +116,49 @@ class TopicListPage extends Component {
                     <button onClick={this.closeConfigShow(row.original)}>Delete</button>
                 </div>)
         }]
+
+        if (this.state.search) {
+            data = data.filter(row => {
+                return row.title.toLowerCase().includes(this.state.search.toLowerCase())
+            })
+        }
+
+        const item = data;
+        let topicListArray = [];
+        for (let i = 0; i < item.length; i++) {
+            topicListArray.push(<Table.Row key={i} >
+                <Table.Cell className="link" onClick={() => this.handleTopicDisplayBox(item[i])} >{item[i].title} </Table.Cell>
+                <Table.Cell>{item[i].type} </Table.Cell>
+                <Table.Cell>
+                    <button onClick={() => this.handleEdit(item[i])}>Edit</button>
+                    <button onClick={this.closeConfigShow(item[i])}>Delete</button>
+                </Table.Cell>
+            </Table.Row>)
+        }
+
         return (
             <div className="maincontain" >
                 <Header as='h4'> Topic page</Header>
-                <Button onClick={() => this.handleCreate()}>Create</Button> 
-                <Button onClick={this.handleGoBack.bind(this)}>Go Back</Button> 
+                <Button onClick={() => this.handleCreate()}>Create</Button>
+                <Button onClick={this.handleGoBack.bind(this)}>Go Back</Button>
 
-                <ReactTable
-                    data={data}
-                    columns={columns}
-                    resolveData={data => data.map(row => row)}
-                    showPagination={false}
-                    minRows={3}
+                Search: <input
+                    value={this.state.search}
+                    onChange={e => this.setState({ search: e.target.value })}
                 />
-
-                <Modal  size={"small"}
+                <Table basic>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell>Title</Table.HeaderCell>
+                            <Table.HeaderCell>Type</Table.HeaderCell>
+                            <Table.HeaderCell>Action</Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                        {topicListArray}
+                    </Table.Body>
+                </Table>
+                <Modal size={"small"}
                     open={open}
                     onClose={this.close}
                 >
@@ -143,7 +171,6 @@ class TopicListPage extends Component {
                         <Button positive onClick={() => this.handleDelete()} labelPosition='right' icon='checkmark' content='Yes' />
                     </Modal.Actions>
                 </Modal>
-
             </div>
         )
     }

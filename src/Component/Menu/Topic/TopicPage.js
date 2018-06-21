@@ -1,10 +1,9 @@
 import axios from 'axios'
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import ReactTable from 'react-table'
 import { Redirect } from 'react-router'
 import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
-import { Button, Form, Grid, Header, Message, Segment, Divider, Label, Modal } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Message, Segment, Divider, Label, Modal, Sidebar, Table, Menu } from 'semantic-ui-react'
 import RedirectTo from '../../../Constant/RedirectTo'
 import constValid from '../../../Constant/Validation'
 import PropTypes from 'prop-types'
@@ -21,7 +20,8 @@ class TopicPage extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            originalData: {}
+            search: '',
+            visible: false
         }
 
     }
@@ -35,59 +35,93 @@ class TopicPage extends Component {
         this.context.router.history.push(RedirectTo.TOPIC_LIST);
     }
 
+    toggleVisibility = () => this.setState({ visible: !this.state.visible })
+
     render() {
         const isLoggedIn = this.props.store.home.isLoggedIn;
-        const data = this.props.store.topic.topicList;
-        const open = this.state.open
+        let data = this.props.store.topic.topicList;
         const menuName = this.props.store.menu.menuName;
+        const { visible } = this.state
 
-        const columns = [{
-            Header: 'Topic Name',
-            Cell: row => (
-                <div>
-                    <span className="spanlink" onClick={() => this.handleTopicDisplayBox(row.original)}>{row.original.title}</span>
-                </div>)
-        }]
+        if (this.state.search) {
+            data = data.filter(row => {
+                return row.title.toLowerCase().includes(this.state.search.toLowerCase())
+            })
+        }
+
+        const item = data;
+        let topicListArray = [];
+        for (let i = 0; i < item.length; i++) {
+            topicListArray.push(<Table.Row key={i} ><Table.Cell className="link" onClick={() => this.handleTopicDisplayBox(item[i])} >{item[i].title} </Table.Cell></Table.Row>)
+
+        }
+
         return (
             <div className="maincontain" >
-            <Button onClick={this.handleClick.bind(this)}>Manage Topics</Button> 
-            <Header as='h2'> {menuName}</Header>
-
-               
-            
-                
-
                 <BrowserView device={isBrowser}>
-            <Grid>
-              <Grid.Row>
-                <Grid.Column width={12}>
-                    <TopicDisplayBox />
-                </Grid.Column>
-                <Grid.Column width={4}>
-                <ReactTable
-                    data={data}
-                    columns={columns}
-                    resolveData={data => data.map(row => row)}
-                    showPagination={true}
-                    showPageSizeOptions= {true}
-                    pageSizeOptions= {[5, 10, 20, 25, 50, 100]}
-                    defaultPageSize= {10}
-                    minRows={5}
-                />
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </BrowserView>
-          <MobileView device={isMobile}>
-            <Grid stackable>
-              <Grid.Row>
-                <Grid.Column >
-                    Need to show topic page
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </MobileView>
-
+                    <Button onClick={this.handleClick.bind(this)}>Manage Topics</Button>
+                    <Header as='h2'> {menuName}</Header>
+                    <Grid>
+                        <Grid.Row>
+                            <Grid.Column width={12}>
+                                <TopicDisplayBox />
+                            </Grid.Column>
+                            <Grid.Column width={4}>
+                                Search: <input
+                                    value={this.state.search}
+                                    onChange={e => this.setState({ search: e.target.value })}
+                                />
+                                <Table basic>
+                                    <Table.Header>
+                                        <Table.Row>
+                                            <Table.HeaderCell>Topics</Table.HeaderCell>
+                                        </Table.Row>
+                                    </Table.Header>
+                                    <Table.Body>
+                                        {topicListArray}
+                                    </Table.Body>
+                                </Table>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </BrowserView>
+                <MobileView device={isMobile}>
+                    <Button onClick={this.toggleVisibility}>Show Topic List</Button>
+                    <Sidebar.Pushable as={Segment}>
+                        <Sidebar
+                            as={Menu}
+                            animation='overlay'
+                            width='thin'
+                            direction='right'
+                            visible={visible}
+                            icon='labeled'
+                            vertical
+                            inverted
+                        >
+                            Search: <input
+                                value={this.state.search}
+                                onChange={e => this.setState({ search: e.target.value })}
+                            />
+                            <Table basic>
+                                <Table.Header>
+                                    <Table.Row>
+                                        <Table.HeaderCell>Topics</Table.HeaderCell>
+                                    </Table.Row>
+                                </Table.Header>
+                                <Table.Body>
+                                    {topicListArray}
+                                </Table.Body>
+                            </Table>
+                        </Sidebar>
+                        <Sidebar.Pusher>
+                            <Button onClick={this.handleClick.bind(this)}>Manage Topics</Button>
+                            <Header as='h2'> {menuName}</Header>
+                            <Segment basic>
+                                <TopicDisplayBox />
+                            </Segment>
+                        </Sidebar.Pusher>
+                    </Sidebar.Pushable>
+                </MobileView>
             </div>
         )
     }
