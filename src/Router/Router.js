@@ -28,7 +28,7 @@ axios.defaults.baseURL = Config.AXIOS_DEFAULTS_BASE_URL;
 const Router = (props) => {
   return (
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename={RedirectTo.MYOWNDESK}>
         <Layout>
           <Route exact path='/' component={LandingPage} />
           <Route path={RedirectTo.LOGIN} component={LoginPage} />

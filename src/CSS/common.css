@@ -1,51 +1,14 @@
+body{height: 100%; background-color: #ffffff;}
 .floatLeft { float: left !important;}
 .floatRight { float: right !important;}
-
-body {
-  height: 100%;
-  background-color: #ffffff;
-}
-
 /*.ui.menu{  font-family: cursive;}*/
-
-.textaligncenter{
-  text-align: center !important;
-}
-
-.textalignleft{
-  text-align: left !important;
-}
-
-.textalignright{
-  text-align: right !important;
-}
-
-.tasklogo{
-  margin-right: 2em !important;
-}
-
-.footer{
-  padding: 3em !important;
-}
-
-.borderRadius0{
-  border-radius: 0 !important;
-}
-
-.forgot{
-  text-align: left;
-  padding-top: 12px;
-}
-
-.width100{
-  width: 100% !important;
-}
-.link {
-  cursor:pointer;
-  color:blue;
-  text-decoration:none;
-}
-.link:hover {
-  text-decoration:none;
-  color:darkblue;
-}
+.textaligncenter{ text-align: center !important; }
+.textalignleft{ text-align: left !important; }
+.textalignright{ text-align: right !important; }
+.tasklogo{ margin-right: 2em !important; }
+.footer{ padding: 3em !important; }
+.borderRadius0{ border-radius: 0 !important; }
+.forgot{ text-align: left; padding-top: 12px; }
+.width100{ width: 100% !important; }
+.link { cursor:pointer; color:blue; text-decoration:none; }
+.link:hover { text-decoration:none; color:darkblue; }

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Taskmgmt Application",
   "main": "index.js",
+  "homepage": "https://localhost:8080/myowndesk",
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot --port 3000",
     "build": "webpack --mode production"
@@ -17,6 +18,7 @@
     "react": "^16.2.0",
     "react-device-detect": "^1.4.5",
     "react-dom": "^16.2.0",
+    "react-quill": "^1.3.0",
     "react-router-dom": "^4.2.2",
     "react-router-mobx": "^1.2.2",
     "react-table": "^6.8.6",

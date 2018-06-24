@@ -4,15 +4,24 @@ import { Image, Grid, Icon, Button, Segment, Menu, Dropdown, Label, Container, L
 import Header from './Header';
 import Footer from './Footer';
 import BrowserSideBar from './BrowserSideBar'
+import RedirectTo from '../../Constant/RedirectTo'
 
 const Layout = props => ({
   render() {
 
-    let listOfPrivatePaths = ['/home', '/menuModal', '/managemenu', '/topic', '/topicList', '/topicModal' ]
+    let listOfPrivatePaths = [
+      RedirectTo.HOME, 
+      RedirectTo.MENU_MODAL, 
+      RedirectTo.MANAGE_MENU, 
+      RedirectTo.TOPIC_MODAL, 
+      RedirectTo.TOPIC_LIST, 
+      RedirectTo.TOPIC
+     ]
     let isPrivate = false;
     for (let path of listOfPrivatePaths) {
-      if (location.pathname == path) {
+      if ((location.pathname).indexOf(path) >= 0) {
         isPrivate = true;
+        break;
       }
     }
 

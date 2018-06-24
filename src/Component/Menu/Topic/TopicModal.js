@@ -5,6 +5,8 @@ import { Button, Form, Grid, Header, Message, Segment, Divider, Label, Modal, Ic
 import RedirectTo from '../../../Constant/RedirectTo'
 import constValid from '../../../Constant/Validation'
 import PropTypes from 'prop-types'
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 @inject(['store'])
 @observer
@@ -21,9 +23,15 @@ class TopicModal extends Component {
             modalTitle: "",
             title: "",
             description: "",
+            descriptionVal: "",
             type: "",
             typeVal: "", //for dropdown case only becasue validaton error message value set as dropdown value
         }
+        this.handleChange = this.handleChange.bind(this)
+    }
+
+    handleChange(value) {
+        this.setState({ descriptionVal: value })
     }
 
     close = () => {
@@ -34,6 +42,7 @@ class TopicModal extends Component {
     componentWillMount() {
         let modalTitle = "Add";
         let topicObjectForEdit = this.props.store.topic.topicObjectForEdit;
+        let descriptionVal = this.props.store.topic.topicObjectForEdit.description;
         if (typeof topicObjectForEdit.id !== "undefined" && topicObjectForEdit != 0) {
             modalTitle = "Update"
         }
@@ -41,7 +50,8 @@ class TopicModal extends Component {
         this.setState({
             open: true,
             modalTitle: modalTitle,
-            typeVal: topicObjectForEdit.type
+            typeVal: topicObjectForEdit.type,
+            descriptionVal: descriptionVal
         });
 
     }
@@ -78,7 +88,7 @@ class TopicModal extends Component {
         axios.post(url, {
             id: topicId,
             title: this.title.value,
-            description: this.description.value,
+            description: this.state.descriptionVal,
             type: this.state.typeVal,
             menuId: this.props.store.menu.menuId
         })
@@ -96,7 +106,7 @@ class TopicModal extends Component {
                         console.log("Before update: ", list[objIndex])
                         //Update object's title property.
                         list[objIndex].title = this.title.value;
-                        list[objIndex].description = this.description.value;
+                        list[objIndex].description = this.state.descriptionVal;
                         list[objIndex].type = this.state.typeVal;
                         //Log object to console again.
                         console.log("After update: ", list[objIndex])
@@ -107,6 +117,7 @@ class TopicModal extends Component {
                         open: false,
                         title: "",
                         description: "",
+                        descriptionVal: "",
                         type: "",
                         typeVal: ""
                     });
@@ -137,7 +148,7 @@ class TopicModal extends Component {
 
     validateTopicForm(e) {
         let title = this.title.value;
-        let description = this.description.value;
+        let description = this.state.descriptionVal;
         let type = this.state.typeVal;
         console.log("type-->" + type);
         let titleErrMsg = "", descriptionErrMsg = "", typeErrMsg = "";
@@ -177,7 +188,6 @@ class TopicModal extends Component {
         const typeVal = this.state.typeVal;
 
         const defaultTitle = this.props.store.topic.topicObjectForEdit.title;
-        const defaultDescription = this.props.store.topic.topicObjectForEdit.description;
         const defaultType = this.props.store.topic.topicObjectForEdit.type;
 
         const options = [
@@ -191,7 +201,7 @@ class TopicModal extends Component {
             <div>
                 <Modal size={'large'} open={open} onClose={this.close} style={{ top: "40%" }}>
                     <Modal.Header>{this.state.modalTitle} Topic</Modal.Header>
-                    <Modal.Content>
+                    <Modal.Content scrolling>
                         <Form id="topicForm" size='large'>
                             <Form.Group widths='equal'>
                                 <Form.Field>
@@ -214,14 +224,13 @@ class TopicModal extends Component {
                                 {typeErrMsg.length > 0 && <Label pointing='left'>{typeErrMsg}</Label>}
                             </Form.Group>
                             <Form.Field>
-                                <div className="ui left icon input">
-                                    <textarea
-                                        placeholder='Topic Title'
-                                        type="text"
-                                        defaultValue={defaultDescription}
-                                        ref={(description) => this.description = description}
-                                    />
-                                    {descriptionErrMsg.length > 0 && <Label pointing='left'>{descriptionErrMsg}</Label>}
+                                <div className="ui left">
+                                    <ReactQuill value={this.state.descriptionVal}
+                                        placeholder={""}
+                                        onChange={this.handleChange}
+                                        modules={modules}
+                                        formats={formats} />
+                                    {descriptionErrMsg.length > 0 && <Label pointing='top'>{descriptionErrMsg}</Label>}
                                 </div>
                             </Form.Field>
                         </Form>
@@ -235,5 +244,42 @@ class TopicModal extends Component {
         )
     }
 }
+
+const modules = {
+    toolbar: [
+        [{ 'header': [1, 2, false] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+        [{ 'color': ['black'] }, { 'background': ['green'] }],
+        ['link', 'image'],
+        ['code-block'],
+        ['clean']
+    ]
+};
+
+/* 
+ * Quill editor formats
+ * See https://quilljs.com/docs/formats/
+ */
+const formats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+    "color",
+    "background",
+    "code-block",
+];
+
+
 
 export default TopicModal

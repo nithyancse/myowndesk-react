@@ -1,4 +1,5 @@
 const RedirectTo = {
+    MYOWNDESK: "/myowndesk",
     LOGIN: "/login",
     SIGNUP: "/signup",
     ADD_NAME:"/addName",

@@ -23,8 +23,7 @@ class BrowserSideBar extends Component {
 
   componentWillMount() {
     let list = [];
-    //let userId =  this.props.store.home.user.id;
-    let userId = 1;
+    let userId =  this.props.store.home.user.id;
     let url = RedirectTo.AXIOS_FETCH_MENU_LIST + userId;
     axios.get(url)
       .then((response) => {

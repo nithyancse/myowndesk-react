@@ -9,13 +9,9 @@ class TopicDisplayBox extends Component {
         super(props);
         this.state = {}    
     }
-
-    
     
     render() {
-
         const topicObject = this.props.store.topic.topicObject;
-
         return (
             <div className="contain" >
                 <Header as="h3">{topicObject.title}</Header>
@@ -23,7 +19,7 @@ class TopicDisplayBox extends Component {
                     <Grid.Row >
                         <Grid.Column>
                             <Segment>
-                            {topicObject.description} 
+                            <div dangerouslySetInnerHTML={{__html: topicObject.description}}></div>
                             </Segment>
                         </Grid.Column>
                     </Grid.Row>

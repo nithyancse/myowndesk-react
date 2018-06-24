@@ -20,16 +20,9 @@
     margin-right: 2em !important;
     min-height: 450px !important;
 }
-.loginError{
-    position: absolute;
-    width: 95%;
-}
-.loginBox{
-    margin-top: 5em !important;
-}
-.sidebarmenu{
-    min-height: 534px !important;
-}
+.loginError{ position: absolute; width: 95%;}
+.loginBox{ margin-top: 5em !important;}
+.sidebarmenu{ min-height: 534px !important;}
 
 }
 
