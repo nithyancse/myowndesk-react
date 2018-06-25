@@ -31,6 +31,7 @@ class TopicModal extends Component {
     }
 
     handleChange(value) {
+        console.log("value-->"+value);
         this.setState({ descriptionVal: value })
     }
 
@@ -85,10 +86,20 @@ class TopicModal extends Component {
         } else {
             url = RedirectTo.AXIOS_UPDATE_TOPIC;
         }
+
+        //process the descriptionVal - delta object
+        let descriptionVal = this.state.descriptionVal;
+        if(descriptionVal){
+            descriptionVal = descriptionVal.replace("<p><br></p><p><br></p>", "<p><br></p>");
+            descriptionVal = descriptionVal.replace("<p><br></p><ol>", "<ol>");
+            descriptionVal = descriptionVal.replace("<p><br></p><ul>", "<ul>");
+            descriptionVal = descriptionVal.replace("<p><br></p><pre", "<pre");
+        }
+
         axios.post(url, {
             id: topicId,
             title: this.title.value,
-            description: this.state.descriptionVal,
+            description: descriptionVal,
             type: this.state.typeVal,
             menuId: this.props.store.menu.menuId
         })
@@ -106,7 +117,7 @@ class TopicModal extends Component {
                         console.log("Before update: ", list[objIndex])
                         //Update object's title property.
                         list[objIndex].title = this.title.value;
-                        list[objIndex].description = this.state.descriptionVal;
+                        list[objIndex].description = descriptionVal;
                         list[objIndex].type = this.state.typeVal;
                         //Log object to console again.
                         console.log("After update: ", list[objIndex])
@@ -158,7 +169,7 @@ class TopicModal extends Component {
             titleErrMsg = constValid.TOPIC_TITLE_EMPTY;
             status = false;
         }
-        if (!description) {
+        if (!description || description == '') {
             descriptionErrMsg = constValid.TOPIC_DESCRIPTION_EMPTY;
             status = false;
         }
@@ -174,7 +185,7 @@ class TopicModal extends Component {
         return status;
     }
 
-    onChange = (e, data) => {
+    onTypeChange = (e, data) => {
         console.log(data.value);
         this.setState({ typeVal: data.value });
     }
@@ -219,13 +230,13 @@ class TopicModal extends Component {
                                     selection
                                     options={options}
                                     defaultValue={defaultType}
-                                    onChange={this.onChange}
+                                    onChange={this.onTypeChange}
                                 />
                                 {typeErrMsg.length > 0 && <Label pointing='left'>{typeErrMsg}</Label>}
                             </Form.Group>
                             <Form.Field>
                                 <div className="ui left">
-                                    <ReactQuill value={this.state.descriptionVal}
+                                    <ReactQuill value={this.state.descriptionVal || ''}
                                         placeholder={""}
                                         onChange={this.handleChange}
                                         modules={modules}
@@ -250,17 +261,13 @@ const modules = {
         [{ 'header': [1, 2, false] }],
         ['bold', 'italic', 'underline', 'strike', 'blockquote'],
         [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-        [{ 'color': ['black'] }, { 'background': ['green'] }],
+        [{ 'color': ['black', 'blue', 'green', 'grey'] }, { 'background': ['green'] }],
         ['link', 'image'],
         ['code-block'],
         ['clean']
     ]
 };
 
-/* 
- * Quill editor formats
- * See https://quilljs.com/docs/formats/
- */
 const formats = [
     "header",
     "font",
@@ -279,7 +286,5 @@ const formats = [
     "background",
     "code-block",
 ];
-
-
 
 export default TopicModal

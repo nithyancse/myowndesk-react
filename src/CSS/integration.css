@@ -9,3 +9,9 @@
     border-top: none !important;
     border-radius: 0 0 .28rem .28rem;
   }
+.ql-syntax, pre.ql-syntax{
+  background-color: #eff0f1 !important;
+  color: #393318 !important;
+  overflow: visible !important;
+}
+
