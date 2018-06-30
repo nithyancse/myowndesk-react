@@ -91,9 +91,13 @@ class TopicModal extends Component {
         let descriptionVal = this.state.descriptionVal;
         if(descriptionVal){
             descriptionVal = descriptionVal.replace("<p><br></p><p><br></p>", "<p><br></p>");
+            descriptionVal = descriptionVal.replace("</p><p><br></p>", "</p>");
             descriptionVal = descriptionVal.replace("<p><br></p><ol>", "<ol>");
+            descriptionVal = descriptionVal.replace("</ol><p><br></p>", "</ol>");
             descriptionVal = descriptionVal.replace("<p><br></p><ul>", "<ul>");
+            descriptionVal = descriptionVal.replace("</ul><p><br></p>", "</ul>");
             descriptionVal = descriptionVal.replace("<p><br></p><pre", "<pre");
+            descriptionVal = descriptionVal.replace("</pre><p><br></p>", "</pre>");
         }
 
         axios.post(url, {

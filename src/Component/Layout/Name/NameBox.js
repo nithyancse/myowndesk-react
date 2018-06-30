@@ -39,6 +39,7 @@ class NameBox extends Component {
             .then(response => {
                 if (response.status == 201) {
                     this.props.store.home.setUserName(name);
+                    this.loadMenuList(this.props.store.home.user.id)
                     this.setState({
                         pageToRedirect : RedirectTo.HOME
                     });
@@ -51,6 +52,22 @@ class NameBox extends Component {
             });
 
         arrowButton.classList.add("loading");
+    }
+
+    loadMenuList(userId) {
+        let list = [];
+        let url = RedirectTo.AXIOS_FETCH_MENU_LIST + userId;
+        axios.get(url)
+            .then((response) => {
+                //console.log(response.data)
+                for (var key in response.data) {
+                    list.push(response.data[key]);
+                }
+                this.props.store.menu.setMenuList(list);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     handleMessage = e => {

@@ -7,6 +7,8 @@ export class TopicStore {
     @observable topicTitle = Common.EMPTY
     @observable topicObject = {}
     @observable topicObjectForEdit = {}
+    @observable prevTopicId = 0
+    @observable nextTopicId = 0
 
     @action setTopicList(topicList) {
         this.topicList = topicList;
@@ -30,6 +32,14 @@ export class TopicStore {
 
     @action setTopicObjectForEdit(topicObject) {
         this.topicObjectForEdit = topicObject;
+    }
+
+    @action setPrevTopicId(prevTopicId) {
+        this.prevTopicId = prevTopicId;
+    }
+
+    @action setNextTopicId(nextTopicId) {
+        this.nextTopicId = nextTopicId;
     }
 
 }

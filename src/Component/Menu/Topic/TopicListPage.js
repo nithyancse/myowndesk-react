@@ -2,7 +2,8 @@ import axios from 'axios'
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Redirect } from 'react-router'
-import { Button, Form, Grid, Header, Message, Segment, Divider, Label, Modal, Table, Menu } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Message, Segment, Divider, Label, Modal, Table, Menu, Icon, Input } from 'semantic-ui-react'
+import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
 import RedirectTo from '../../../Constant/RedirectTo'
 import constValid from '../../../Constant/Validation'
 import PropTypes from 'prop-types'
@@ -22,7 +23,6 @@ class TopicListPage extends Component {
             originalData: {},
             search: ''
         }
-
     }
 
 
@@ -98,24 +98,13 @@ class TopicListPage extends Component {
     render() {
         const isLoggedIn = this.props.store.home.isLoggedIn;
         let data = this.props.store.topic.topicList;
-        const open = this.state.open
-
-        const columns = [{
-            Header: 'Topic Name',
-            accessor: 'title'
-        },
-        {
-            Header: 'Topic Type',
-            accessor: 'type'
-        },
-        {
-            Header: '',
-            Cell: row => (
-                <div>
-                    <button onClick={() => this.handleEdit(row.original)}>Edit</button>
-                    <button onClick={this.closeConfigShow(row.original)}>Delete</button>
-                </div>)
-        }]
+        const open = this.state.open;
+        let firstColumnWidth = 13;
+        let secondColumnWidth = 3;
+        if(isMobile){
+            firstColumnWidth = 11;
+            secondColumnWidth = 5;
+        } 
 
         if (this.state.search) {
             data = data.filter(row => {
@@ -128,36 +117,54 @@ class TopicListPage extends Component {
         for (let i = 0; i < item.length; i++) {
             topicListArray.push(<Table.Row key={i} >
                 <Table.Cell className="link" onClick={() => this.handleTopicDisplayBox(item[i])} >{item[i].title} </Table.Cell>
-                <Table.Cell>{item[i].type} </Table.Cell>
                 <Table.Cell>
-                    <button onClick={() => this.handleEdit(item[i])}>Edit</button>
-                    <button onClick={this.closeConfigShow(item[i])}>Delete</button>
+                    <Button circular color='yellow' icon='edit' onClick={() => this.handleEdit(item[i])} />
+                    <Button circular color='red' icon='delete' onClick={this.closeConfigShow(item[i])} />
                 </Table.Cell>
             </Table.Row>)
         }
 
         return (
             <div className="maincontain" >
-                <Header as='h4'> Topic page</Header>
-                <Button onClick={() => this.handleCreate()}>Create</Button>
-                <Button onClick={this.handleGoBack.bind(this)}>Go Back</Button>
+                <Grid >
+                    <Grid.Row>
+                        <Grid.Column>
+                            <Header as='h3'>Manage your Topics</Header>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row > 
+                        <Grid.Column width={10}>
+                            <Input icon={<Icon name='search' inverted circular link />} value={this.state.search}
+                                onChange={e => this.setState({ search: e.target.value })}
+                                placeholder='Search...'/>
+                        </Grid.Column>
+                        <Grid.Column floated='right' width={6}>
+                            <div className="floatRight">
+                                <BrowserView device={isBrowser}>
+                                    <Button color='green' onClick={() => this.handleCreate()}>Create</Button>
+                                    <Button color='grey' onClick={this.handleGoBack.bind(this)}>Go Back</Button>
+                                </BrowserView>
+                                <MobileView device={isMobile}>
+                                    <Button circular color='green' icon='add' onClick={() => this.handleCreate()} />
+                                    <Button circular color='grey' icon='backward' onClick={this.handleGoBack.bind(this)} />
+                                </MobileView>
+                            </div>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
 
-                Search: <input
-                    value={this.state.search}
-                    onChange={e => this.setState({ search: e.target.value })}
-                />
-                <Table basic>
+                 <Table unstackable striped>
                     <Table.Header>
                         <Table.Row>
-                            <Table.HeaderCell>Title</Table.HeaderCell>
-                            <Table.HeaderCell>Type</Table.HeaderCell>
-                            <Table.HeaderCell>Action</Table.HeaderCell>
+                            <Table.HeaderCell width={firstColumnWidth}>Title</Table.HeaderCell>
+                            <Table.HeaderCell width={secondColumnWidth}>Action</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {topicListArray}
+                    {topicListArray}
                     </Table.Body>
                 </Table>
+
                 <Modal size={"small"}
                     open={open}
                     onClose={this.close}

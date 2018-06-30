@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Switch, Route } from 'react-router-dom'
-import { BrowserRouter } from 'react-router-dom'
+import { Switch, Route, Redirect, BrowserRouter } from 'react-router-dom'
 import { Provider } from 'mobx-react'
 import store from '../Store/stores'
 import Config from '../Constant/Config'
@@ -30,7 +29,7 @@ const Router = (props) => {
     <Provider store={store}>
       <BrowserRouter basename={RedirectTo.MYOWNDESK}>
         <Layout>
-          <Route exact path='/' component={LandingPage} />
+          <Route exact path={RedirectTo.LANDING} component={LandingPage} />
           <Route path={RedirectTo.LOGIN} component={LoginPage} />
           <Route path={RedirectTo.SIGNUP} component={SignupPage} />
           <Route path={RedirectTo.ADD_NAME} component={NamePage} />
@@ -41,6 +40,7 @@ const Router = (props) => {
           <Route path={RedirectTo.TOPIC_LIST} component={TopicListPage} />
           <Route path={RedirectTo.TOPIC} component={TopicPage} />
           <Route path={RedirectTo.LOGOUT} component={LandingPage} />
+          <Route exact path='/' render = {() => <Redirect to={RedirectTo.LANDING} />} />
         </Layout>
       </BrowserRouter>
     </Provider>

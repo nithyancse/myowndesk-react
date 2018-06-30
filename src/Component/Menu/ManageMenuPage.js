@@ -3,6 +3,7 @@ import axios from 'axios'
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Button, Form, Grid, Header, Message, Segment, Table, Modal } from 'semantic-ui-react'
+import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
 import RedirectTo from '../../Constant/RedirectTo'
 import { CommonUtil } from '../../Util/CommonUtil'
 import PropTypes from 'prop-types'
@@ -19,8 +20,8 @@ class ManageMenuPage extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            open:false,
-            originalData : {}
+            open: false,
+            originalData: {}
         }
     }
 
@@ -40,8 +41,8 @@ class ManageMenuPage extends Component {
     handleDelete() {
         let original = this.state.originalData;
         let tempArray = [];
-        let message = "", color="";
-        axios.delete(RedirectTo.AXIOS_DELETE_MENU+"?menuId="+original.id)
+        let message = "", color = "";
+        axios.delete(RedirectTo.AXIOS_DELETE_MENU + "?menuId=" + original.id)
             .then(response => {
                 console.log(response);
                 if (response.status == 204) {
@@ -81,43 +82,57 @@ class ManageMenuPage extends Component {
         const isLoggedIn = this.props.store.home.isLoggedIn;
         const data = this.props.store.menu.menuList;
         const open = this.state.open
+        let firstColumnWidth = 13;
+        let secondColumnWidth = 3;
+        if(isMobile){
+            firstColumnWidth = 11;
+            secondColumnWidth = 5;
+        } 
 
-        const columns = [{
-            Header: 'Menu Name',
-            accessor: 'name'
-        },
-        {
-            Header: '',
-            Cell: row => (
-                <div>
-                    <button onClick={() => this.handleEdit(row.original)}>Edit</button>
-                    <button onClick={this.closeConfigShow(row.original)}>Delete</button>
-                </div>)
-        }]
+        const item = data;
+        let menuListArray = [];
+        for (let i = 0; i < item.length; i++) {
+            menuListArray.push(<Table.Row key={i} >
+                <Table.Cell>{item[i].name} </Table.Cell>
+                <Table.Cell>
+                    <Button circular color='yellow' icon='edit' onClick={() => this.handleEdit(item[i])} />
+                    <Button circular color='red' icon='delete' onClick={this.closeConfigShow(item[i])} />
+                </Table.Cell>
+            </Table.Row>)
+        }
 
         return (
 
-
-
             <div className="maincontain" >
+                <Grid>
+                    <Grid.Column floated='left' width={11}>
+                        <Header as='h3'>Manage your menu</Header>
+                    </Grid.Column>
+                    <Grid.Column floated='right' width={5}>
+                        <div className="floatRight">
+                            <BrowserView device={isBrowser}>
+                                <Button color='green' onClick={() => this.handleCreate()}>Create</Button>
+                            </BrowserView>
+                            <MobileView device={isMobile}>
+                                <Button circular color='green' icon='add' onClick={() => this.handleCreate()} />
+                            </MobileView>
+                        </div>
+                    </Grid.Column>
+                </Grid>
 
-                MenuManagePage
+                <Table unstackable striped>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell width={firstColumnWidth}>Menu Name</Table.HeaderCell>
+                            <Table.HeaderCell width={secondColumnWidth}>Action</Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                        {menuListArray}
+                    </Table.Body>
+                </Table>
 
-            <button onClick={() => this.handleCreate()}>create</button>
-
-                <div>
-
-                    <ReactTable
-                        data={data}
-                        columns={columns}
-                        resolveData={data => data.map(row => row)}
-                        showPagination={false}
-                        minRows={3}
-                    />
-                </div>
-
-
-                <Modal  size={"small"}
+                <Modal size={"small"}
                     open={open}
                     onClose={this.close}
                 >
@@ -130,7 +145,6 @@ class ManageMenuPage extends Component {
                         <Button positive onClick={() => this.handleDelete()} labelPosition='right' icon='checkmark' content='Yes' />
                     </Modal.Actions>
                 </Modal>
-
 
             </div>
         )

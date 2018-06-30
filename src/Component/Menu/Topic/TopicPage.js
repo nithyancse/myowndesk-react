@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Redirect } from 'react-router'
 import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
-import { Button, Form, Grid, Header, Message, Segment, Divider, Label, Modal, Sidebar, Table, Menu } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Message, Segment, Divider, Label, Modal, Sidebar, Table, Menu, Input, Icon } from 'semantic-ui-react'
 import RedirectTo from '../../../Constant/RedirectTo'
 import constValid from '../../../Constant/Validation'
 import PropTypes from 'prop-types'
@@ -26,9 +26,35 @@ class TopicPage extends Component {
 
     }
 
-
-    handleTopicDisplayBox(original) {
-        this.props.store.topic.setTopicObject(original);
+    handleTopicDisplayBox(topicId) {
+        let item = this.props.store.topic.topicList;
+        let prevTopicId = 0;
+        let nextTopicId = 0;
+        let status = false;
+        console.log(topicId);
+        for (let i = 0; i < item.length; i++) {
+            if (item[i].id == topicId) {
+                this.props.store.topic.setTopicObject(item[i]);
+                if (i == 0) {
+                    prevTopicId = 0;
+                    if (i < item.length - 1) {
+                        nextTopicId = item[i + 1].id;
+                    }
+                }
+                if (i == item.length - 1) {
+                    nextTopicId = 0;
+                    prevTopicId = item[i - 1].id;
+                }
+                if (i != 0 && i != item.length - 1) {
+                    prevTopicId = item[i - 1].id;
+                    nextTopicId = item[i + 1].id;
+                }
+                this.props.store.topic.setPrevTopicId(prevTopicId);
+                this.props.store.topic.setNextTopicId(nextTopicId);
+                break;
+            }
+        }
+        //this.toggleVisibility();
     }
 
     handleClick(menuId, name) {
@@ -41,6 +67,8 @@ class TopicPage extends Component {
         const isLoggedIn = this.props.store.home.isLoggedIn;
         let data = this.props.store.topic.topicList;
         const menuName = this.props.store.menu.menuName;
+        const prevTopicId = this.props.store.topic.prevTopicId;
+        const nextTopicId = this.props.store.topic.nextTopicId;
         const { visible } = this.state
 
         if (this.state.search) {
@@ -52,76 +80,84 @@ class TopicPage extends Component {
         const item = data;
         let topicListArray = [];
         for (let i = 0; i < item.length; i++) {
-            topicListArray.push(<Table.Row key={i} ><Table.Cell className="link" onClick={() => this.handleTopicDisplayBox(item[i])} >{item[i].title} </Table.Cell></Table.Row>)
-
+            topicListArray.push(<Table.Row key={i} ><Table.Cell className="link" onClick={() => this.handleTopicDisplayBox(item[i].id)} >{item[i].title} </Table.Cell></Table.Row>)
         }
 
         return (
             <div className="maincontain" >
-                <BrowserView device={isBrowser}>
-                    <Button onClick={this.handleClick.bind(this)}>Manage Topics</Button>
-                    <Header as='h2'> {menuName}</Header>
-                    <Grid>
-                        <Grid.Row>
-                            <Grid.Column width={12}>
-                                <TopicDisplayBox />
-                            </Grid.Column>
-                            <Grid.Column width={4}>
-                                Search: <input
-                                    value={this.state.search}
-                                    onChange={e => this.setState({ search: e.target.value })}
-                                />
-                                <Table basic>
-                                    <Table.Header>
-                                        <Table.Row>
-                                            <Table.HeaderCell>Topics</Table.HeaderCell>
-                                        </Table.Row>
-                                    </Table.Header>
-                                    <Table.Body>
-                                        {topicListArray}
-                                    </Table.Body>
-                                </Table>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </BrowserView>
-                <MobileView device={isMobile}>
-                    <Button onClick={this.toggleVisibility}>Show Topic List</Button>
-                    <Sidebar.Pushable as={Segment}>
-                        <Sidebar
-                            as={Menu}
-                            animation='overlay'
-                            width='thin'
-                            direction='right'
-                            visible={visible}
-                            icon='labeled'
-                            vertical
-                            inverted
-                        >
-                            Search: <input
+
+                <Grid >
+                    <Grid.Row>
+                        <Grid.Column width={6}>
+                            <Header as='h3'>{menuName}</Header>
+                        </Grid.Column>
+                        <Grid.Column width={10} >
+                            <div className="floatRight">
+                                <Button content='Topic List' color='green' icon='edit' onClick={this.toggleVisibility} />
+                                <Button content='Manage Topics' color='yellow' name='edit' icon='edit' onClick={this.handleClick.bind(this)} />
+                                {prevTopicId != 0 && <Button content='Previous' icon='left arrow' labelPosition='left' onClick={() => this.handleTopicDisplayBox(prevTopicId)} />}
+                                {nextTopicId != 0 && <Button content='Next' icon='right arrow' labelPosition='right' onClick={() => this.handleTopicDisplayBox(nextTopicId)} />}
+                            </div>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+
+
+                <Sidebar.Pushable as={Segment}>
+                    <Sidebar
+                        as={Menu}
+                        animation='overlay'
+                        width='thin'
+                        direction='right'
+                        visible={visible}
+                        icon='labeled'
+                        vertical
+                        inverted
+                        className="sidebartopic padding10"
+                    >
+                        <div style={{ height: '50px' }}>
+                            <Input
                                 value={this.state.search}
+                                icon={<Icon name='search' inverted circular link />}
                                 onChange={e => this.setState({ search: e.target.value })}
+                                placeholder='Search...'
+                                className="floatLeft width80"
                             />
-                            <Table basic>
+                            <span className="floatRight">
+                                <Button circular color='red' icon='close' onClick={this.toggleVisibility} />
+                            </span>
+                        </div>
+                        <div>
+                            <Table>
                                 <Table.Header>
                                     <Table.Row>
-                                        <Table.HeaderCell>Topics</Table.HeaderCell>
+                                        <Table.HeaderCell>
+                                            Topics
+                                        </Table.HeaderCell>
                                     </Table.Row>
                                 </Table.Header>
                                 <Table.Body>
                                     {topicListArray}
                                 </Table.Body>
                             </Table>
-                        </Sidebar>
-                        <Sidebar.Pusher>
-                            <Button onClick={this.handleClick.bind(this)}>Manage Topics</Button>
-                            <Header as='h2'> {menuName}</Header>
-                            <Segment basic>
-                                <TopicDisplayBox />
-                            </Segment>
-                        </Sidebar.Pusher>
-                    </Sidebar.Pushable>
-                </MobileView>
+                        </div>
+                    </Sidebar>
+                    <Sidebar.Pusher>
+                        <Segment basic>
+                            <TopicDisplayBox />
+                        </Segment>
+                    </Sidebar.Pusher>
+                </Sidebar.Pushable>
+                <Grid >
+                    <Grid.Row>
+                        <Grid.Column floated='left' width={3}>
+                            {prevTopicId != 0 && <Button floated='left' content='Previous' icon='left arrow' labelPosition='left' onClick={() => this.handleTopicDisplayBox(prevTopicId)} />}
+                        </Grid.Column>
+                        <Grid.Column floated='right' width={3}>
+                            {nextTopicId != 0 && <Button floated='right' content='Next' icon='right arrow' labelPosition='right' onClick={() => this.handleTopicDisplayBox(nextTopicId)} />}
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid >
             </div>
         )
     }

@@ -39,7 +39,7 @@ const Layout = props => ({
                 <Grid.Column width={3}>
                   <BrowserSideBar />
                 </Grid.Column>
-                <Grid.Column width={13}>
+                <Grid.Column width={13} className="paddingLeft0">
                   <main>{props.children}</main>
                 </Grid.Column>
               </Grid.Row>

@@ -23,6 +23,6 @@
 .loginError{ position: absolute; width: 95%;}
 .loginBox{ margin-top: 5em !important;}
 .sidebarmenu{ min-height: 534px !important;}
-
+.sidebartopic{ width:30% !important; }
 }
 

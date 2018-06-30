@@ -9,6 +9,7 @@
 # production
 /build
 /dist
+/myowndesk
 
 # misc
 .DS_Store

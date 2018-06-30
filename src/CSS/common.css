@@ -1,4 +1,4 @@
-body{height: 100%; background-color: #ffffff;}
+body{height: 100%; background-color: #ffffff; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;}
 .floatLeft { float: left !important;}
 .floatRight { float: right !important;}
 /*.ui.menu{  font-family: cursive;}*/
@@ -10,5 +10,17 @@ body{height: 100%; background-color: #ffffff;}
 .borderRadius0{ border-radius: 0 !important; }
 .forgot{ text-align: left; padding-top: 12px; }
 .width100{ width: 100% !important; }
+.width80{ width: 80% !important; }
 .link { cursor:pointer; color:blue; text-decoration:none; }
 .link:hover { text-decoration:none; color:darkblue; }
+.linktopic { cursor:pointer; color:white; text-decoration:none; }
+.linktopic:hover { text-decoration:none; color:skyblue; }
+.paddingLeft0{ padding-left:0px !important; }
+.paddingTop10{ padding-top: 10px !important; }
+.padding10{ padding: 10px !important; }
+.editTopic{
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px !important;
+}

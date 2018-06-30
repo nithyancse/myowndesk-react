@@ -15,40 +15,19 @@ class BrowserSideBar extends Component {
 
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      activeItem: ""
-    }
-  }
-
-
-  componentWillMount() {
-    let list = [];
-    let userId =  this.props.store.home.user.id;
-    let url = RedirectTo.AXIOS_FETCH_MENU_LIST + userId;
-    axios.get(url)
-      .then((response) => {
-        //console.log(response.data)
-        for (var key in response.data) {
-          list.push(response.data[key]);
-        }
-        this.props.store.menu.setMenuList(list);
-        this.context.router.history.push(RedirectTo.HOME);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    this.state = {}
   }
 
   componentWillUnmount() {
     this.props.store.menu.setMenuList([]);
     this.props.store.topic.setTopicList([]);
     this.props.store.topic.setTopicObject({});
-}
-
+  }
 
   handleMenuClick(menuId, name) {
     this.props.store.menu.setMenuId(menuId);
     this.props.store.menu.setMenuName(name);
+    let prevTopicId = 0, nextTopicId = 0;
     let list = [];
     let original = {};
     let url = RedirectTo.AXIOS_FETCH_TOPIC_LIST + menuId;
@@ -59,10 +38,15 @@ class BrowserSideBar extends Component {
           if (key == 0) {
             original = response.data[key];
           }
+          if (key == 1) {
+            nextTopicId = response.data[key].id;
+          }
           list.push(response.data[key]);
         }
         this.props.store.topic.setTopicList(list);
         this.props.store.topic.setTopicObject(original);
+        this.props.store.topic.setPrevTopicId(prevTopicId);
+        this.props.store.topic.setNextTopicId(nextTopicId);
       })
       .catch((error) => {
         console.log(error);
@@ -76,17 +60,16 @@ class BrowserSideBar extends Component {
 
   render() {
 
-    const { activeItem } = this.state.activeItem
     const item = this.props.store.menu.menuList;
     let menuListArray = [];
     for (let i = 0; i < item.length; i++) {
-      menuListArray.push(<Menu.Item key={i} name={item[i].name} active={activeItem === item[i].name} onClick={() => this.handleMenuClick(item[i].id, item[i].name)}> {item[i].name} </Menu.Item>);
+      menuListArray.push(<Menu.Item key={i} name={item[i].name} onClick={() => this.handleMenuClick(item[i].id, item[i].name)}> {item[i].name} </Menu.Item>);
     }
 
     return (
       <div className="sidebardiv">
         <Menu inverted vertical stackable className="width100 borderRadius0 sidebarmenu" >
-          <Menu.Item name='manageMenu' active={activeItem === 'manageMenu'} onClick={() => this.handleManageMenu()}>
+          <Menu.Item name='manageMenu' onClick={() => this.handleManageMenu()}>
             Manage Menu
           </Menu.Item>
           {menuListArray}

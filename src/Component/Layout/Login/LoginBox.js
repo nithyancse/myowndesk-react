@@ -46,6 +46,7 @@ class LoginBox extends Component {
                     if (!this.props.store.home.user.name) {
                         pageToRedirect = RedirectTo.ADD_NAME;
                     } else {
+                        this.loadMenuList(this.props.store.home.user.id)
                         pageToRedirect = RedirectTo.HOME;
                     }
                     this.setState({
@@ -84,6 +85,23 @@ class LoginBox extends Component {
             passwordErr: passwordErrMsg,
         });
         return status;
+    }
+
+    loadMenuList(userId) {
+        let list = [];
+        userId = 1;
+        let url = RedirectTo.AXIOS_FETCH_MENU_LIST + userId;
+        axios.get(url)
+            .then((response) => {
+                //console.log(response.data)
+                for (var key in response.data) {
+                    list.push(response.data[key]);
+                }
+                this.props.store.menu.setMenuList(list);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     render() {

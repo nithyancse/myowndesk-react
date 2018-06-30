@@ -7,23 +7,15 @@ import { Segment, Grid, Button, Image, Header } from 'semantic-ui-react'
 class TopicDisplayBox extends Component {
     constructor(props) {
         super(props);
-        this.state = {}    
+        this.state = {}
     }
-    
+
     render() {
         const topicObject = this.props.store.topic.topicObject;
         return (
-            <div className="contain" >
+            <div>
                 <Header as="h3">{topicObject.title}</Header>
-                <Grid centered columns='equal'>
-                    <Grid.Row >
-                        <Grid.Column>
-                            <Segment>
-                            <div dangerouslySetInnerHTML={{__html: topicObject.description}}></div>
-                            </Segment>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+                <div dangerouslySetInnerHTML={{ __html: topicObject.description }}></div>
             </div>
         )
     }

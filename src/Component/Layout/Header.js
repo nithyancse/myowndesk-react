@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Image, Header, Grid, Icon, Button, Segment, Menu, Dropdown, Label, Container } from 'semantic-ui-react'
 import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
 import { observer, inject } from 'mobx-react';
-import { Redirect } from 'react-router'
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'
 import Common from '../../Constant/Common'
@@ -84,14 +83,14 @@ class LogoBar extends Component {
                 <MobileView device={isMobile}>
                     <Menu size="tiny" inverted className="borderRadius0" >
                         <Menu.Item as='a' header>
-                            {true &&
+                            {isLoggedIn &&
                                 <Icon name='bars' size='large' className="tasklogo" onClick={this.handleSideBar} />
                             }
                             {/*<Image className="tasklogo" size='tiny' src="public/images/Mod_logo_1.png" />*/}
                             <span className="tasktitle" >My Own Desk</span>
                         </Menu.Item>
                     </Menu>
-                    <MobileSideBar status={this.state.sidebarStatus} handleSideBar={this.handleSideBar} />
+                        {isLoggedIn && <MobileSideBar status={this.state.sidebarStatus} handleSideBar={this.handleSideBar} /> }
                 </MobileView>
             </div>
         )
