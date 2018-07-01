@@ -1,4 +1,4 @@
-const constValid = {
+const Validation = {
     EMAIL: {
         ENTER: "Please enter Email Id",
         VALID: "Email Id should be valid",
@@ -18,4 +18,4 @@ const constValid = {
     TOPIC_DESCRIPTION_EMPTY:"Topic description should not be empty",
 };
 
-export default constValid;
+export default Validation;

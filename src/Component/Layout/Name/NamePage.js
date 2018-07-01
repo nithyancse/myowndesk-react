@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Redirect } from 'react-router'
 import { Segment, Divider, Grid, Container, Button, Image, Input, Icon, } from 'semantic-ui-react'
-import constError from '../../../Constant/Error'
 import Error from '../../Common/Message/Error'
 import NameBox from './NameBox';
 

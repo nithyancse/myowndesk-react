@@ -4,7 +4,7 @@ import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detec
 import { observer, inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'
-import Common from '../../Constant/Common'
+import Messages from '../../Constant/Messages'
 import Config from '../../Constant/Config'
 import RedirectTo from '../../Constant/RedirectTo'
 import MobileSideBar from './MobileSideBar'
@@ -26,7 +26,7 @@ class LogoBar extends Component {
 
     handleRedirect(pageToRedirect) {
         if (RedirectTo.LOGOUT === pageToRedirect) {
-            //this.props.store.home.setIsLoggedIn(Common.NO);
+            //this.props.store.home.setIsLoggedIn(Messages.NO);
             window.location.href = Config.HOME_URL; // on refresh will clear the mobx data
         } else {
             this.context.router.history.push(pageToRedirect);
@@ -50,19 +50,19 @@ class LogoBar extends Component {
                     <Menu fluid inverted className="borderRadius0">
                         <Menu.Item as='a' header onClick={() => this.handleRedirect(RedirectTo.LOGOUT)}>
                             {/*<Image className="tasklogo" size='tiny' src="public/images/Mod_logo_1.png" />*/}
-                            <span className="tasktitle" >My Own Desk</span>
+                            <span className="tasktitle" >{Messages.MY_OWN_DESK}</span>
                         </Menu.Item>
                         {/*<Menu.Item as='a'>Home</Menu.Item>*/}
                         {!isLoggedIn &&
                             <Menu.Menu position='right'>
                                 <Menu.Item>
                                     <Link to={RedirectTo.LOGIN}>
-                                        <Button color='green' >Login</Button>
+                                        <Button color='green' >{Messages.LOGIN}</Button>
                                     </Link>
                                 </Menu.Item>
                                 <Menu.Item >
                                     <Link to={RedirectTo.SIGNUP} >
-                                        <Button color='green'> Sign Up </Button>
+                                        <Button color='green'>{Messages.SIGNUP}</Button>
                                     </Link>
                                 </Menu.Item>
                             </Menu.Menu>
@@ -71,9 +71,9 @@ class LogoBar extends Component {
                             <Menu.Menu position='right'>
                                 <Dropdown item simple text={name} direction='right' >
                                     <Dropdown.Menu>
-                                        <Dropdown.Item icon='edit' text='Edit Profile' />
-                                        <Dropdown.Item icon='settings' text='Settings' />
-                                        <Dropdown.Item icon='log out' text='Logout' onClick={() => this.handleRedirect(RedirectTo.LOGOUT)} />
+                                        {/*<Dropdown.Item icon='edit' text={Messages.EDIT_PROFILE} />
+                                        <Dropdown.Item icon='settings' text={Messages.SETTINGS} /> */}
+                                        <Dropdown.Item icon='log out' text={Messages.LOGOUT} onClick={() => this.handleRedirect(RedirectTo.LOGOUT)} />
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Menu.Menu>
@@ -87,10 +87,10 @@ class LogoBar extends Component {
                                 <Icon name='bars' size='large' className="tasklogo" onClick={this.handleSideBar} />
                             }
                             {/*<Image className="tasklogo" size='tiny' src="public/images/Mod_logo_1.png" />*/}
-                            <span className="tasktitle" >My Own Desk</span>
+                            <span className="tasktitle" >{Messages.MY_OWN_DESK}</span>
                         </Menu.Item>
                     </Menu>
-                        {isLoggedIn && <MobileSideBar status={this.state.sidebarStatus} handleSideBar={this.handleSideBar} /> }
+                    {isLoggedIn && <MobileSideBar status={this.state.sidebarStatus} handleSideBar={this.handleSideBar} />}
                 </MobileView>
             </div>
         )

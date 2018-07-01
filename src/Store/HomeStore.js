@@ -1,13 +1,14 @@
 import { computed, observable, action } from "mobx"
-import Common from '../Constant/Common'
+import Messages from '../Constant/Messages'
 
 export class HomeStore {
   @observable user = {}
   @observable isLoggedIn = false
-  @observable registerStatus = Common.EMPTY
-  @observable registerStatusColor = Common.EMPTY
-  @observable responseStatus = Common.EMPTY
-  @observable responseColor = Common.EMPTY
+  @observable registerStatus = Messages.EMPTY
+  @observable registerStatusColor = Messages.EMPTY
+  @observable responseStatus = Messages.EMPTY
+  @observable responseColor = Messages.EMPTY
+  @observable responseClass = Messages.EMPTY
 
   @action setUser(user){
     this.user = user;
@@ -35,6 +36,10 @@ export class HomeStore {
 
   @action setResponseColor(color){
     this.responseColor = color;
+  }
+
+  @action setResponseClass(color){
+    this.responseClass = color;
   }
 }
 

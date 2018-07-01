@@ -6,6 +6,7 @@ import { Button, Form, Grid, Header, Message, Segment, Table, Modal } from 'sema
 import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
 import RedirectTo from '../../Constant/RedirectTo'
 import { CommonUtil } from '../../Util/CommonUtil'
+import Messages from '../../Constant/Messages'
 import PropTypes from 'prop-types'
 import ReactTable from 'react-table'
 
@@ -25,11 +26,13 @@ class ManageMenuPage extends Component {
         }
     }
 
-    componentWillMount() {
-
+    componentWillUnmount() {
+        this.props.store.home.setResponseStatus("");
+        this.props.store.home.setResponseClass("");
     }
 
     handleCreate() {
+        this.props.store.menu.setMenuObject({});
         this.context.router.history.push(RedirectTo.MENU_MODAL);
     }
 
@@ -41,7 +44,6 @@ class ManageMenuPage extends Component {
     handleDelete() {
         let original = this.state.originalData;
         let tempArray = [];
-        let message = "", color = "";
         axios.delete(RedirectTo.AXIOS_DELETE_MENU + "?menuId=" + original.id)
             .then(response => {
                 console.log(response);
@@ -49,21 +51,23 @@ class ManageMenuPage extends Component {
                     tempArray = this.props.store.menu.menuList;
                     tempArray = tempArray.filter(menu => menu.id != original.id);
                     this.props.store.menu.setMenuList(tempArray);
-                    color = "green";
-                    message = "Menu deleted successfully";
-                    this.props.store.home.setResponseStatus(message);
-                    this.props.store.home.setResponseColor(color);
-                    alert(message);
+                    this.props.store.home.setResponseStatus(Messages.MENU_DELETED_SUCCESS);
+                    this.props.store.home.setResponseClass(Messages.GREEN);
                     this.close();
                 }
             })
             .catch(error => {
-                alert(error.response);
-                //this.props.handleMessage(error.response.data.message, "red");
+                //console.log(error.response);
+                let httpStatus = (error.response.status).toString();
+                let errorMsg = httpStatus.startsWith("5") ? Messages.RESPONSE_ERROR_MSG : Messages.REQUEST_ERROR_MSG;
+                this.props.store.home.setResponseStatus(errorMsg);
+                this.props.store.home.setResponseClass(Messages.RED);
             });
     }
 
     closeConfigShow = (originalData) => () => {
+        this.props.store.home.setResponseStatus("");
+        this.props.store.home.setResponseClass("");
         this.setState({
             open: true,
             originalData: originalData
@@ -81,44 +85,82 @@ class ManageMenuPage extends Component {
     render() {
         const isLoggedIn = this.props.store.home.isLoggedIn;
         const data = this.props.store.menu.menuList;
+        const responseStatus = this.props.store.home.responseStatus;
+        const responseClass = this.props.store.home.responseClass;
         const open = this.state.open
         let firstColumnWidth = 13;
         let secondColumnWidth = 3;
-        if(isMobile){
+        if (isMobile) {
             firstColumnWidth = 11;
             secondColumnWidth = 5;
-        } 
+        }
 
         const item = data;
         let menuListArray = [];
         for (let i = 0; i < item.length; i++) {
-            menuListArray.push(<Table.Row key={i} >
-                <Table.Cell>{item[i].name} </Table.Cell>
-                <Table.Cell>
-                    <Button circular color='yellow' icon='edit' onClick={() => this.handleEdit(item[i])} />
-                    <Button circular color='red' icon='delete' onClick={this.closeConfigShow(item[i])} />
-                </Table.Cell>
-            </Table.Row>)
+            menuListArray.push(
+                <Table.Row key={i} >
+                    <Table.Cell>{item[i].name} </Table.Cell>
+                    <Table.Cell>
+                        <Button circular color='yellow' icon='edit' onClick={() => this.handleEdit(item[i])} />
+                        <Button circular color='red' icon='delete' onClick={this.closeConfigShow(item[i])} />
+                    </Table.Cell>
+                </Table.Row>
+            )
+        }
+
+        if (item.length == 0) {
+            menuListArray.push(
+                <Table.Row key="nodata" textAlign='center'>
+                    <Table.Cell colSpan='2'>
+                        {Messages.MENU_NOT_AVAILABLE}
+                    </Table.Cell>
+                </Table.Row>
+            )
         }
 
         return (
-
             <div className="maincontain" >
-                <Grid>
-                    <Grid.Column floated='left' width={11}>
-                        <Header as='h3'>Manage your menu</Header>
-                    </Grid.Column>
-                    <Grid.Column floated='right' width={5}>
-                        <div className="floatRight">
-                            <BrowserView device={isBrowser}>
-                                <Button color='green' onClick={() => this.handleCreate()}>Create</Button>
-                            </BrowserView>
-                            <MobileView device={isMobile}>
-                                <Button circular color='green' icon='add' onClick={() => this.handleCreate()} />
-                            </MobileView>
-                        </div>
-                    </Grid.Column>
-                </Grid>
+                <BrowserView device={isBrowser}>
+                    <Grid>
+                        <Grid.Row>
+                            <Grid.Column floated='left' width={4}>
+                                <Header as='h3'>{Messages.MANAGE_YOUR_MENU}</Header>
+                            </Grid.Column>
+                            {responseStatus.length > 0 &&
+                                <Grid.Column width={8} className="textaligncenter">
+                                    <span className={responseClass}>{responseStatus}</span>
+                                </Grid.Column>
+                            }
+                            <Grid.Column floated='right' width={4}>
+                                <div className="floatRight">
+                                    <Button color='green' onClick={() => this.handleCreate()}>Create</Button>
+                                </div>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </BrowserView>
+                <MobileView device={isMobile}>
+                    <Grid>
+                        <Grid.Row>
+                            <Grid.Column floated='left' width={10}>
+                                <Header as='h3'>{Messages.MANAGE_YOUR_MENU}</Header>
+                            </Grid.Column>
+                            <Grid.Column floated='right' width={6}>
+                                <div className="floatRight">
+                                    <Button circular color='green' icon='add' onClick={() => this.handleCreate()} />
+                                </div>
+                            </Grid.Column>
+                        </Grid.Row>
+                        {responseStatus.length > 0 &&
+                            <Grid.Row>
+                                <Grid.Column className="textaligncenter">
+                                    <span className={responseClass}>{responseStatus}</span>
+                                </Grid.Column>
+                            </Grid.Row>
+                        }
+                    </Grid>
+                </MobileView>
 
                 <Table unstackable striped>
                     <Table.Header>
@@ -136,9 +178,9 @@ class ManageMenuPage extends Component {
                     open={open}
                     onClose={this.close}
                 >
-                    <Modal.Header>Delete Your Menu</Modal.Header>
+                    <Modal.Header>{Messages.DELETE_YOUR_MENU}</Modal.Header>
                     <Modal.Content>
-                        <p>Are you sure you want to delete your menu <b>{this.state.originalData.name}</b>?</p>
+                        <p>{Messages.ARE_SURE_WANT_TO_DELETE_MENU} <b>{this.state.originalData.name}</b>?</p>
                     </Modal.Content>
                     <Modal.Actions>
                         <Button negative onClick={this.close} >No</Button>

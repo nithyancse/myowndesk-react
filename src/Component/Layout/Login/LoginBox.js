@@ -1,25 +1,35 @@
 import axios from 'axios'
 import React, { Component } from 'react';
 import { Button, Form, Grid, Header, Message, Segment, Divider, Label } from 'semantic-ui-react'
+import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
 import { Redirect } from 'react-router'
 import { observer, inject } from 'mobx-react';
 import { isValidEmailId } from '../../../Util/ValidationUtil'
-import constValid from '../../../Constant/Validation'
-import Common from '../../../Constant/Common'
+import Validation from '../../../Constant/Validation'
+import Messages from '../../../Constant/Messages'
 import RedirectTo from '../../../Constant/RedirectTo'
+import PropTypes from 'prop-types'
 
 @inject(['store'])
 @observer
 class LoginBox extends Component {
 
-    constructor(props) {
-        super(props);
+    static contextTypes = {
+        router: PropTypes.object
+    }
+
+    constructor(props, context) {
+        super(props, context);
         this.state = {
             pageToRedirect: "",
             emailIdErr: '',
             passwordErr: '',
         }
         this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
+    }
+
+    handleSignUpClick() {
+        this.context.router.history.push(RedirectTo.SIGNUP);
     }
 
     handleLoginSubmit(e) {
@@ -68,16 +78,16 @@ class LoginBox extends Component {
         let status = true;
 
         if (!emailId) {
-            emailIdErrMsg = constValid.EMAIL.ENTER;
+            emailIdErrMsg = Validation.EMAIL.ENTER;
             status = false;
         } else {
             /* if (!isValidEmailId(emailId)) {
-                emailIdErrMsg = constValid.EMAIL.VALID;
+                emailIdErrMsg = Validation.EMAIL.VALID;
                 status = false;
             } */
         }
         if (!password) {
-            passwordErrMsg = constValid.PASSWORD.ENTER;
+            passwordErrMsg = Validation.PASSWORD.ENTER;
             status = false;
         }
         this.setState({
@@ -126,7 +136,7 @@ class LoginBox extends Component {
                 <Grid textAlign='center'>
                     <Grid.Column style={{ maxWidth: 550 }}>
                         <Header as='h2' color='teal' textAlign='center'>
-                            Login to your account
+                            {Messages.LOGIN_TITLE}
                         </Header>
                         <Form size='large'>
                             <Segment>
@@ -155,7 +165,12 @@ class LoginBox extends Component {
                                 <Button id="loginButton" color='teal' fluid size='large' onClick={this.handleLoginSubmit}>Login</Button>
                             </Segment>
                         </Form>
-                        <div className="forgot"><a href='#'>Forgot Password</a></div>
+                        <MobileView device={isMobile}>
+                        <Message className="marginTop10">
+                            New to us?  <span className="link" onClick={this.handleSignUpClick.bind(this)}>Sign Up</span>
+                        </Message>
+                        </MobileView>
+                        {/*<div className="forgot"><a href='#'>Forgot Password</a></div>*/}
                     </Grid.Column>
                 </Grid>
             </div>

@@ -5,7 +5,7 @@ import LoginBox from './LoginBox';
 import Header from '../Header'
 import Footer from '../Footer'
 import CenterSegment from '../../Common/Segment/CenterSegment'
-import Common from '../../../Constant/Common'
+import Messages from '../../../Constant/Messages'
 
 @inject(['store'])
 @observer
@@ -31,8 +31,8 @@ class LoginPage extends Component {
             custResponse: this.props.store.home.registerStatus,
             custColor: this.props.store.home.registerStatusColor,
         });
-        this.props.store.home.setRegisterStatus(Common.EMPTY);
-        this.props.store.home.setRegisterStatusColor(Common.EMPTY);
+        this.props.store.home.setRegisterStatus(Messages.EMPTY);
+        this.props.store.home.setRegisterStatusColor(Messages.EMPTY);
     }
 
     render() {

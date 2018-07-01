@@ -4,7 +4,8 @@ import { Redirect } from 'react-router'
 import { observer, inject } from 'mobx-react';
 import { Button, Form, Grid, Header, Message, Segment, Label, Checkbox } from 'semantic-ui-react'
 import { isValidEmailId } from '../../../Util/ValidationUtil'
-import constValid from '../../../Constant/Validation'
+import Validation from '../../../Constant/Validation'
+import Messages from '../../../Constant/Messages'
 import RedirectTo from '../../../Constant/RedirectTo'
 
 @inject(['store'])
@@ -96,23 +97,23 @@ class SignupBox extends Component {
         let status = true;
 
         if (!isValidEmailId(emailId)) {
-            emailIdErrMsg = constValid.EMAIL.VALID;
+            emailIdErrMsg = Validation.EMAIL.VALID;
             status = false;
         }
         if (password.length < 6) {
-            passwordErrMsg = constValid.PASSWORD.VALID;
+            passwordErrMsg = Validation.PASSWORD.VALID;
             status = false;
         }
         if (confirmPassword.length < 6) {
-            confirmPasswordErrMsg = constValid.CONFIRM_PASSWORD.VALID;
+            confirmPasswordErrMsg = Validation.CONFIRM_PASSWORD.VALID;
             status = false;
         }
         if (password !== confirmPassword) {
-            confirmPasswordErrMsg = constValid.CONFIRM_PASSWORD.NOT_MATCH;
+            confirmPasswordErrMsg = Validation.CONFIRM_PASSWORD.NOT_MATCH;
             status = false;
         }
         if (!agree) {
-            agreeErrMsg = constValid.AGREE;
+            agreeErrMsg = Validation.AGREE;
             status = false;
         }
         this.setState({
@@ -140,7 +141,7 @@ class SignupBox extends Component {
                 <Grid textAlign='center'>
                     <Grid.Column style={{ maxWidth: 600 }}>
                         <Header as='h2' color='teal' textAlign='center'>
-                            Sign Up your account
+                            {Messages.SIGNUP_TITLE}
                         </Header>
                         <Form id="registerForm" size='large'>
                             <Segment>
@@ -180,9 +181,9 @@ class SignupBox extends Component {
                                 <Form.Field className="textalignleft" >
                                     <div className="required inline field">
                                         <div className="ui checkbox">
-                                            <input 
-                                            type="checkbox" 
-                                            ref={(agree) => this.agree = agree}
+                                            <input
+                                                type="checkbox"
+                                                ref={(agree) => this.agree = agree}
                                             />
                                             <label>I agree to the terms and conditions</label>
                                         </div>

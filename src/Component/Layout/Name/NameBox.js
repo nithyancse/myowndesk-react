@@ -4,7 +4,8 @@ import { Button, Form, Grid, Header, Message, Segment, Divider, Label, Input } f
 import { Redirect } from 'react-router'
 import { observer, inject } from 'mobx-react';
 import { isValidEmailId } from '../../../Util/ValidationUtil'
-import constValid from '../../../Constant/Validation'
+import Messages from '../../../Constant/Messages'
+import Validation from '../../../Constant/Validation'
 import RedirectTo from '../../../Constant/RedirectTo'
 
 @inject(['store'])
@@ -47,7 +48,7 @@ class NameBox extends Component {
             })
             .catch(error => {
                 httpStatus = (error.response.status).toString();
-                errorMsg = httpStatus.startsWith("5") ? constError.RESPONSE_ERROR_MSG : constError.REQUEST_ERROR_MSG;
+                errorMsg = httpStatus.startsWith("5") ? Messages.RESPONSE_ERROR_MSG : Messages.REQUEST_ERROR_MSG;
                 this.setState({ errorMsg: errorMsg });
             });
 

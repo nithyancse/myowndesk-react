@@ -1,7 +1,8 @@
 import axios from 'axios'
 import React, { Component } from 'react';
 import { Image, Dropdown, Icon, Input, Menu } from 'semantic-ui-react'
-import { observer, inject } from 'mobx-react';
+import { observer, inject } from 'mobx-react'
+import Messages from '../../Constant/Messages'
 import RedirectTo from '../../Constant/RedirectTo'
 import PropTypes from 'prop-types'
 
@@ -28,6 +29,7 @@ class BrowserSideBar extends Component {
     this.props.store.menu.setMenuId(menuId);
     this.props.store.menu.setMenuName(name);
     let prevTopicId = 0, nextTopicId = 0;
+    let isTopicPresent = false;
     let list = [];
     let original = {};
     let url = RedirectTo.AXIOS_FETCH_TOPIC_LIST + menuId;
@@ -37,6 +39,7 @@ class BrowserSideBar extends Component {
         for (var key in response.data) {
           if (key == 0) {
             original = response.data[key];
+            isTopicPresent = true;
           }
           if (key == 1) {
             nextTopicId = response.data[key].id;
@@ -47,11 +50,15 @@ class BrowserSideBar extends Component {
         this.props.store.topic.setTopicObject(original);
         this.props.store.topic.setPrevTopicId(prevTopicId);
         this.props.store.topic.setNextTopicId(nextTopicId);
+        if (isTopicPresent) {
+          this.context.router.history.push(RedirectTo.TOPIC);
+        } else {
+          this.context.router.history.push(RedirectTo.TOPIC_LIST);
+        }
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error.response);
       });
-    this.context.router.history.push(RedirectTo.TOPIC);
   }
 
   handleManageMenu() {
@@ -59,7 +66,6 @@ class BrowserSideBar extends Component {
   }
 
   render() {
-
     const item = this.props.store.menu.menuList;
     let menuListArray = [];
     for (let i = 0; i < item.length; i++) {
@@ -70,7 +76,7 @@ class BrowserSideBar extends Component {
       <div className="sidebardiv">
         <Menu inverted vertical stackable className="width100 borderRadius0 sidebarmenu" >
           <Menu.Item name='manageMenu' onClick={() => this.handleManageMenu()}>
-            Manage Menu
+            {Messages.MENU_MANAGE}
           </Menu.Item>
           {menuListArray}
         </Menu>

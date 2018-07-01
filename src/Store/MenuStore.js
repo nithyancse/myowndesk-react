@@ -1,10 +1,10 @@
 import { computed, observable, action } from "mobx"
-import Common from '../Constant/Common'
+import Messages from '../Constant/Messages'
 
 export class MenuStore {
   @observable menuList = []
   @observable menuId = 0
-  @observable menuName = Common.EMPTY
+  @observable menuName = Messages.EMPTY
   @observable menuObject = {}
 
   @action setMenuList(menuList) {

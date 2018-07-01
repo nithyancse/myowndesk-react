@@ -18,9 +18,25 @@ body{height: 100%; background-color: #ffffff; font-family: Lato,'Helvetica Neue'
 .paddingLeft0{ padding-left:0px !important; }
 .paddingTop10{ padding-top: 10px !important; }
 .padding10{ padding: 10px !important; }
+.marginTop10{ margin-top: 10px !important; }
 .editTopic{
     position: absolute;
     top: 0;
     right: 0;
     padding: 10px !important;
+}
+.topicDisplayBox{
+    min-height: 200px;
+}
+.cgreen{
+    color: green !important;
+}
+.cyellow{
+    color: yellow !important;
+}
+.cyellowgreen{
+    color: yellowgreen !important;
+}
+.cred{
+    color: red !important;
 }

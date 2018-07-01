@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Dropdown, Input, Sidebar, Segment, Button, Menu, Image, Icon, Header } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 import PropTypes from 'prop-types'
-import Common from '../../Constant/Common'
+import Messages from '../../Constant/Messages'
 import Config from '../../Constant/Config'
 import RedirectTo from '../../Constant/RedirectTo'
 
@@ -30,6 +30,7 @@ class MobileSideBar extends Component {
         this.props.store.menu.setMenuId(menuId);
         this.props.store.menu.setMenuName(name);
         let prevTopicId = 0, nextTopicId = 0;
+        let isTopicPresent = false;
         let list = [];
         let original = {};
         let url = RedirectTo.AXIOS_FETCH_TOPIC_LIST + menuId;
@@ -39,6 +40,7 @@ class MobileSideBar extends Component {
                 for (var key in response.data) {
                     if (key == 0) {
                         original = response.data[key];
+                        isTopicPresent = true;
                     }
                     if (key == 1) {
                         nextTopicId = response.data[key].id;
@@ -49,12 +51,16 @@ class MobileSideBar extends Component {
                 this.props.store.topic.setTopicObject(original);
                 this.props.store.topic.setPrevTopicId(prevTopicId);
                 this.props.store.topic.setNextTopicId(nextTopicId);
+                if (isTopicPresent) {
+                    this.context.router.history.push(RedirectTo.TOPIC);
+                } else {
+                    this.context.router.history.push(RedirectTo.TOPIC_LIST);
+                }
+                this.handleSideBar();
             })
             .catch((error) => {
-                console.log(error);
+                //console.log(error);
             });
-        this.handleSideBar();
-        this.context.router.history.push(RedirectTo.TOPIC);
     }
 
     handleManageMenu() {
@@ -64,7 +70,7 @@ class MobileSideBar extends Component {
 
     handleRedirect(pageToRedirect) {
         if (RedirectTo.LOGOUT === pageToRedirect) {
-            //this.props.store.home.setIsLoggedIn(Common.NO);
+            //this.props.store.home.setIsLoggedIn(Messages.NO);
             window.location.href = Config.HOME_URL; // on refresh will clear the mobx data
         } else {
             this.context.router.history.push(pageToRedirect);
@@ -92,14 +98,14 @@ class MobileSideBar extends Component {
                         <Icon name='close' className="floatRight" />
                     </Menu.Item>
                     <Menu.Item name='home' onClick={() => this.handleRedirect(RedirectTo.HOME)} className="textalignleft">
-                        Home
+                        {Messages.MENU_HOME}
                     </Menu.Item>
                     <Menu.Item name='home' onClick={() => this.handleManageMenu()} className="textalignleft">
-                        Manage Menu
+                        {Messages.MENU_MANAGE}
                     </Menu.Item>
                     {menuListArray}
                     <Menu.Item name='gamepad' onClick={() => this.handleRedirect(RedirectTo.LOGOUT)} className="textalignleft">
-                        Logout
+                        {Messages.MENU_LOGOUT}
                     </Menu.Item>
                 </Sidebar>
             </div>

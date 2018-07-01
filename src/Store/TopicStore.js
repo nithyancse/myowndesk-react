@@ -1,10 +1,10 @@
 import { computed, observable, action } from "mobx"
-import Common from '../Constant/Common'
+import Messages from '../Constant/Messages'
 
 export class TopicStore {
     @observable topicList = []
     @observable topicId = 0
-    @observable topicTitle = Common.EMPTY
+    @observable topicTitle = Messages.EMPTY
     @observable topicObject = {}
     @observable topicObjectForEdit = {}
     @observable prevTopicId = 0

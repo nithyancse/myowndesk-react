@@ -41,14 +41,14 @@ class LandingPage extends Component {
                                 <Image size='large' src="public/images/responsive2.jpg" />
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row >
+                        {/*<Grid.Row >
                             <Grid.Column>
                                 <Image size='large' src="public/images/responsive2.jpg" />
                             </Grid.Column>
                             <Grid.Column >
                                 <ContentHome2 />
                             </Grid.Column>
-                        </Grid.Row>
+                        </Grid.Row> */}
                     </Grid>
                 </BrowserView>
                 <MobileView device={isMobile}>

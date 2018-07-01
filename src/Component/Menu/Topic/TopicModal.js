@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { Button, Form, Grid, Header, Message, Segment, Divider, Label, Modal, Icon, Select, Dropdown } from 'semantic-ui-react'
 import RedirectTo from '../../../Constant/RedirectTo'
-import constValid from '../../../Constant/Validation'
+import Validation from '../../../Constant/Validation'
+import Messages from '../../../Constant/Messages'
 import PropTypes from 'prop-types'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -31,7 +32,7 @@ class TopicModal extends Component {
     }
 
     handleChange(value) {
-        console.log("value-->"+value);
+        //console.log("value-->" + value);
         this.setState({ descriptionVal: value })
     }
 
@@ -41,11 +42,11 @@ class TopicModal extends Component {
     }
 
     componentWillMount() {
-        let modalTitle = "Add";
+        let modalTitle = Messages.ADD;
         let topicObjectForEdit = this.props.store.topic.topicObjectForEdit;
         let descriptionVal = this.props.store.topic.topicObjectForEdit.description;
         if (typeof topicObjectForEdit.id !== "undefined" && topicObjectForEdit != 0) {
-            modalTitle = "Update"
+            modalTitle = Messages.UPDATE;
         }
 
         this.setState({
@@ -69,7 +70,6 @@ class TopicModal extends Component {
         let topicSubmitButton = document.getElementById("topicSubmitButton");
 
         let isValid = this.validateTopicForm(e);
-        let color = "", message = "";
         if (!isValid) {
             //this.props.handleMessage("", ""); // don't show this error(parent class) if any field error is displayed
             return false;
@@ -77,8 +77,6 @@ class TopicModal extends Component {
             e.preventDefault();
             topicForm.classList.add("loading");
         }
-
-        let pageToRedirect = "";
 
         if (!topicId) {
             topicId = 0;
@@ -89,7 +87,7 @@ class TopicModal extends Component {
 
         //process the descriptionVal - delta object
         let descriptionVal = this.state.descriptionVal;
-        if(descriptionVal){
+        if (descriptionVal) {
             descriptionVal = descriptionVal.replace("<p><br></p><p><br></p>", "<p><br></p>");
             descriptionVal = descriptionVal.replace("</p><p><br></p>", "</p>");
             descriptionVal = descriptionVal.replace("<p><br></p><ol>", "<ol>");
@@ -116,15 +114,17 @@ class TopicModal extends Component {
                         }
                     } else {
                         list = this.props.store.topic.topicList;
-                        let objIndex = list.findIndex((obj => obj.id == topicId));
-                        //Log object to Console.
-                        console.log("Before update: ", list[objIndex])
-                        //Update object's title property.
-                        list[objIndex].title = this.title.value;
-                        list[objIndex].description = descriptionVal;
-                        list[objIndex].type = this.state.typeVal;
-                        //Log object to console again.
-                        console.log("After update: ", list[objIndex])
+                        if (url.indexOf("updateTopic") != -1) {
+                            let objIndex = list.findIndex((obj => obj.id == topicId));
+                            //Log object to Console.
+                            //console.log("Before update: ", list[objIndex])
+                            //Update object's title property.
+                            list[objIndex].title = this.title.value;
+                            list[objIndex].description = descriptionVal;
+                            list[objIndex].type = this.state.typeVal;
+                            //Log object to console again.
+                            //console.log("After update: ", list[objIndex])
+                        }
                     }
                     this.props.store.topic.setTopicList(list);
                     //clear the errors from server if successfullly registerd
@@ -137,24 +137,24 @@ class TopicModal extends Component {
                         typeVal: ""
                     });
                     if (response.status == 208) {
-                        color = "yellow";
-                        message = "Topic already added";
+                        this.props.store.home.setResponseStatus(Messages.TOPIC_ADDED_ALREADY);
+                        this.props.store.home.setResponseClass(Messages.YELLOW_GREEN);
                     } else if (response.status == 200) {
-                        color = "green";
-                        message = "Topic updated successfully";
+                        this.props.store.home.setResponseStatus(Messages.TOPIC_UPDATED_SUCCESS);
+                        this.props.store.home.setResponseClass(Messages.GREEN);
                     } else {
-                        color = "green";
-                        message = "Topic added successfully";
+                        this.props.store.home.setResponseStatus(Messages.TOPIC_ADDED_SUCCESS);
+                        this.props.store.home.setResponseClass(Messages.GREEN);
                     }
-                    this.props.store.home.setResponseStatus(message);
-                    this.props.store.home.setResponseColor(color);
-                    alert(message);
                     this.context.router.history.push(RedirectTo.TOPIC_LIST);
                 }
             })
             .catch(error => {
-                //console.log(error);
                 //console.log(error.response);
+                let httpStatus = (error.response.status).toString();
+                let errorMsg = httpStatus.startsWith("5") ? Messages.RESPONSE_ERROR_MSG : Messages.REQUEST_ERROR_MSG;
+                this.props.store.home.setResponseStatus(errorMsg);
+                this.props.store.home.setResponseClass(Messages.RED);
                 this.context.router.history.push(RedirectTo.TOPIC_LIST);
             });
 
@@ -165,20 +165,19 @@ class TopicModal extends Component {
         let title = this.title.value;
         let description = this.state.descriptionVal;
         let type = this.state.typeVal;
-        console.log("type-->" + type);
         let titleErrMsg = "", descriptionErrMsg = "", typeErrMsg = "";
         let status = true;
 
         if (!title) {
-            titleErrMsg = constValid.TOPIC_TITLE_EMPTY;
+            titleErrMsg = Validation.TOPIC_TITLE_EMPTY;
             status = false;
         }
         if (!description || description == '') {
-            descriptionErrMsg = constValid.TOPIC_DESCRIPTION_EMPTY;
+            descriptionErrMsg = Validation.TOPIC_DESCRIPTION_EMPTY;
             status = false;
         }
         if (!type) {
-            typeErrMsg = constValid.TOPIC_TYPE_EMPTY;
+            typeErrMsg = Validation.TOPIC_TYPE_EMPTY;
             status = false;
         }
         this.setState({
@@ -215,7 +214,7 @@ class TopicModal extends Component {
         return (
             <div>
                 <Modal size={'large'} open={open} onClose={this.close} style={{ top: "40%" }}>
-                    <Modal.Header>{this.state.modalTitle} Topic</Modal.Header>
+                    <Modal.Header>{this.state.modalTitle} {Messages.TOPIC}</Modal.Header>
                     <Modal.Content scrolling>
                         <Form id="topicForm" size='large'>
                             <Form.Group widths='equal'>
@@ -230,6 +229,7 @@ class TopicModal extends Component {
                                         {titleErrMsg.length > 0 && <Label pointing='left'>{titleErrMsg}</Label>}
                                     </div>
                                 </Form.Field>
+                                <Form.Field>
                                 <Dropdown
                                     selection
                                     options={options}
@@ -237,6 +237,7 @@ class TopicModal extends Component {
                                     onChange={this.onTypeChange}
                                 />
                                 {typeErrMsg.length > 0 && <Label pointing='left'>{typeErrMsg}</Label>}
+                                </Form.Field>
                             </Form.Group>
                             <Form.Field>
                                 <div className="ui left">
@@ -266,9 +267,8 @@ const modules = {
         ['bold', 'italic', 'underline', 'strike', 'blockquote'],
         [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
         [{ 'color': ['black', 'blue', 'green', 'grey'] }, { 'background': ['green'] }],
-        ['link', 'image'],
-        ['code-block'],
-        ['clean']
+        //['link', 'image'],
+        ['link','code-block', 'clean']
     ]
 };
 

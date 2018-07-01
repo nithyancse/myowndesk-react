@@ -10,13 +10,11 @@ class Footer extends Component {
         const { index } = titleProps
         const { activeIndex } = this.state
         const newIndex = activeIndex === index ? -1 : index
-
         this.setState({ activeIndex: newIndex })
     }
 
     render() {
         const { activeIndex } = this.state;
-
         return (
             <div>
                 <BrowserView device={isBrowser}>
@@ -57,7 +55,7 @@ class Footer extends Component {
                     </BrowserView>
                 <MobileView device={isMobile}>
 
-                <div className="footerbottom ">
+                <div>
                     <Segment inverted className="borderRadius0">
                         <Accordion inverted fluid >
                             <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>

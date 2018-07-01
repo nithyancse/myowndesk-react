@@ -5,7 +5,8 @@ import { Redirect } from 'react-router'
 import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
 import { Button, Form, Grid, Header, Message, Segment, Divider, Label, Modal, Sidebar, Table, Menu, Input, Icon } from 'semantic-ui-react'
 import RedirectTo from '../../../Constant/RedirectTo'
-import constValid from '../../../Constant/Validation'
+import Validation from '../../../Constant/Validation'
+import Messages from '../../../Constant/Messages'
 import PropTypes from 'prop-types'
 import TopicDisplayBox from './TopicDisplayBox'
 
@@ -23,7 +24,6 @@ class TopicPage extends Component {
             search: '',
             visible: false
         }
-
     }
 
     handleTopicDisplayBox(topicId) {
@@ -31,7 +31,7 @@ class TopicPage extends Component {
         let prevTopicId = 0;
         let nextTopicId = 0;
         let status = false;
-        console.log(topicId);
+        //console.log(topicId);
         for (let i = 0; i < item.length; i++) {
             if (item[i].id == topicId) {
                 this.props.store.topic.setTopicObject(item[i]);
@@ -41,7 +41,7 @@ class TopicPage extends Component {
                         nextTopicId = item[i + 1].id;
                     }
                 }
-                if (i == item.length - 1) {
+                if (i != 0 && i == item.length - 1) {
                     nextTopicId = 0;
                     prevTopicId = item[i - 1].id;
                 }
@@ -69,7 +69,7 @@ class TopicPage extends Component {
         const menuName = this.props.store.menu.menuName;
         const prevTopicId = this.props.store.topic.prevTopicId;
         const nextTopicId = this.props.store.topic.nextTopicId;
-        const { visible } = this.state
+        const { visible } = this.state;
 
         if (this.state.search) {
             data = data.filter(row => {
@@ -80,12 +80,27 @@ class TopicPage extends Component {
         const item = data;
         let topicListArray = [];
         for (let i = 0; i < item.length; i++) {
-            topicListArray.push(<Table.Row key={i} ><Table.Cell className="link" onClick={() => this.handleTopicDisplayBox(item[i].id)} >{item[i].title} </Table.Cell></Table.Row>)
+            topicListArray.push(
+                <Table.Row key={i} >
+                    <Table.Cell className="link" onClick={() => this.handleTopicDisplayBox(item[i].id)} >
+                        {item[i].title}
+                    </Table.Cell>
+                </Table.Row>
+            )
+        }
+
+        if (item.length == 0) {
+            topicListArray.push(
+                <Table.Row key="nodata" textAlign='center'>
+                    <Table.Cell colSpan='2'>
+                        {Messages.TOPIC_NOT_FOUND}
+                    </Table.Cell>
+                </Table.Row>
+            )
         }
 
         return (
             <div className="maincontain" >
-
                 <Grid >
                     <Grid.Row>
                         <Grid.Column width={6}>
@@ -93,15 +108,22 @@ class TopicPage extends Component {
                         </Grid.Column>
                         <Grid.Column width={10} >
                             <div className="floatRight">
-                                <Button content='Topic List' color='green' icon='edit' onClick={this.toggleVisibility} />
-                                <Button content='Manage Topics' color='yellow' name='edit' icon='edit' onClick={this.handleClick.bind(this)} />
-                                {prevTopicId != 0 && <Button content='Previous' icon='left arrow' labelPosition='left' onClick={() => this.handleTopicDisplayBox(prevTopicId)} />}
-                                {nextTopicId != 0 && <Button content='Next' icon='right arrow' labelPosition='right' onClick={() => this.handleTopicDisplayBox(nextTopicId)} />}
+                                <BrowserView device={isBrowser}>
+                                    {prevTopicId != 0 && <Button content='Previous' icon='left arrow' labelPosition='left' onClick={() => this.handleTopicDisplayBox(prevTopicId)} />}
+                                    {nextTopicId != 0 && <Button content='Next' icon='right arrow' labelPosition='right' onClick={() => this.handleTopicDisplayBox(nextTopicId)} />}
+                                    <Button content='Topic List' color='green' icon='bars' onClick={this.toggleVisibility} />
+                                    <Button content='Manage Topics' color='yellow' name='edit' icon='edit' onClick={this.handleClick.bind(this)} />
+                                </BrowserView>
+                                <MobileView device={isMobile}>
+                                    {prevTopicId != 0 && <Button circular icon='left arrow' onClick={() => this.handleTopicDisplayBox(prevTopicId)} />}
+                                    {nextTopicId != 0 && <Button circular icon='right arrow' onClick={() => this.handleTopicDisplayBox(nextTopicId)} />}
+                                    <Button circular color='green' icon='bars' onClick={this.toggleVisibility} />
+                                    <Button circular color='yellow' name='edit' icon='edit' onClick={this.handleClick.bind(this)} />
+                                </MobileView>
                             </div>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-
 
                 <Sidebar.Pushable as={Segment}>
                     <Sidebar
@@ -148,16 +170,30 @@ class TopicPage extends Component {
                         </Segment>
                     </Sidebar.Pusher>
                 </Sidebar.Pushable>
-                <Grid >
-                    <Grid.Row>
-                        <Grid.Column floated='left' width={3}>
-                            {prevTopicId != 0 && <Button floated='left' content='Previous' icon='left arrow' labelPosition='left' onClick={() => this.handleTopicDisplayBox(prevTopicId)} />}
-                        </Grid.Column>
-                        <Grid.Column floated='right' width={3}>
-                            {nextTopicId != 0 && <Button floated='right' content='Next' icon='right arrow' labelPosition='right' onClick={() => this.handleTopicDisplayBox(nextTopicId)} />}
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid >
+                <BrowserView device={isBrowser}>
+                    <Grid >
+                        <Grid.Row>
+                            <Grid.Column floated='left' width={3}>
+                                {prevTopicId != 0 && <Button floated='left' content='Previous' icon='left arrow' labelPosition='left' onClick={() => this.handleTopicDisplayBox(prevTopicId)} />}
+                            </Grid.Column>
+                            <Grid.Column floated='right' width={3}>
+                                {nextTopicId != 0 && <Button floated='right' content='Next' icon='right arrow' labelPosition='right' onClick={() => this.handleTopicDisplayBox(nextTopicId)} />}
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid >
+                </BrowserView>
+                <MobileView device={isMobile}>
+                    <Grid >
+                        <Grid.Row>
+                            <Grid.Column floated='left' width={3}>
+                                {prevTopicId != 0 && <Button circular floated='left' icon='left arrow' onClick={() => this.handleTopicDisplayBox(prevTopicId)} />}
+                            </Grid.Column>
+                            <Grid.Column floated='right' width={3}>
+                                {nextTopicId != 0 && <Button circular floated='right' icon='right arrow' onClick={() => this.handleTopicDisplayBox(nextTopicId)} />}
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid >
+                </MobileView>
             </div>
         )
     }
