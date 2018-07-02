@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { Component } from 'react';
 import { Button, Form, Grid, Header, Message, Segment, Divider, Label, Input } from 'semantic-ui-react'
+import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
 import { Redirect } from 'react-router'
 import { observer, inject } from 'mobx-react';
 import { isValidEmailId } from '../../../Util/ValidationUtil'
@@ -42,7 +43,7 @@ class NameBox extends Component {
                     this.props.store.home.setUserName(name);
                     this.loadMenuList(this.props.store.home.user.id)
                     this.setState({
-                        pageToRedirect : RedirectTo.HOME
+                        pageToRedirect: RedirectTo.HOME
                     });
                 }
             })
@@ -95,8 +96,7 @@ class NameBox extends Component {
                 <Grid>
                     <Grid.Row>
                         <Grid.Column>
-                            <Header as='h1'>Add Name Page</Header>
-                            <Header as='h3'>Manage your workload, communicate with your team and celebrate success</Header>
+                            <Header as='h1' className="cblue firstContent">Manage your workload, communicate with your team and celebrate success</Header>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row >
@@ -110,16 +110,18 @@ class NameBox extends Component {
                         <Grid.Column width={4}>
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Header as='h4'>
-                                Manage your workload, communicate with your team and celebrate success
-                                Manage your workload, communicate with your team and celebrate success
-                                Manage your workload, communicate with your team and celebrate success
-                                Manage your workload, communicate with your team and celebrate success
-                            </Header>
-                        </Grid.Column>
-                    </Grid.Row>
+                    <MobileView device={isMobile}>
+                        <Grid.Row>
+                            <Grid.Column>
+                                <Header as='h3' className="cwhite">
+                                    A My Own Desk can improve the security of your business content and maximize the productivity of your workforce.
+                                </Header>
+                                <Header as='h4' className="cwhite">
+                                    Contact us to learn how your business can take full advantage of the scale and capabilities of My Own Desk.
+                                </Header>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </MobileView >
                 </Grid>
             </div>
         )

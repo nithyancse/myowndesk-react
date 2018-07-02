@@ -19,6 +19,8 @@ body{height: 100%; background-color: #ffffff; font-family: Lato,'Helvetica Neue'
 .paddingTop10{ padding-top: 10px !important; }
 .padding10{ padding: 10px !important; }
 .marginTop10{ margin-top: 10px !important; }
+.marginTop60{ margin-top: 60px !important; }
+.fontSize22{font-size: 22px !important; }
 .editTopic{
     position: absolute;
     top: 0;
@@ -39,4 +41,10 @@ body{height: 100%; background-color: #ffffff; font-family: Lato,'Helvetica Neue'
 }
 .cred{
     color: red !important;
+}
+.cwhite{
+    color: white !important;
+}
+.cblue{
+    color: cornflowerblue !important;
 }

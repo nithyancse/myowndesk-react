@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
-import { Segment, Divider, Grid, Container, Button, Image } from 'semantic-ui-react'
+import { Segment, Divider, Grid, Container, Button, Image, Header } from 'semantic-ui-react'
 import ContentHome1 from './ContentHome1'
 import ContentHome2 from './ContentHome2'
 import LoginBox from '../Login/LoginBox'
@@ -38,7 +38,7 @@ class LandingPage extends Component {
                                 <ContentHome1 />
                             </Grid.Column>
                             <Grid.Column>
-                                <Image size='large' src="public/images/responsive2.jpg" />
+                                <Image size='large' src="public/images/paperless1.png" centered />
                             </Grid.Column>
                         </Grid.Row>
                         {/*<Grid.Row >
@@ -65,6 +65,9 @@ class LandingPage extends Component {
                                     <LoginBox onClick={this.handleClick} handleMessage={this.handleMessage} />
                                 </Segment>
                             </Grid.Column>
+                            {/*<Header as='h4' className="cwhite">
+                                My Own Desk modern workspace designed to reduce busywork-so you can focus on the things that matter.
+                            </Header>*/}
                         </Grid.Row>
                     </Grid>
                 </MobileView >

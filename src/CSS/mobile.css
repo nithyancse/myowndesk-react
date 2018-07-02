@@ -2,10 +2,11 @@
 @media only screen and (max-width: 767px) {
 .contain{
     width: auto!important;
-    margin-top: 1em !important;
-    margin-bottom: 1em !important;
-    margin-left: 1em!important;
-    margin-right: 1em!important;
+    padding-top: 1em !important;
+    padding-bottom: 2em !important;
+    padding-left: 1em!important;
+    padding-right: 1em!important;
+    background-color: #1B1C1D !important;
 }
 .maincontain{
     width: auto!important;
@@ -20,4 +21,5 @@
 .footerbottom{ position: fixed; left: 0px; bottom: 0px; width: 100%;}
 .loginError{ margin-top: 2em; }
 .sidebartopic{ width:70% !important; }
+.firstContent{font-size: 25px !important; }
 }

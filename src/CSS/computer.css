@@ -6,11 +6,12 @@
 @media only screen and (min-width: 768px) {
 .contain{
     width: auto!important;
-    margin-top: 3em !important;
-    margin-bottom: 3em !important;
-    margin-left: 2em !important;
-    margin-right: 2em !important;
+    padding-top: 4em !important;
+    padding-bottom: 4em !important;
+    padding-left: 2em !important;
+    padding-right: 4em !important;
     min-height: 450px !important;
+    background-color: #1B1C1D !important;
 }
 .maincontain{
     width: auto!important;
@@ -24,5 +25,6 @@
 .loginBox{ margin-top: 5em !important;}
 .sidebarmenu{ min-height: 534px !important;}
 .sidebartopic{ width:30% !important; }
+.firstContent{font-size: 45px !important; }
 }
 

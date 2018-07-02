@@ -10,7 +10,6 @@ class HomePage extends Component {
         const isLoggedIn = this.props.store.home.isLoggedIn;
         return (
             <div className="maincontain" >
-            <Header as='h2'>Home page</Header>
                 {isLoggedIn &&
                     <div>
                         <Header as='h2'>Hi {this.props.store.home.user.name},</Header>

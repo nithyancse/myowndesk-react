@@ -99,7 +99,6 @@ class LoginBox extends Component {
 
     loadMenuList(userId) {
         let list = [];
-        userId = 1;
         let url = RedirectTo.AXIOS_FETCH_MENU_LIST + userId;
         axios.get(url)
             .then((response) => {
