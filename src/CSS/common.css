@@ -1,4 +1,4 @@
-body{height: 100%; background-color: #ffffff; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;}
+body{ height: 100%; background-color: #ffffff; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif; }
 .floatLeft { float: left !important;}
 .floatRight { float: right !important;}
 /*.ui.menu{  font-family: cursive;}*/
@@ -21,30 +21,11 @@ body{height: 100%; background-color: #ffffff; font-family: Lato,'Helvetica Neue'
 .marginTop10{ margin-top: 10px !important; }
 .marginTop60{ margin-top: 60px !important; }
 .fontSize22{font-size: 22px !important; }
-.editTopic{
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 10px !important;
-}
-.topicDisplayBox{
-    min-height: 200px;
-}
-.cgreen{
-    color: green !important;
-}
-.cyellow{
-    color: yellow !important;
-}
-.cyellowgreen{
-    color: yellowgreen !important;
-}
-.cred{
-    color: red !important;
-}
-.cwhite{
-    color: white !important;
-}
-.cblue{
-    color: cornflowerblue !important;
-}
+.editTopic{ position: absolute; top: 0; right: 0; padding: 10px !important; }
+.topicDisplayBox{ min-height: 200px; }
+.cgreen{ color: green !important; }
+.cyellow{ color: yellow !important; }
+.cyellowgreen{ color: yellowgreen !important; }
+.cred{ color: red !important; }
+.cwhite{ color: white !important;}
+.cblue{color: cornflowerblue !important;}

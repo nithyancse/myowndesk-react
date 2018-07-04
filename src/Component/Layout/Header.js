@@ -20,7 +20,8 @@ class LogoBar extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            sidebarStatus: false
+            sidebarStatus: false,
+            minHeight:"0px"
         }
     }
 
@@ -39,18 +40,30 @@ class LogoBar extends Component {
         }));
     }
 
+    componentDidMount(){
+        this.props.store.home.setWindowWidth(document.documentElement.clientWidth);
+        this.props.store.home.setWindowHeight(document.documentElement.clientHeight);
+        let { clientHeight, clientWidth } = this.refs.headerdiv;
+        this.props.store.home.setHeaderWidth(clientWidth);
+        this.props.store.home.setHeaderHeight(clientHeight);
+        this.setState({
+            minHeight: clientHeight+"px"
+        })
+    }
+
     render() {
 
         const isLoggedIn = this.props.store.home.isLoggedIn;
         const name = this.props.store.home.user.name;
+        const minHeight = this.state.minHeight;
 
         return (
-            <div>
+            <div ref="headerdiv">
                 <BrowserView device={isBrowser}>
-                    <Menu fluid inverted className="borderRadius0">
-                        <Menu.Item as='a' header onClick={() => this.handleRedirect(RedirectTo.LOGOUT)}>
+                    <Menu fluid inverted borderless className="borderRadius0 modtitlemenu">
+                        <Menu.Item as='a' header className="modtitlediv" onClick={() => this.handleRedirect(RedirectTo.LOGOUT)}>
                             {/*<Image className="tasklogo" size='tiny' src="public/images/Mod_logo_1.png" />*/}
-                            <span className="tasktitle" >{Messages.MY_OWN_DESK}</span>
+                            <span className="modtitle" >{Messages.MY_OWN_DESK}</span>
                         </Menu.Item>
                         {/*<Menu.Item as='a'>Home</Menu.Item>*/}
                         {!isLoggedIn &&
@@ -68,8 +81,8 @@ class LogoBar extends Component {
                             </Menu.Menu>
                         }
                         {isLoggedIn &&
-                            <Menu.Menu position='right'>
-                                <Dropdown item simple text={name} direction='right' >
+                            <Menu.Menu position='right' style={{minHeight:minHeight}}>
+                                <Dropdown item simple text={name} direction='right'  >
                                     <Dropdown.Menu>
                                         {/*<Dropdown.Item icon='edit' text={Messages.EDIT_PROFILE} />
                                         <Dropdown.Item icon='settings' text={Messages.SETTINGS} /> */}
@@ -81,13 +94,13 @@ class LogoBar extends Component {
                     </Menu>
                 </BrowserView>
                 <MobileView device={isMobile}>
-                    <Menu size="tiny" inverted className="borderRadius0" >
+                    <Menu size="tiny" borderless inverted className="borderRadius0" >
                         <Menu.Item as='a' header>
                             {isLoggedIn &&
                                 <Icon name='bars' size='large' className="tasklogo" onClick={this.handleSideBar} />
                             }
                             {/*<Image className="tasklogo" size='tiny' src="public/images/Mod_logo_1.png" />*/}
-                            <span className="tasktitle" >{Messages.MY_OWN_DESK}</span>
+                            <span className="modtitle" >{Messages.MY_OWN_DESK}</span>
                         </Menu.Item>
                     </Menu>
                     {isLoggedIn && <MobileSideBar status={this.state.sidebarStatus} handleSideBar={this.handleSideBar} />}

@@ -10,20 +10,18 @@
     padding-bottom: 4em !important;
     padding-left: 2em !important;
     padding-right: 4em !important;
-    min-height: 450px !important;
     background-color: #1B1C1D !important;
 }
 .maincontain{
     width: auto!important;
-    margin-top: 2em !important;
-    margin-bottom: 3em !important;
-    margin-left: 1em !important;
-    margin-right: 2em !important;
-    min-height: 450px !important;
+    padding-top: 2em !important;
+    padding-bottom: 3em !important;
+    padding-left: 1em !important;
+    padding-right: 2em !important;
 }
 .loginError{ position: absolute; width: 95%;}
-.loginBox{ margin-top: 5em !important;}
-.sidebarmenu{ min-height: 534px !important;}
+.loginbox{ margin-top: 5em !important;}
+.sidebardiv{background: #1B1C1D !important;}
 .sidebartopic{ width:30% !important; }
 .firstContent{font-size: 45px !important; }
 }

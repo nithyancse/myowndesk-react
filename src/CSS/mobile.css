@@ -10,13 +10,13 @@
 }
 .maincontain{
     width: auto!important;
-    margin-top: 1em !important;
-    margin-bottom: 1em !important;
-    margin-left: 1% !important;
-    margin-right: 1%!important;
+    padding-top: 1em !important;
+    padding-bottom: 1em !important;
+    padding-left: 1% !important;
+    padding-right: 1%!important;
 }
-.tasktitle{ font-size: 25px;}
-.loginBox{ margin-top: 3em !important;}
+.modtitle{ font-size: 25px;}
+.loginbox{ margin-top: 3em !important;}
 .headertop{ z-index: 10; position: fixed; left: 0px; top: 0px; width: 100%;}
 .footerbottom{ position: fixed; left: 0px; bottom: 0px; width: 100%;}
 .loginError{ margin-top: 2em; }

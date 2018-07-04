@@ -59,9 +59,9 @@ const Layout = props => ({
 
         {!isPrivate && <Footer />}
         {isPrivate &&
-          <BrowserView device={isBrowser}>
+         
             <Footer />
-          </BrowserView>
+         
         }
       </div>
     );

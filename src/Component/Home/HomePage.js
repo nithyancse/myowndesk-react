@@ -7,9 +7,10 @@ import { Button, Form, Grid, Header, Message, Segment} from 'semantic-ui-react'
 @observer
 class HomePage extends Component {
     render() {
+        const mainMinHeight = this.props.store.home.mainMinHeight;
         const isLoggedIn = this.props.store.home.isLoggedIn;
         return (
-            <div className="maincontain" >
+            <div className="maincontain" style={{minHeight:mainMinHeight}}>
                 {isLoggedIn &&
                     <div>
                         <Header as='h2'>Hi {this.props.store.home.user.name},</Header>

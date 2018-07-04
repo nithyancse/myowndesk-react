@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
 import { Segment, Divider, Grid, Container, Button, Image, Header } from 'semantic-ui-react'
+import { observer, inject } from 'mobx-react'
 import ContentHome1 from './ContentHome1'
 import ContentHome2 from './ContentHome2'
 import LoginBox from '../Login/LoginBox'
 import CenterSegment from '../../../Component/Common/Segment/CenterSegment'
 
+@inject(['store'])
+@observer
 class LandingPage extends Component {
 
     constructor(props) {
@@ -26,11 +29,12 @@ class LandingPage extends Component {
 
     render() {
 
+        const minHeight = this.props.store.home.minHeight;
         const custResponse = this.state.custResponse;
         const custColor = this.state.custColor;
 
         return (
-            <div className="contain" >
+            <div className="contain" style={{minHeight:minHeight}}>
                 <BrowserView device={isBrowser}>
                     <Grid columns='equal'>
                         <Grid.Row>

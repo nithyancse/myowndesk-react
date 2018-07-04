@@ -64,6 +64,7 @@ class TopicPage extends Component {
     toggleVisibility = () => this.setState({ visible: !this.state.visible })
 
     render() {
+        const mainMinHeight = this.props.store.home.mainMinHeight;
         const isLoggedIn = this.props.store.home.isLoggedIn;
         let data = this.props.store.topic.topicList;
         const menuName = this.props.store.menu.menuName;
@@ -100,7 +101,7 @@ class TopicPage extends Component {
         }
 
         return (
-            <div className="maincontain" >
+            <div className="maincontain" style={{minHeight:mainMinHeight}}>
                 <Grid >
                     <Grid.Row>
                         <Grid.Column width={6}>

@@ -134,6 +134,7 @@ class TopicListPage extends Component {
     }
 
     render() {
+        const mainMinHeight = this.props.store.home.mainMinHeight;
         const isLoggedIn = this.props.store.home.isLoggedIn;
         let data = this.props.store.topic.topicList;
         const responseStatus = this.props.store.home.responseStatus;
@@ -177,7 +178,7 @@ class TopicListPage extends Component {
         }
 
         return (
-            <div className="maincontain" >
+            <div className="maincontain" style={{minHeight:mainMinHeight}}>
                 <BrowserView device={isBrowser}>
                     <Grid >
                         <Grid.Row>

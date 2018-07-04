@@ -26,15 +26,8 @@ class SignupBox extends Component {
 
     handleSignUpSubmit(e) {
         let registerForm = document.getElementById("registerForm");
-        let isValid = this.validateRegisterForm(e);
+        //let isValid = this.validateRegisterForm(e);
         let color = "green";
-        if (!isValid) {
-            this.props.handleMessage("", ""); // don't show this error(parent class) if any field error is displayed
-            return false;
-        } else {
-            e.preventDefault();
-            registerForm.classList.add("loading");
-        }
 
         //add the new user 
         axios.post(RedirectTo.AXIOS_ADD_USER, {
@@ -182,10 +175,11 @@ class SignupBox extends Component {
                                     <div className="required inline field">
                                         <div className="ui checkbox">
                                             <input
+                                                id="tnc"
                                                 type="checkbox"
                                                 ref={(agree) => this.agree = agree}
                                             />
-                                            <label>I agree to the terms and conditions</label>
+                                            <label htmlFor="tnc">I agree to the terms and conditions</label>
                                         </div>
                                         {agreeErrMsg.length > 0 && <Label pointing='left'>{agreeErrMsg}</Label>}
                                     </div>

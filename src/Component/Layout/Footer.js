@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
 import { Image, Header, Grid, Icon, Button, Segment, Menu, Dropdown, Label, Container, List, Accordion } from 'semantic-ui-react'
 import { Redirect } from 'react-router'
+import { observer, inject } from 'mobx-react';
 
+@inject(['store'])
+@observer
 class Footer extends Component {
     state = { activeIndex: -1 }
 
@@ -13,10 +16,33 @@ class Footer extends Component {
         this.setState({ activeIndex: newIndex })
     }
 
+    componentDidMount(){
+        let { clientHeight, clientWidth } = this.refs.footerdiv;
+        this.props.store.home.setFooterWidth(clientWidth);
+        this.props.store.home.setFooterHeight(clientHeight);
+        let headerHeight= this.props.store.home.headerHeight;
+        let footerHeight= this.props.store.home.footerHeight;
+        let windowHeight= this.props.store.home.windowHeight;
+        let minHeight= windowHeight - (headerHeight + footerHeight );
+        let mainMinHeight= windowHeight - headerHeight;
+        this.props.store.home.setMinHeight(minHeight+"px");
+        if(!isMobile){
+            this.props.store.home.setMainMinHeight(mainMinHeight+"px");
+        } else {
+            this.props.store.home.setMainMinHeight(minHeight+"px");
+        }
+        console.log("windowHeight " + windowHeight);
+        console.log("headerHeight " + headerHeight);
+        console.log("footerHeight " + footerHeight);
+        console.log("minHeight " + minHeight);
+        console.log("mainMinHeight " + mainMinHeight);
+        //document.querySelectorAll('.contain').forEach(el => el.style.minHeight = minHeight+'px');
+      }
+
     render() {
         const { activeIndex } = this.state;
         return (
-            <div>
+            <div ref="footerdiv" >
                 <BrowserView device={isBrowser}>
                     <Segment inverted vertical >
                         <Container>
@@ -58,30 +84,6 @@ class Footer extends Component {
                 <div>
                     <Segment inverted className="borderRadius0">
                         <Accordion inverted fluid >
-                            <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
-                                <Icon name='dropdown' />
-                                About
-                            </Accordion.Title>
-                            <Accordion.Content active={activeIndex === 0}>
-                                <List link inverted>
-                                    <List.Item as='a'>Sitemap</List.Item>
-                                    <List.Item as='a'>Contact Us</List.Item>
-                                    <List.Item as='a'>Religious Ceremonies</List.Item>
-                                    <List.Item as='a'>Gazebo Plans</List.Item>
-                                </List>
-                            </Accordion.Content>
-                            <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick}>
-                                <Icon name='dropdown' />
-                                Services
-                            </Accordion.Title>
-                            <Accordion.Content active={activeIndex === 1}>
-                                <List link inverted>
-                                    <List.Item as='a'>Banana Pre-Order</List.Item>
-                                    <List.Item as='a'>DNA FAQ</List.Item>
-                                    <List.Item as='a'>How To Access</List.Item>
-                                    <List.Item as='a'>Favorite X-Men</List.Item>
-                                </List>
-                            </Accordion.Content>
                             <Accordion.Title active={activeIndex === 2} index={2} onClick={this.handleClick}>
                                 <Icon name='dropdown' />
                                 Task Management

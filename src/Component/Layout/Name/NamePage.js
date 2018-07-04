@@ -7,10 +7,13 @@ import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detec
 import Error from '../../Common/Message/Error'
 import NameBox from './NameBox';
 
+@inject(['store'])
+@observer
 class NamePage extends Component {
     render() {
+        const minHeight = this.props.store.home.minHeight;
         return (
-            <div className="contain" >
+            <div className="contain" style={{minHeight:minHeight}}>
                 <BrowserView device={isBrowser}>
                     <Grid columns='equal'>
                         <Grid.Row>

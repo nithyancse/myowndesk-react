@@ -66,6 +66,7 @@ class BrowserSideBar extends Component {
   }
 
   render() {
+    const mainMinHeight = this.props.store.home.mainMinHeight;
     const item = this.props.store.menu.menuList;
     let menuListArray = [];
     for (let i = 0; i < item.length; i++) {
@@ -73,8 +74,8 @@ class BrowserSideBar extends Component {
     }
 
     return (
-      <div className="sidebardiv">
-        <Menu inverted vertical stackable className="width100 borderRadius0 sidebarmenu" >
+      <div className="sidebardiv" style={{minHeight:mainMinHeight}}>
+        <Menu inverted vertical stackable className="width100 borderRadius0" >
           <Menu.Item name='manageMenu' onClick={() => this.handleManageMenu()}>
             {Messages.MENU_MANAGE}
           </Menu.Item>

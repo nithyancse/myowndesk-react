@@ -83,6 +83,7 @@ class ManageMenuPage extends Component {
 
 
     render() {
+        const mainMinHeight = this.props.store.home.mainMinHeight;
         const isLoggedIn = this.props.store.home.isLoggedIn;
         const data = this.props.store.menu.menuList;
         const responseStatus = this.props.store.home.responseStatus;
@@ -120,7 +121,7 @@ class ManageMenuPage extends Component {
         }
 
         return (
-            <div className="maincontain" >
+            <div className="maincontain" style={{minHeight:mainMinHeight}}>
                 <BrowserView device={isBrowser}>
                     <Grid>
                         <Grid.Row>
