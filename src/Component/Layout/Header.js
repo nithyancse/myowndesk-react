@@ -68,7 +68,7 @@ class LogoBar extends Component {
                         {/*<Menu.Item as='a'>Home</Menu.Item>*/}
                         {!isLoggedIn &&
                             <Menu.Menu position='right'>
-                                <Menu.Item>
+                                <Menu.Item fitted='horizontally'>
                                     <Link to={RedirectTo.LOGIN}>
                                         <Button color='green' >{Messages.LOGIN}</Button>
                                     </Link>

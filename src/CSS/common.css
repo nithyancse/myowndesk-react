@@ -2,30 +2,49 @@ body{ height: 100%; background-color: #ffffff; font-family: Lato,'Helvetica Neue
 .floatLeft { float: left !important;}
 .floatRight { float: right !important;}
 /*.ui.menu{  font-family: cursive;}*/
-.textaligncenter{ text-align: center !important; }
-.textalignleft{ text-align: left !important; }
-.textalignright{ text-align: right !important; }
-.tasklogo{ margin-right: 2em !important; }
-.footer{ padding: 3em !important; }
-.borderRadius0{ border-radius: 0 !important; }
-.forgot{ text-align: left; padding-top: 12px; }
+
+/* Width  */
 .width100{ width: 100% !important; }
 .width80{ width: 80% !important; }
+
+/* Margin  */
+.marginTop10{ margin-top: 10px !important; }
+.marginTop60{ margin-top: 60px !important; }
+
+/* Padding  */
+.paddingLeft0{ padding-left:0px !important; }
+.paddingTop10{ padding-top: 10px !important; }
+.padding10{ padding: 10px !important; }
+.paddingBot16{padding-bottom: 16px !important; }
+
+/* Border  */
+.borderRadius0{ border-radius: 0 !important; }
+
+/* Link  */
 .link { cursor:pointer; color:blue; text-decoration:none; }
 .link:hover { text-decoration:none; color:darkblue; }
 .linktopic { cursor:pointer; color:white; text-decoration:none; }
 .linktopic:hover { text-decoration:none; color:skyblue; }
-.paddingLeft0{ padding-left:0px !important; }
-.paddingTop10{ padding-top: 10px !important; }
-.padding10{ padding: 10px !important; }
-.marginTop10{ margin-top: 10px !important; }
-.marginTop60{ margin-top: 60px !important; }
+
+/* Text  */
+.textaligncenter{ text-align: center !important; }
+.textalignleft{ text-align: left !important; }
+.textalignright{ text-align: right !important; }
+
+/* Font  */
 .fontSize22{font-size: 22px !important; }
-.editTopic{ position: absolute; top: 0; right: 0; padding: 10px !important; }
-.topicDisplayBox{ min-height: 200px; }
+
+/* Colors  */
 .cgreen{ color: green !important; }
 .cyellow{ color: yellow !important; }
 .cyellowgreen{ color: yellowgreen !important; }
 .cred{ color: red !important; }
 .cwhite{ color: white !important;}
 .cblue{color: cornflowerblue !important;}
+
+/* Others  */
+.editTopic{ position: absolute; top: 0; right: 0; padding: 10px !important; }
+.topicDisplayBox{ min-height: 200px; }
+.tasklogo{ margin-right: 2em !important; }
+.footer{ padding: 3em !important; }
+.forgot{ text-align: left; padding-top: 12px; }
