@@ -9,6 +9,7 @@ import Validation from '../../../Constant/Validation'
 import Messages from '../../../Constant/Messages'
 import RedirectTo from '../../../Constant/RedirectTo'
 import PropTypes from 'prop-types'
+import Querystring from 'querystring'
 
 @inject(['store'])
 @observer
@@ -43,14 +44,31 @@ class LoginBox extends Component {
             e.preventDefault();
         }
 
-        let pageToRedirect = "";
-        let params = new URLSearchParams();
-        params.append('emailId', this.emailId.value);
-        params.append('password', this.password.value);
+        const data = {
+            grant_type: "password",
+            //scope: SCOPE_INT,
+            username: this.emailId.value,
+            password: this.password.value
+          };
 
-        axios.post(RedirectTo.AXIOS_LOGIN, params)
+          let axiosConfig = {
+            auth: {
+                'username': 'devglan-client',
+                "password": "devglan-secret",
+            }
+          };
+      
+
+        let pageToRedirect = "";
+
+        axios.post(RedirectTo.AXIOS_LOGIN, Querystring.stringify(data),axiosConfig   )
             .then(response => {
-                if (response.status == 200) {
+               
+                    console.log(response.data);
+                    USER_TOKEN = response.data.access_token;
+                    console.log('userresponse ' + response.data.access_token); 
+               
+                if (response.status == 201) {
                     this.props.store.home.setIsLoggedIn(true);
                     this.props.store.home.setUser(response.data);
                     if (!this.props.store.home.user.name) {
@@ -65,6 +83,7 @@ class LoginBox extends Component {
                 }
             })
             .catch(error => {
+                console.log('error ' + error);  
                 this.props.handleMessage(error.response.data.message, "red");
             });
 

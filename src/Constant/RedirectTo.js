@@ -12,7 +12,7 @@ const RedirectTo = {
     TOPIC_LIST:"/topicList",
     TOPIC_MODAL:"/topicModal",
 
-    AXIOS_LOGIN:"/user/login",
+    AXIOS_LOGIN:"/oauth/token",
     AXIOS_ADD_NAME:"/user/addName",
     AXIOS_ADD_USER:"/user/addUser",
     AXIOS_FETCH_MENU_LIST:"/menu/fetchMenuList?userId=",
