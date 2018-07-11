@@ -30,6 +30,9 @@ const Message = {
 
     //Login
     LOGIN_TITLE : "Login to your account",
+    PASSWORD_INCORRECT : "Entered Password is Incorrect",
+    BAD_CREDENTIALS : "Incorrect Username and Password",
+    ACCESS_TOKEN: "accesstoken",
 
     //Sign Up
     SIGNUP_TITLE : "Sign Up your account",

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import Messages from '../../Constant/Messages'
 import Config from '../../Constant/Config'
 import RedirectTo from '../../Constant/RedirectTo'
+import { setAuthorizationToken } from '../Common/AxiosData'
 
 @inject(['store'])
 @observer
@@ -71,6 +72,7 @@ class MobileSideBar extends Component {
     handleRedirect(pageToRedirect) {
         if (RedirectTo.LOGOUT === pageToRedirect) {
             //this.props.store.home.setIsLoggedIn(Messages.NO);
+            setAuthorizationToken("");
             window.location.href = Config.HOME_URL; // on refresh will clear the mobx data
         } else {
             this.context.router.history.push(pageToRedirect);

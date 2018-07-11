@@ -8,6 +8,7 @@ import Messages from '../../Constant/Messages'
 import Config from '../../Constant/Config'
 import RedirectTo from '../../Constant/RedirectTo'
 import MobileSideBar from './MobileSideBar'
+import { setAuthorizationToken } from '../Common/AxiosData'
 
 @inject(['store'])
 @observer
@@ -28,6 +29,7 @@ class LogoBar extends Component {
     handleRedirect(pageToRedirect) {
         if (RedirectTo.LOGOUT === pageToRedirect) {
             //this.props.store.home.setIsLoggedIn(Messages.NO);
+            setAuthorizationToken("");
             window.location.href = Config.HOME_URL; // on refresh will clear the mobx data
         } else {
             this.context.router.history.push(pageToRedirect);
@@ -49,6 +51,8 @@ class LogoBar extends Component {
         this.setState({
             minHeight: clientHeight+"px"
         })
+
+        setAuthorizationToken(sessionStorage.getItem(Messages.ACCESS_TOKEN));
     }
 
     render() {
