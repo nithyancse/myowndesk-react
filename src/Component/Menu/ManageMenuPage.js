@@ -184,8 +184,8 @@ class ManageMenuPage extends Component {
                         <p>{Messages.ARE_SURE_WANT_TO_DELETE_MENU} <b>{this.state.originalData.name}</b>?</p>
                     </Modal.Content>
                     <Modal.Actions>
-                        <Button negative onClick={this.close} >No</Button>
-                        <Button positive onClick={() => this.handleDelete()} labelPosition='right' icon='checkmark' content='Yes' />
+                        <Button negative onClick={this.close} >Cancel</Button>
+                        <Button positive onClick={() => this.handleDelete()} labelPosition='right' icon='checkmark' content='Delete' />
                     </Modal.Actions>
                 </Modal>
 

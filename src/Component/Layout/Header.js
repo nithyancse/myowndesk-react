@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { Component } from 'react';
 import { Image, Header, Grid, Icon, Button, Segment, Menu, Dropdown, Label, Container } from 'semantic-ui-react'
 import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
@@ -29,7 +30,7 @@ class LogoBar extends Component {
     handleRedirect(pageToRedirect) {
         if (RedirectTo.LOGOUT === pageToRedirect) {
             //this.props.store.home.setIsLoggedIn(Messages.NO);
-            setAuthorizationToken("");
+            sessionStorage.clear();
             window.location.href = Config.HOME_URL; // on refresh will clear the mobx data
         } else {
             this.context.router.history.push(pageToRedirect);
@@ -51,14 +52,45 @@ class LogoBar extends Component {
         this.setState({
             minHeight: clientHeight+"px"
         })
+    }
 
-        setAuthorizationToken(sessionStorage.getItem(Messages.ACCESS_TOKEN));
+    componentWillMount(){
+        let isActive = sessionStorage.getItem(Messages.SESSION_IS_ACTIVE);
+        if(isActive){
+            //call required methods
+            setAuthorizationToken();
+            let isActive = sessionStorage.getItem(Messages.SESSION_IS_ACTIVE);
+            this.props.store.home.setIsActive(isActive); 
+            let user = JSON.parse(sessionStorage.getItem(Messages.SESSION_USER));
+            this.props.store.home.setUser(user);
+            let menu = JSON.parse(sessionStorage.getItem(Messages.SESSION_MENU));
+            this.props.store.menu.setMenuId(menu.menuId);
+            this.props.store.menu.setMenuName(menu.name);
+            this.props.store.home.setIsRefresh(true);
+            this.loadMenuList();
+        }
+    }
+
+    loadMenuList() {
+        let list = [];
+        let userId = this.props.store.home.user.id;
+        let url = RedirectTo.AXIOS_FETCH_MENU_LIST + userId;
+        axios.get(url)
+            .then((response) => {
+                //console.log(response.data)
+                for (var key in response.data) {
+                    list.push(response.data[key]);
+                }
+                this.props.store.menu.setMenuList(list);
+            })
+            .catch((error) => {
+                console.log("error ->"+error);
+            });
     }
 
     render() {
-
-        const isLoggedIn = this.props.store.home.isLoggedIn;
-        const name = this.props.store.home.user.name;
+        let isActive = this.props.store.home.isActive;
+        const name =  this.props.store.home.user.name;
         const minHeight = this.state.minHeight;
 
         return (
@@ -70,7 +102,7 @@ class LogoBar extends Component {
                             <span className="modtitle" >{Messages.MY_OWN_DESK}</span>
                         </Menu.Item>
                         {/*<Menu.Item as='a'>Home</Menu.Item>*/}
-                        {!isLoggedIn &&
+                        {!isActive &&
                             <Menu.Menu position='right'>
                                 <Menu.Item fitted='horizontally'>
                                     <Link to={RedirectTo.LOGIN}>
@@ -84,7 +116,7 @@ class LogoBar extends Component {
                                 </Menu.Item>
                             </Menu.Menu>
                         }
-                        {isLoggedIn &&
+                        {isActive &&
                             <Menu.Menu position='right' style={{minHeight:minHeight}}>
                                 <Dropdown item simple text={name} direction='right'  >
                                     <Dropdown.Menu>
@@ -100,14 +132,14 @@ class LogoBar extends Component {
                 <MobileView device={isMobile}>
                     <Menu size="tiny" borderless inverted className="borderRadius0" >
                         <Menu.Item as='a' header>
-                            {isLoggedIn &&
+                            {isActive &&
                                 <Icon name='bars' size='large' className="tasklogo" onClick={this.handleSideBar} />
                             }
                             {/*<Image className="tasklogo" size='tiny' src="public/images/Mod_logo_1.png" />*/}
                             <span className="modtitle" >{Messages.MY_OWN_DESK}</span>
                         </Menu.Item>
                     </Menu>
-                    {isLoggedIn && <MobileSideBar status={this.state.sidebarStatus} handleSideBar={this.handleSideBar} />}
+                    {isActive && <MobileSideBar status={this.state.sidebarStatus} handleSideBar={this.handleSideBar} />}
                 </MobileView>
             </div>
         )

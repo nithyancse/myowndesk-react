@@ -41,7 +41,7 @@ class NameBox extends Component {
             .then(response => {
                 if (response.status == 201) {
                     this.props.store.home.setUserName(name);
-                    this.loadMenuList(this.props.store.home.user.id)
+                    this.loadMenuList();
                     this.setState({
                         pageToRedirect: RedirectTo.HOME
                     });
@@ -56,8 +56,9 @@ class NameBox extends Component {
         arrowButton.classList.add("loading");
     }
 
-    loadMenuList(userId) {
+    loadMenuList() {
         let list = [];
+        let userId = this.props.store.home.user.id;
         let url = RedirectTo.AXIOS_FETCH_MENU_LIST + userId;
         axios.get(url)
             .then((response) => {

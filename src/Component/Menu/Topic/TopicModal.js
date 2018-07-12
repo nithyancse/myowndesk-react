@@ -189,7 +189,7 @@ class TopicModal extends Component {
     }
 
     onTypeChange = (e, data) => {
-        console.log(data.value);
+        //console.log(data.value);
         this.setState({ typeVal: data.value });
     }
 
@@ -246,14 +246,14 @@ class TopicModal extends Component {
                                         onChange={this.handleChange}
                                         modules={modules}
                                         formats={formats} />
-                                    {descriptionErrMsg.length > 0 && <Label pointing='top'>{descriptionErrMsg}</Label>}
+                                    {descriptionErrMsg.length > 0 && <Label>{descriptionErrMsg}</Label>}
                                 </div>
                             </Form.Field>
                         </Form>
                     </Modal.Content>
                     <Modal.Actions>
-                        <Button negative onClick={this.close}>No</Button>
-                        <Button positive id="topicSubmitButton" onClick={this.handleTopicSubmit.bind(this)} icon='checkmark' labelPosition='right' content='Yes' />
+                        <Button negative onClick={this.close}>Cancel</Button>
+                        <Button positive id="topicSubmitButton" onClick={this.handleTopicSubmit.bind(this)} icon='checkmark' labelPosition='right' content='Save' />
                     </Modal.Actions>
                 </Modal>
             </div>

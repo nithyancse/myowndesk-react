@@ -8,7 +8,7 @@ import { isValidEmailId } from '../../../Util/ValidationUtil'
 import Validation from '../../../Constant/Validation'
 import Messages from '../../../Constant/Messages'
 import RedirectTo from '../../../Constant/RedirectTo'
-import { setAuthorizationToken, getAuthorizationToken } from '../../Common/AxiosData'
+import { setAuthorizationToken } from '../../Common/AxiosData'
 import PropTypes from 'prop-types'
 import Querystring from 'querystring'
 
@@ -59,20 +59,15 @@ class LoginBox extends Component {
             }
         };
 
-
-        let pageToRedirect = "";
-
         axios.post(RedirectTo.AXIOS_LOGIN, Querystring.stringify(data), axiosConfig)
             .then(response => {
-
-                console.log(response.data);
-                setAuthorizationToken(response.data.access_token);
-                sessionStorage.setItem(Messages.ACCESS_TOKEN, response.data.access_token);
+                //console.log(response.data);
+                sessionStorage.setItem(Messages.SESSION_ACCESS_TOKEN, response.data.access_token);
+                setAuthorizationToken();
                 this.getUser();
-
             })
             .catch(error => {
-                console.log('error ' + error);
+                //console.log('error ' + error);
                 if (error.response.status == 400) {
                     this.props.handleMessage(Messages.PASSWORD_INCORRECT, "red");
                 } else {
@@ -84,31 +79,45 @@ class LoginBox extends Component {
     }
 
     getUser() {
-        let tokenStr = sessionStorage.getItem(Messages.ACCESS_TOKEN);
-        let axiosConfig = {
-            headers: {
-                "Authorization": "Bearer " + tokenStr
-            }
-        };
-
         let url = RedirectTo.AXIOS_FETCH_USER;
-        axios.get(url, axiosConfig)
+        axios.get(url)
             .then((response) => {
                 //console.log(response.data)
-                this.props.store.home.setIsLoggedIn(true);
+                sessionStorage.setItem(Messages.SESSION_IS_ACTIVE, true);
+                sessionStorage.setItem(Messages.SESSION_USER, JSON.stringify(response.data));
+                this.props.store.home.setIsActive(true);
                 this.props.store.home.setUser(response.data);
-                if (!this.props.store.home.user.name) {
-                    pageToRedirect = RedirectTo.ADD_NAME;
+                if (!response.data.name) {
+                    this.setState({
+                        pageToRedirect: RedirectTo.ADD_NAME
+                    });
                 } else {
-                    this.loadMenuList(this.props.store.home.user.id)
-                    pageToRedirect = RedirectTo.HOME;
+                    this.loadMenuList();
                 }
-                this.setState({
-                    pageToRedirect: pageToRedirect
-                });
             })
             .catch((error) => {
-                //console.log(error.response);
+                let errorMsg = "", httpStatus = "";
+                if (error.response) {
+                    //console.log(error.response);
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    //console.log(error.response.data);
+                    //console.log(error.response.status);
+                    //console.log(error.response.headers);
+                    httpStatus = (error.response.status).toString();
+                    errorMsg = httpStatus.startsWith("5") ? Messages.RESPONSE_ERROR_MSG : Messages.REQUEST_ERROR_MSG;
+                  } else if (error.request) {
+                    //console.log(error.request);
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    errorMsg = Messages.REQUEST_ERROR_MSG;
+                  } else {
+                    // Something happened in setting up the request that triggered an Error
+                    //console.log('Error', error.message);
+                    errorMsg = Messages.COMMON_ERROR_MSG;
+                  }
+                  this.props.handleMessage(errorMsg, "red");
             });
     }
 
@@ -138,8 +147,9 @@ class LoginBox extends Component {
         return status;
     }
 
-    loadMenuList(userId) {
+    loadMenuList() {
         let list = [];
+        let userId = this.props.store.home.user.id;
         let url = RedirectTo.AXIOS_FETCH_MENU_LIST + userId;
         axios.get(url)
             .then((response) => {
@@ -148,9 +158,21 @@ class LoginBox extends Component {
                     list.push(response.data[key]);
                 }
                 this.props.store.menu.setMenuList(list);
+                this.setState({
+                    pageToRedirect: RedirectTo.HOME
+                });
             })
             .catch((error) => {
-                console.log(error);
+                let errorMsg = "", httpStatus = "";
+                if (error.response) {
+                    httpStatus = (error.response.status).toString();
+                    errorMsg = httpStatus.startsWith("5") ? Messages.RESPONSE_ERROR_MSG : Messages.REQUEST_ERROR_MSG;
+                  } else if (error.request) {
+                    errorMsg = Messages.REQUEST_ERROR_MSG;
+                  } else {
+                    errorMsg = Messages.COMMON_ERROR_MSG;
+                  }
+                  this.props.handleMessage(errorMsg, "red");
             });
     }
 

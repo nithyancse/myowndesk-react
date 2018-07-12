@@ -28,8 +28,11 @@ class MobileSideBar extends Component {
     }
 
     handleMenuClick(menuId, name) {
-        this.props.store.menu.setMenuId(menuId);
-        this.props.store.menu.setMenuName(name);
+        let menu = {
+            "menuId": menuId,
+            "name": name
+        }
+        sessionStorage.setItem(Messages.SESSION_MENU, JSON.stringify(menu));
         let prevTopicId = 0, nextTopicId = 0;
         let isTopicPresent = false;
         let list = [];
@@ -72,7 +75,7 @@ class MobileSideBar extends Component {
     handleRedirect(pageToRedirect) {
         if (RedirectTo.LOGOUT === pageToRedirect) {
             //this.props.store.home.setIsLoggedIn(Messages.NO);
-            setAuthorizationToken("");
+            sessionStorage.clear();
             window.location.href = Config.HOME_URL; // on refresh will clear the mobx data
         } else {
             this.context.router.history.push(pageToRedirect);

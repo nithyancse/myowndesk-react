@@ -3,7 +3,8 @@ import Messages from '../Constant/Messages'
 
 export class HomeStore {
   @observable user = {}
-  @observable isLoggedIn = false
+  @observable isRefresh = false
+  @observable isActive = false
   @observable registerStatus = Messages.EMPTY
   @observable registerStatusColor = Messages.EMPTY
   @observable responseStatus = Messages.EMPTY
@@ -34,8 +35,12 @@ export class HomeStore {
     this.registerStatusColor = color;
   }
 
-  @action setIsLoggedIn(loginStatus){
-    this.isLoggedIn = loginStatus;
+  @action setIsRefresh(isRefresh){
+    this.isRefresh = isRefresh;
+  }
+
+  @action setIsActive(loginStatus){
+    this.isActive = loginStatus;
   }
 
   @action setResponseStatus(status){

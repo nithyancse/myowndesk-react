@@ -26,6 +26,8 @@ class BrowserSideBar extends Component {
   }
 
   handleMenuClick(menuId, name) {
+    let menu = { "menuId": menuId, "name": name }
+    sessionStorage.setItem(Messages.SESSION_MENU, JSON.stringify(menu));
     this.props.store.menu.setMenuId(menuId);
     this.props.store.menu.setMenuName(name);
     let prevTopicId = 0, nextTopicId = 0;
@@ -74,7 +76,7 @@ class BrowserSideBar extends Component {
     }
 
     return (
-      <div className="sidebardiv" style={{minHeight:mainMinHeight}}>
+      <div className="sidebardiv" style={{ minHeight: mainMinHeight }}>
         <Menu inverted vertical stackable className="width100 borderRadius0" >
           <Menu.Item name='manageMenu' onClick={() => this.handleManageMenu()}>
             {Messages.MENU_MANAGE}

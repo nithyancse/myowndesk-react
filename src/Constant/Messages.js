@@ -18,6 +18,13 @@ const Message = {
     MENU_MANAGE: "Manage Menu",
     MENU_LOGOUT: "Logout",
 
+    //Session
+    SESSION_ACCESS_TOKEN: "accessToken",
+    SESSION_IS_ACTIVE: "isActive",
+    SESSION_USER: "user",
+    SESSION_MENU: "menu",
+    SESSION_TOPIC_ID: "topicId",
+
     //Color
     GREEN: "cgreen",
     RED: "cred",
@@ -25,14 +32,14 @@ const Message = {
     YELLOW_GREEN: "cyellowgreen",
 
     //Error
-    REQUEST_ERROR_MSG: "We can't process this request due to Bad Request",
-    RESPONSE_ERROR_MSG: "We can't process this request due to Server under maintenance",
+    REQUEST_ERROR_MSG: "We can't process this request due to bad Request",
+    RESPONSE_ERROR_MSG: "We can't process this request due to server under maintenance",
+    COMMON_ERROR_MSG: "Server under maintenance, So please try after some time",
 
     //Login
     LOGIN_TITLE : "Login to your account",
-    PASSWORD_INCORRECT : "Entered Password is Incorrect",
-    BAD_CREDENTIALS : "Incorrect Username and Password",
-    ACCESS_TOKEN: "accesstoken",
+    PASSWORD_INCORRECT : "Incorrect Password",
+    BAD_CREDENTIALS : "Incorrect username and password",
 
     //Sign Up
     SIGNUP_TITLE : "Sign Up your account",

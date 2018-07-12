@@ -27,6 +27,10 @@ class TopicListPage extends Component {
     }
 
     componentWillMount() {
+        if(!sessionStorage.getItem(Messages.SESSION_IS_ACTIVE)){
+            this.context.router.history.push(RedirectTo.LOGIN);
+            return false;
+        }
         let list = [];
         let menuId = this.props.store.menu.menuId;
         let url = RedirectTo.AXIOS_FETCH_TOPIC_LIST + menuId;
@@ -255,8 +259,8 @@ class TopicListPage extends Component {
                         <p>{Messages.ARE_SURE_WANT_TO_DELETE_TOPIC} <b>{this.state.originalData.title}</b>?</p>
                     </Modal.Content>
                     <Modal.Actions>
-                        <Button negative onClick={this.close} >No</Button>
-                        <Button positive onClick={() => this.handleDelete()} labelPosition='right' icon='checkmark' content='Yes' />
+                        <Button negative onClick={this.close} >Cancel</Button>
+                        <Button positive onClick={() => this.handleDelete()} labelPosition='right' icon='checkmark' content='Delete' />
                     </Modal.Actions>
                 </Modal>
             </div>

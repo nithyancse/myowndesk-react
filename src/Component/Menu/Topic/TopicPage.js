@@ -26,6 +26,48 @@ class TopicPage extends Component {
         }
     }
 
+    componentWillMount() {
+        if(!sessionStorage.getItem(Messages.SESSION_IS_ACTIVE)){
+            this.context.router.history.push(RedirectTo.LOGIN);
+            return false;
+        }
+        let menuId = this.props.store.menu.menuId;
+        let isRefresh = this.props.store.home.isRefresh;
+        if (isRefresh) {
+            let prevTopicId = 0, nextTopicId = 0;
+            let isTopicPresent = false;
+            let list = [];
+            let original = {};
+            let url = RedirectTo.AXIOS_FETCH_TOPIC_LIST + menuId;
+            axios.get(url)
+                .then((response) => {
+                    //console.log(response.data)
+                    for (var key in response.data) {
+                        if (key == 0) {
+                            original = response.data[key];
+                            isTopicPresent = true;
+                        }
+                        if (key == 1) {
+                            nextTopicId = response.data[key].id;
+                        }
+                        list.push(response.data[key]);
+                    }
+                    this.props.store.topic.setTopicList(list);
+                    this.props.store.topic.setTopicObject(original);
+                    this.props.store.topic.setPrevTopicId(prevTopicId);
+                    this.props.store.topic.setNextTopicId(nextTopicId);
+                    if (isTopicPresent) {
+                        this.context.router.history.push(RedirectTo.TOPIC);
+                    } else {
+                        this.context.router.history.push(RedirectTo.TOPIC_LIST);
+                    }
+                })
+                .catch((error) => {
+                    //console.log(error.response);
+                });
+        }
+    }
+
     handleTopicDisplayBox(topicId) {
         let item = this.props.store.topic.topicList;
         let prevTopicId = 0;
@@ -101,7 +143,7 @@ class TopicPage extends Component {
         }
 
         return (
-            <div className="maincontain" style={{minHeight:mainMinHeight}}>
+            <div className="maincontain" style={{ minHeight: mainMinHeight }}>
                 <Grid >
                     <Grid.Row>
                         <Grid.Column width={6}>

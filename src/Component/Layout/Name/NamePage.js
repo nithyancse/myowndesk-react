@@ -6,10 +6,21 @@ import { Segment, Divider, Grid, Container, Button, Image, Input, Icon, } from '
 import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
 import Error from '../../Common/Message/Error'
 import NameBox from './NameBox';
+import Messages from '../../../Constant/Messages'
+import PropTypes from 'prop-types';
+import RedirectTo from '../../../Constant/RedirectTo';
 
 @inject(['store'])
 @observer
 class NamePage extends Component {
+
+    componentWillMount() {
+        if(!sessionStorage.getItem(Messages.SESSION_IS_ACTIVE)){
+            this.context.router.history.push(RedirectTo.LOGIN);
+            return false;
+        }
+    }
+
     render() {
         const minHeight = this.props.store.home.minHeight;
         return (

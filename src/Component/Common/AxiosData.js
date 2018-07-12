@@ -1,20 +1,11 @@
 import axios from 'axios';
 import Messages from '../../Constant/Messages'
 
-export function setAuthorizationToken(token) {
+export function setAuthorizationToken() {
+    let token = sessionStorage.getItem(Messages.SESSION_ACCESS_TOKEN);
     if (token) {
-        axios.defaults.headers.common['Authorization'] = token;
+        axios.defaults.headers.common['Authorization'] = "Bearer " + token
     } else {
         delete axios.defaults.headers.common['Authorization'];
     }
-}
-
-export function getAuthorizationToken() {
-    let tokenStr = sessionStorage.getItem(Messages.ACCESS_TOKEN);
-    let obj = ({
-        headers: {
-            "Authorization": "Bearer " + tokenStr
-        }
-    })
-    return obj;
 }

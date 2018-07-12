@@ -16,6 +16,10 @@ class Footer extends Component {
         this.setState({ activeIndex: newIndex })
     }
 
+    componentWillMount() {
+        this.props.store.home.setIsRefresh(false);
+    }
+
     componentDidMount() {
         let { clientHeight, clientWidth } = this.refs.footerdiv;
         this.props.store.home.setFooterWidth(clientWidth);

@@ -123,7 +123,6 @@ class MenuModal extends Component {
 
 
     render() {
-        const isLoggedIn = this.props.store.home.isLoggedIn;
         const open = this.state.open;
         const nameErrMsg = this.state.name;
         const defaultName = this.props.store.menu.menuObject.name;
@@ -150,8 +149,8 @@ class MenuModal extends Component {
 
                     </Modal.Content>
                     <Modal.Actions>
-                        <Button negative onClick={this.close}>No</Button>
-                        <Button positive id="menuSubmitButton" onClick={this.handleMenuSubmit.bind(this)} icon='checkmark' labelPosition='right' content='Yes' />
+                        <Button negative onClick={this.close}>Cancel</Button>
+                        <Button positive id="menuSubmitButton" onClick={this.handleMenuSubmit.bind(this)} icon='checkmark' labelPosition='right' content='Save' />
                     </Modal.Actions>
                 </Modal>
             </div>
