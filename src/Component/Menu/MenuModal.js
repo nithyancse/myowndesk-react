@@ -90,11 +90,13 @@ class MenuModal extends Component {
                         this.props.store.home.setResponseStatus(Messages.MENU_ADDED_SUCCESS);
                         this.props.store.home.setResponseClass(Messages.GREEN);
                     }
+                    menuSubmitButton.classList.remove("loading");
                     this.context.router.history.push(RedirectTo.MANAGE_MENU);
                 }
             })
             .catch(error => {
                 //console.log(error.response);
+                menuSubmitButton.classList.remove("loading");
                 let errorMsg = "", httpStatus = "";
                 if (error.response) {
                     httpStatus = (error.response.status).toString();
@@ -106,7 +108,7 @@ class MenuModal extends Component {
                 this.props.store.home.setResponseClass(Messages.RED);
                 this.context.router.history.push(RedirectTo.MANAGE_MENU);
             });
-        menuSubmitButton.classList.remove("loading");
+       
     }
 
     componentWillMount() {

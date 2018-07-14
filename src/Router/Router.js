@@ -29,7 +29,7 @@ const Router = (props) => {
     <Provider store={store}>
       <BrowserRouter basename={RedirectTo.MYOWNDESK}>
         <Layout>
-          <Route exact path={RedirectTo.LANDING} component={LandingPage} />
+          <Route path={RedirectTo.LANDING} component={LandingPage} />
           <Route path={RedirectTo.LOGIN} component={LoginPage} />
           <Route path={RedirectTo.SIGNUP} component={SignupPage} />
           <Route path={RedirectTo.ADD_NAME} component={NamePage} />

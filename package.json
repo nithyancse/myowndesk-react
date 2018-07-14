@@ -1,7 +1,7 @@
 {
-  "name": "taskmgmt",
+  "name": "myowndesk",
   "version": "1.0.0",
-  "description": "Taskmgmt Application",
+  "description": "MyOwnDesk Application",
   "main": "index.js",
   "homepage": "https://localhost:8080/myowndesk",
   "scripts": {

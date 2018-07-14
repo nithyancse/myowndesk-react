@@ -68,6 +68,7 @@ class LoginBox extends Component {
             })
             .catch(error => {
                 //console.log('error ' + error);
+                loginButton.classList.remove("loading");
                 if (error.response.status == 400) {
                     this.props.handleMessage(Messages.PASSWORD_INCORRECT, "red");
                 } else {
@@ -75,10 +76,10 @@ class LoginBox extends Component {
                 }
             });
 
-        loginButton.classList.remove("loading");
     }
 
     getUser() {
+        let loginButton = document.getElementById("loginButton");
         let url = RedirectTo.AXIOS_FETCH_USER;
         axios.get(url)
             .then((response) => {
@@ -87,6 +88,7 @@ class LoginBox extends Component {
                 sessionStorage.setItem(Messages.SESSION_USER, JSON.stringify(response.data));
                 this.props.store.home.setIsActive(true);
                 this.props.store.home.setUser(response.data);
+                loginButton.classList.remove("loading");
                 if (!response.data.name) {
                     this.setState({
                         pageToRedirect: RedirectTo.ADD_NAME
@@ -121,6 +123,37 @@ class LoginBox extends Component {
             });
     }
 
+    loadMenuList() {
+        let list = [];
+        let loginButton = document.getElementById("loginButton");
+        let userId = this.props.store.home.user.id;
+        let url = RedirectTo.AXIOS_FETCH_MENU_LIST + userId;
+        axios.get(url)
+            .then((response) => {
+                //console.log(response.data)
+                for (var key in response.data) {
+                    list.push(response.data[key]);
+                }
+                this.props.store.menu.setMenuList(list);
+                loginButton.classList.remove("loading");
+                this.setState({
+                    pageToRedirect: RedirectTo.HOME
+                });
+            })
+            .catch((error) => {
+                let errorMsg = "", httpStatus = "";
+                if (error.response) {
+                    httpStatus = (error.response.status).toString();
+                    errorMsg = httpStatus.startsWith("5") ? Messages.RESPONSE_ERROR_MSG : Messages.REQUEST_ERROR_MSG;
+                  } else if (error.request) {
+                    errorMsg = Messages.REQUEST_ERROR_MSG;
+                  } else {
+                    errorMsg = Messages.COMMON_ERROR_MSG;
+                  }
+                  this.props.handleMessage(errorMsg, "red");
+            });
+    }
+
     validateLoginForm(e) {
         let emailId = this.emailId.value;
         let password = this.password.value;
@@ -145,35 +178,6 @@ class LoginBox extends Component {
             passwordErr: passwordErrMsg,
         });
         return status;
-    }
-
-    loadMenuList() {
-        let list = [];
-        let userId = this.props.store.home.user.id;
-        let url = RedirectTo.AXIOS_FETCH_MENU_LIST + userId;
-        axios.get(url)
-            .then((response) => {
-                //console.log(response.data)
-                for (var key in response.data) {
-                    list.push(response.data[key]);
-                }
-                this.props.store.menu.setMenuList(list);
-                this.setState({
-                    pageToRedirect: RedirectTo.HOME
-                });
-            })
-            .catch((error) => {
-                let errorMsg = "", httpStatus = "";
-                if (error.response) {
-                    httpStatus = (error.response.status).toString();
-                    errorMsg = httpStatus.startsWith("5") ? Messages.RESPONSE_ERROR_MSG : Messages.REQUEST_ERROR_MSG;
-                  } else if (error.request) {
-                    errorMsg = Messages.REQUEST_ERROR_MSG;
-                  } else {
-                    errorMsg = Messages.COMMON_ERROR_MSG;
-                  }
-                  this.props.handleMessage(errorMsg, "red");
-            });
     }
 
     render() {

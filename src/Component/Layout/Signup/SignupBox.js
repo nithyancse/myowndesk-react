@@ -57,6 +57,9 @@ class SignupBox extends Component {
                     this.props.store.home.setRegisterStatus(response.data.message);
                     this.props.store.home.setRegisterStatusColor(color);
 
+                    registerForm.reset(); // reset the form fields
+                    registerForm.classList.remove("loading");  // stop the loading
+
                     this.setState({
                         pageToRedirect: RedirectTo.LOGIN
                     });
@@ -85,8 +88,7 @@ class SignupBox extends Component {
                 }
             });
 
-        registerForm.reset(); // reset the form fields
-        registerForm.classList.remove("loading");  // stop the loading
+        
     }
 
     validateRegisterForm(e) {

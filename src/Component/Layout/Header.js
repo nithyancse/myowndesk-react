@@ -23,7 +23,7 @@ class LogoBar extends Component {
         super(props, context);
         this.state = {
             sidebarStatus: false,
-            minHeight:"0px"
+            minHeight: "0px"
         }
     }
 
@@ -43,29 +43,31 @@ class LogoBar extends Component {
         }));
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.store.home.setWindowWidth(document.documentElement.clientWidth);
         this.props.store.home.setWindowHeight(document.documentElement.clientHeight);
         let { clientHeight, clientWidth } = this.refs.headerdiv;
         this.props.store.home.setHeaderWidth(clientWidth);
         this.props.store.home.setHeaderHeight(clientHeight);
         this.setState({
-            minHeight: clientHeight+"px"
+            minHeight: clientHeight + "px"
         })
     }
 
-    componentWillMount(){
+    componentWillMount() {
         let isActive = sessionStorage.getItem(Messages.SESSION_IS_ACTIVE);
-        if(isActive){
+        if (isActive) {
             //call required methods
             setAuthorizationToken();
             let isActive = sessionStorage.getItem(Messages.SESSION_IS_ACTIVE);
-            this.props.store.home.setIsActive(isActive); 
+            this.props.store.home.setIsActive(isActive);
             let user = JSON.parse(sessionStorage.getItem(Messages.SESSION_USER));
             this.props.store.home.setUser(user);
             let menu = JSON.parse(sessionStorage.getItem(Messages.SESSION_MENU));
-            this.props.store.menu.setMenuId(menu.menuId);
-            this.props.store.menu.setMenuName(menu.name);
+            if (menu) {
+                this.props.store.menu.setMenuId(menu.menuId);
+                this.props.store.menu.setMenuName(menu.name);
+            }
             this.props.store.home.setIsRefresh(true);
             this.loadMenuList();
         }
@@ -84,13 +86,13 @@ class LogoBar extends Component {
                 this.props.store.menu.setMenuList(list);
             })
             .catch((error) => {
-                console.log("error ->"+error);
+                console.log("error ->" + error);
             });
     }
 
     render() {
         let isActive = this.props.store.home.isActive;
-        const name =  this.props.store.home.user.name;
+        const name = this.props.store.home.user.name;
         const minHeight = this.state.minHeight;
 
         return (
@@ -117,7 +119,7 @@ class LogoBar extends Component {
                             </Menu.Menu>
                         }
                         {isActive &&
-                            <Menu.Menu position='right' style={{minHeight:minHeight}}>
+                            <Menu.Menu position='right' style={{ minHeight: minHeight }}>
                                 <Dropdown item simple text={name} direction='right'  >
                                     <Dropdown.Menu>
                                         {/*<Dropdown.Item icon='edit' text={Messages.EDIT_PROFILE} />

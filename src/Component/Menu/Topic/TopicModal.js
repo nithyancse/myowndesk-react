@@ -146,19 +146,19 @@ class TopicModal extends Component {
                         this.props.store.home.setResponseStatus(Messages.TOPIC_ADDED_SUCCESS);
                         this.props.store.home.setResponseClass(Messages.GREEN);
                     }
+                    topicForm.classList.remove("loading");
                     this.context.router.history.push(RedirectTo.TOPIC_LIST);
                 }
             })
             .catch(error => {
                 //console.log(error.response);
+                topicForm.classList.remove("loading");
                 let httpStatus = (error.response.status).toString();
                 let errorMsg = httpStatus.startsWith("5") ? Messages.RESPONSE_ERROR_MSG : Messages.REQUEST_ERROR_MSG;
                 this.props.store.home.setResponseStatus(errorMsg);
                 this.props.store.home.setResponseClass(Messages.RED);
                 this.context.router.history.push(RedirectTo.TOPIC_LIST);
             });
-
-        topicForm.classList.remove("loading");
     }
 
     validateTopicForm(e) {
