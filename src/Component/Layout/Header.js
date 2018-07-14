@@ -132,7 +132,7 @@ class LogoBar extends Component {
                     </Menu>
                 </BrowserView>
                 <MobileView device={isMobile}>
-                    <Menu size="tiny" borderless inverted className="borderRadius0" >
+                    <Menu size="tiny" borderless inverted className="borderRadius0 marginBottom0" >
                         <Menu.Item as='a' header>
                             {isActive &&
                                 <Icon name='bars' size='large' className="tasklogo" onClick={this.handleSideBar} />

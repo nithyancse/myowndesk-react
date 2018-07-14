@@ -92,8 +92,8 @@ class ManageMenuPage extends Component {
         let firstColumnWidth = 13;
         let secondColumnWidth = 3;
         if (isMobile) {
-            firstColumnWidth = 11;
-            secondColumnWidth = 5;
+            firstColumnWidth = 10;
+            secondColumnWidth = 6;
         }
 
         const item = data;

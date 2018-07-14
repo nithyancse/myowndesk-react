@@ -96,7 +96,7 @@ class TopicPage extends Component {
                 break;
             }
         }
-        //this.toggleVisibility();
+        this.toggleVisibility();
     }
 
     handleClick(menuId, name) {

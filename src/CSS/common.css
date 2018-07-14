@@ -10,6 +10,7 @@ body{ height: 100%; background-color: #ffffff; font-family: Lato,'Helvetica Neue
 /* Margin  */
 .marginTop10{ margin-top: 10px !important; }
 .marginTop60{ margin-top: 60px !important; }
+.marginBottom0{ margin-bottom: 0 !important; }
 
 /* Padding  */
 .paddingLeft0{ padding-left:0px !important; }

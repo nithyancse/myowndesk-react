@@ -99,13 +99,13 @@ class MobileSideBar extends Component {
         return (
             <div>
                 <Sidebar as={Menu} animation='overlay' width='wide' visible={visible} icon='labeled' vertical inverted style={{ width: "50%" }}>
-                    <Menu.Item name='home' onClick={() => this.handleSideBar()}>
-                        <Icon name='close' className="floatRight" />
+                    <Menu.Item name='close' onClick={() => this.handleSideBar()} className="textalignright">
+                        <span >X</span>
                     </Menu.Item>
                     <Menu.Item name='home' onClick={() => this.handleRedirect(RedirectTo.HOME)} className="textalignleft">
                         {Messages.MENU_HOME}
                     </Menu.Item>
-                    <Menu.Item name='home' onClick={() => this.handleManageMenu()} className="textalignleft">
+                    <Menu.Item name='managemenu' onClick={() => this.handleManageMenu()} className="textalignleft">
                         {Messages.MENU_MANAGE}
                     </Menu.Item>
                     {menuListArray}
