@@ -5,6 +5,7 @@ import { Provider } from 'mobx-react'
 import store from '../Store/stores'
 import Config from '../Constant/Config'
 import RedirectTo from '../Constant/RedirectTo'
+import ScrollToTop from '../Component/Common/ScrollToTop'
 import Layout from '../Component/Layout/Layout'
 import LandingPage from '../Component/Layout/Landing/LandingPage'
 import LoginPage from '../Component/Layout/Login/LoginPage'
@@ -28,23 +29,27 @@ const Router = (props) => {
   return (
     <Provider store={store}>
       <BrowserRouter basename={RedirectTo.MYOWNDESK}>
-        <Layout>
-          <Route path={RedirectTo.LANDING} component={LandingPage} />
-          <Route path={RedirectTo.LOGIN} component={LoginPage} />
-          <Route path={RedirectTo.SIGNUP} component={SignupPage} />
-          <Route path={RedirectTo.ADD_NAME} component={NamePage} />
-          <Route path={RedirectTo.HOME} component={HomePage} />
-          <Route path={RedirectTo.MENU_MODAL} component={MenuModal} />
-          <Route path={RedirectTo.MANAGE_MENU} component={ManageMenuPage} />
-          <Route path={RedirectTo.TOPIC_MODAL} component={TopicModal} />
-          <Route path={RedirectTo.TOPIC_LIST} component={TopicListPage} />
-          <Route path={RedirectTo.TOPIC} component={TopicPage} />
-          <Route path={RedirectTo.LOGOUT} component={LandingPage} />
-          <Route exact path='/' render = {() => <Redirect to={RedirectTo.LANDING} />} />
-        </Layout>
+        <ScrollToTop>
+          <Layout>
+            <Route path={RedirectTo.LANDING} component={LandingPage} />
+            <Route path={RedirectTo.LOGIN} component={LoginPage} />
+            <Route path={RedirectTo.SIGNUP} component={SignupPage} />
+            <Route path={RedirectTo.ADD_NAME} component={NamePage} />
+            <Route path={RedirectTo.HOME} component={HomePage} />
+            <Route path={RedirectTo.MENU_MODAL} component={MenuModal} />
+            <Route path={RedirectTo.MANAGE_MENU} component={ManageMenuPage} />
+            <Route path={RedirectTo.TOPIC_MODAL} component={TopicModal} />
+            <Route path={RedirectTo.TOPIC_LIST} component={TopicListPage} />
+            <Route path={RedirectTo.TOPIC} component={TopicPage} />
+            <Route path={RedirectTo.LOGOUT} component={LandingPage} />
+            <Route exact path='/' render={() => <Redirect to={RedirectTo.LANDING} />} />
+          </Layout>
+        </ScrollToTop>
       </BrowserRouter>
     </Provider>
   );
 }
+
+
 
 export default Router
