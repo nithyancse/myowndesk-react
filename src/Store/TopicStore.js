@@ -9,6 +9,7 @@ export class TopicStore {
     @observable topicObjectForEdit = {}
     @observable prevTopicId = 0
     @observable nextTopicId = 0
+    @observable isFromTopicPage = false
 
     @action setTopicList(topicList) {
         this.topicList = topicList;
@@ -40,6 +41,10 @@ export class TopicStore {
 
     @action setNextTopicId(nextTopicId) {
         this.nextTopicId = nextTopicId;
+    }
+
+    @action setIsFromTopicPage(isFromTopicPage) {
+        this.isFromTopicPage = isFromTopicPage;
     }
 
 }

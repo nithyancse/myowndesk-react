@@ -15,4 +15,6 @@
   overflow-x: auto !important;
   padding: 15px !important;
 }
-
+.ql-editor{
+  max-height: 340px  !important;
+}

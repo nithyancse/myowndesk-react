@@ -27,6 +27,7 @@ class TopicListPage extends Component {
     }
 
     componentWillMount() {
+        this.props.store.topic.setIsFromTopicPage(false);
         if(!sessionStorage.getItem(Messages.SESSION_IS_ACTIVE)){
             this.context.router.history.push(RedirectTo.LOGIN);
             return false;

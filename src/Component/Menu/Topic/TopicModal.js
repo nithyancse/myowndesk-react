@@ -38,7 +38,11 @@ class TopicModal extends Component {
 
     close = () => {
         this.setState({ open: false })
-        this.context.router.history.push(RedirectTo.TOPIC_LIST);
+        if(this.props.store.topic.isFromTopicPage){
+            this.context.router.history.push(RedirectTo.TOPIC);
+        } else {
+            this.context.router.history.push(RedirectTo.TOPIC_LIST);
+        }
     }
 
     componentWillMount() {
@@ -147,7 +151,12 @@ class TopicModal extends Component {
                         this.props.store.home.setResponseClass(Messages.GREEN);
                     }
                     topicForm.classList.remove("loading");
-                    this.context.router.history.push(RedirectTo.TOPIC_LIST);
+                    if(this.props.store.topic.isFromTopicPage){
+                        this.context.router.history.push(RedirectTo.TOPIC);
+                    } else {
+                        this.context.router.history.push(RedirectTo.TOPIC_LIST);
+                    }
+                    
                 }
             })
             .catch(error => {
@@ -213,7 +222,7 @@ class TopicModal extends Component {
 
         return (
             <div>
-                <Modal size={'large'} open={open} onClose={this.close} style={{ top: "40%" }}>
+                <Modal size={'large'} open={open} onClose={this.close}  closeOnDimmerClick={false} centered={false} >
                     <Modal.Header>{this.state.modalTitle} {Messages.TOPIC}</Modal.Header>
                     <Modal.Content scrolling>
                         <Form id="topicForm" size='large'>

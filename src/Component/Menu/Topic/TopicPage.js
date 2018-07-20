@@ -27,7 +27,8 @@ class TopicPage extends Component {
     }
 
     componentWillMount() {
-        if(!sessionStorage.getItem(Messages.SESSION_IS_ACTIVE)){
+        this.props.store.topic.setIsFromTopicPage(true);
+        if (!sessionStorage.getItem(Messages.SESSION_IS_ACTIVE)) {
             this.context.router.history.push(RedirectTo.LOGIN);
             return false;
         }
@@ -68,7 +69,17 @@ class TopicPage extends Component {
         }
     }
 
+    componentWillUnmount() {
+        this.clear();
+    }
+
+    clear() {
+        this.props.store.home.setResponseStatus("");
+        this.props.store.home.setResponseClass("");
+    }
+
     handleTopicDisplayBox(topicId) {
+        this.clear();
         let item = this.props.store.topic.topicList;
         let prevTopicId = 0;
         let nextTopicId = 0;
@@ -104,11 +115,18 @@ class TopicPage extends Component {
         this.context.router.history.push(RedirectTo.TOPIC_LIST);
     }
 
+    handleEdit() {
+        this.props.store.topic.setTopicObjectForEdit(this.props.store.topic.topicObject);
+        this.context.router.history.push(RedirectTo.TOPIC_MODAL);
+    }
+
     toggleVisibility = () => this.setState({ visible: !this.state.visible })
 
     render() {
         const mainMinHeight = this.props.store.home.mainMinHeight;
         const isLoggedIn = this.props.store.home.isLoggedIn;
+        const responseStatus = this.props.store.home.responseStatus;
+        const responseClass = this.props.store.home.responseClass;
         let data = this.props.store.topic.topicList;
         const menuName = this.props.store.menu.menuName;
         const prevTopicId = this.props.store.topic.prevTopicId;
@@ -147,28 +165,30 @@ class TopicPage extends Component {
             <div className="maincontain" style={{ minHeight: mainMinHeight }}>
                 <Grid >
                     <Grid.Row>
-                        <Grid.Column width={6}>
+                        <Grid.Column width={5}>
                             <Header as='h3'>{menuName}</Header>
                         </Grid.Column>
-                        <Grid.Column width={10} >
+                        <Grid.Column width={11} >
                             <div className="floatRight">
                                 <BrowserView device={isBrowser}>
                                     {prevTopicId != 0 && <Button content='Previous' icon='left arrow' labelPosition='left' onClick={() => this.handleTopicDisplayBox(prevTopicId)} />}
                                     {nextTopicId != 0 && <Button content='Next' icon='right arrow' labelPosition='right' onClick={() => this.handleTopicDisplayBox(nextTopicId)} />}
                                     <Button content='Topic List' color='green' icon='bars' onClick={this.toggleVisibility} />
-                                    <Button content='Manage Topics' color='yellow' name='edit' icon='edit' onClick={this.handleClick.bind(this)} />
+                                    <Button content='Manage' color='green' name='edit' icon='edit' onClick={this.handleClick.bind(this)} />
+                                    <Button content='Edit' color='yellow' icon='edit' onClick={() => this.handleEdit()} />
                                 </BrowserView>
                                 <MobileView device={isMobile}>
                                     {prevTopicId != 0 && <Button circular icon='left arrow' onClick={() => this.handleTopicDisplayBox(prevTopicId)} />}
                                     {nextTopicId != 0 && <Button circular icon='right arrow' onClick={() => this.handleTopicDisplayBox(nextTopicId)} />}
                                     <Button circular color='green' icon='bars' onClick={this.toggleVisibility} />
-                                    <Button circular color='yellow' name='edit' icon='edit' onClick={this.handleClick.bind(this)} />
+                                    <Button circular color='green' name='edit' icon='edit' onClick={this.handleClick.bind(this)} />
+                                    <Button circular color='yellow' icon='edit' onClick={() => this.handleEdit()} />
                                 </MobileView>
                             </div>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-
+                <div className="textaligncenter paddingTop10"><span className={responseClass}>{responseStatus}</span></div>
                 <Sidebar.Pushable as={Segment}>
                     <Sidebar
                         as={Menu}
