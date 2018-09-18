@@ -28,11 +28,10 @@ class MobileSideBar extends Component {
     }
 
     handleMenuClick(menuId, name) {
-        let menu = {
-            "menuId": menuId,
-            "name": name
-        }
+        let menu = { "menuId": menuId, "name": name }
         sessionStorage.setItem(Messages.SESSION_MENU, JSON.stringify(menu));
+        this.props.store.menu.setMenuId(menuId);
+        this.props.store.menu.setMenuName(name);
         let prevTopicId = 0, nextTopicId = 0;
         let isTopicPresent = false;
         let list = [];

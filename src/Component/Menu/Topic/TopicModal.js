@@ -38,7 +38,7 @@ class TopicModal extends Component {
 
     close = () => {
         this.setState({ open: false })
-        if(this.props.store.topic.isFromTopicPage){
+        if (this.props.store.topic.isFromTopicPage) {
             this.context.router.history.push(RedirectTo.TOPIC);
         } else {
             this.context.router.history.push(RedirectTo.TOPIC_LIST);
@@ -151,12 +151,12 @@ class TopicModal extends Component {
                         this.props.store.home.setResponseClass(Messages.GREEN);
                     }
                     topicForm.classList.remove("loading");
-                    if(this.props.store.topic.isFromTopicPage){
+                    if (this.props.store.topic.isFromTopicPage) {
                         this.context.router.history.push(RedirectTo.TOPIC);
                     } else {
                         this.context.router.history.push(RedirectTo.TOPIC_LIST);
                     }
-                    
+
                 }
             })
             .catch(error => {
@@ -222,7 +222,7 @@ class TopicModal extends Component {
 
         return (
             <div>
-                <Modal size={'large'} open={open} onClose={this.close}  closeOnDimmerClick={false} centered={false} >
+                <Modal size={'large'} open={open} onClose={this.close} closeOnDimmerClick={false} centered={false} >
                     <Modal.Header>{this.state.modalTitle} {Messages.TOPIC}</Modal.Header>
                     <Modal.Content scrolling>
                         <Form id="topicForm" size='large'>
@@ -235,17 +235,19 @@ class TopicModal extends Component {
                                             defaultValue={defaultTitle}
                                             ref={(title) => this.title = title}
                                         />
-                                        {titleErrMsg.length > 0 && <Label pointing='left'>{titleErrMsg}</Label>}
+                                        {titleErrMsg.length > 0 && <Label pointing='top'>{titleErrMsg}</Label>}
                                     </div>
                                 </Form.Field>
                                 <Form.Field>
-                                <Dropdown
-                                    selection
-                                    options={options}
-                                    defaultValue={defaultType}
-                                    onChange={this.onTypeChange}
-                                />
-                                {typeErrMsg.length > 0 && <Label pointing='left'>{typeErrMsg}</Label>}
+                                    <div className="ui left icon input">
+                                        <Dropdown
+                                            selection
+                                            options={options}
+                                            defaultValue={defaultType}
+                                            onChange={this.onTypeChange}
+                                        />
+                                    </div>
+                                    {typeErrMsg.length > 0 && <Label pointing='top'>{typeErrMsg}</Label>}
                                 </Form.Field>
                             </Form.Group>
                             <Form.Field>
@@ -275,9 +277,17 @@ const modules = {
         [{ 'header': [1, 2, false] }],
         ['bold', 'italic', 'underline', 'strike', 'blockquote'],
         [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-        [{ 'color': ['black', 'blue', 'green', 'grey'] }, { 'background': ['green'] }],
+        [
+            {
+                'color': ['aquamarine', 'brown', 'black', 'blue', 'darkblue', 'darkgray', 'darkgreen', 'darkgrey', 'forestgreen', 'greenyellow',
+                    'limegreen', 'maroon', 'navy', 'green', 'grey', 'pink', 'red', 'violet']
+            },
+            {
+                'background': ['aquamarine', 'brown', 'black', 'blue', 'darkblue', 'darkgray', 'darkgreen', 'darkgrey', 'forestgreen', 'greenyellow',
+                    'limegreen', 'maroon', 'navy', 'green', 'grey', 'pink', 'red', 'violet']
+            }],
         //['link', 'image'],
-        ['link','code-block', 'clean']
+        ['link', 'code-block', 'clean']
     ]
 };
 
